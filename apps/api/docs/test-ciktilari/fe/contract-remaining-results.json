@@ -1,0 +1,92 @@
+[
+  {
+    "id": "FOLLOWUP-CYCLE",
+    "schema": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "takip dönemi bağlıysa dönem kodu, değilse null",
+      "x-source": "routes/analysis.ts: followupCycleCode: followupCycle?.code ?? null"
+    },
+    "value": "2027-ANA",
+    "expected": "accept",
+    "error": null,
+    "pass": true
+  },
+  {
+    "id": "AGGREGATE-DERIVED",
+    "schema": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "description": "üye göstergeler tamamsa türetilmiş tahmin; değilse null (routes/corporate.ts aggregates)",
+      "properties": {
+        "value": {
+          "type": "number"
+        },
+        "members": {
+          "type": "integer"
+        },
+        "label": {
+          "type": "string",
+          "enum": [
+            "derived_estimate"
+          ]
+        },
+        "note": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "value",
+        "members",
+        "label",
+        "note"
+      ],
+      "x-source": "routes/corporate.ts GET aggregates: complete ? {value, members, label, note} : null"
+    },
+    "value": {
+      "value": 65,
+      "members": 3,
+      "label": "derived_estimate",
+      "note": "madde ortalaması; resmî HPW sonucu değildir"
+    },
+    "expected": "accept",
+    "error": null,
+    "pass": true
+  },
+  {
+    "id": "RESULT-INVALID-STATUS",
+    "schema": {
+      "type": "string",
+      "enum": [
+        "OBSERVED",
+        "OFFICIAL",
+        "SUPPRESSED"
+      ],
+      "x-source": "CHECK result.status"
+    },
+    "value": "not_a_real_status",
+    "expected": "reject",
+    "error": "$: izin verilmeyen değer \"not_a_real_status\"",
+    "pass": true
+  },
+  {
+    "id": "LEVER-TAGS-TEXT-ARRAY",
+    "schema": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "x-source": "db/migrations: local_target.lever_tags text[] (öğe: text)"
+      }
+    },
+    "value": [
+      "communication"
+    ],
+    "expected": "accept",
+    "error": null,
+    "pass": true
+  }
+]

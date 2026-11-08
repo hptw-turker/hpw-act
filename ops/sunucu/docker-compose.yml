@@ -1,0 +1,39 @@
+# HPW Act v3.0 — tek üretim ortamı (ADR-0043). Sunucuya Claude Code ile kurulum: ops/sunucu/SUNUCU-KURULUMU.md
+# Sırlar .env dosyasından gelir (${VAR:?} — eksikse compose durur). Kapalı modüller ve iki adımlı doğrulama varsayılan olarak kapalıdır.
+# NOT: Bu dosya geliştirme ortamında docker olmadığı için çalıştırılarak denenmedi; kurulumda SUNUCU-KURULUMU.md adım 6'daki denetimler zorunludur.
+services:
+  db:
+    image: postgres:16
+    restart: unless-stopped
+    environment: { POSTGRES_PASSWORD: "${PG_PASSWORD:?PG_PASSWORD gerekli}", POSTGRES_DB: hpw_act, HPW_ENV: production, HPW_API_PASSWORD: "${API_DB_PASSWORD:?API_DB_PASSWORD gerekli}" }
+    volumes: [ "pgdata:/var/lib/postgresql/data", "../docker/init-roles.sh:/docker-entrypoint-initdb.d/10-roles.sh:ro" ]
+    healthcheck: { test: ["CMD-SHELL", "pg_isready -U postgres -d hpw_act"], interval: 10s, timeout: 5s, retries: 10 }
+  api:
+    build: { context: ../.., dockerfile: apps/api/Dockerfile }
+    restart: unless-stopped
+    depends_on: { db: { condition: service_healthy } }
+    environment:
+      NODE_ENV: production
+      HPW_ENV: production
+      PORT: "8787"
+      APP_BASE_URL: "https://${DOMAIN:?DOMAIN gerekli (ör. act.happyplacetowork.com.tr)}"
+      COOKIE_SECURE: "true"
+      SETUP_KEY: "${SETUP_KEY:?SETUP_KEY gerekli}"
+      HPW_MFA_KEY: "${HPW_MFA_KEY:?HPW_MFA_KEY gerekli}"
+      DATABASE_URL: "postgres://hpw_api_production:${API_DB_PASSWORD:?}@db:5432/hpw_act"
+      MIGRATE_DATABASE_URL: "postgres://postgres:${PG_PASSWORD:?}@db:5432/hpw_act"
+      SMTP_URL: "${SMTP_URL:-}"
+      MAIL_FROM: "${MAIL_FROM:-}"
+      HPW_LEGACY_MODULES: "false"
+      HPW_MFA_REQUIRED: "false"
+      TRUST_PROXY: "1"
+    command: ["sh", "-c", "GRANT_APP_ROLES_TO=hpw_api_production node dist/src/migrate.js && exec node dist/src/server.js"]
+    expose: [ "8787" ]
+  caddy:
+    image: caddy:2
+    restart: unless-stopped
+    depends_on: [ api ]
+    environment: { DOMAIN: "${DOMAIN:?}" }
+    ports: [ "80:80", "443:443" ]
+    volumes: [ "./Caddyfile:/etc/caddy/Caddyfile:ro", "caddy_data:/data", "caddy_config:/config" ]
+volumes: { pgdata: {}, caddy_data: {}, caddy_config: {} }

@@ -1,0 +1,10 @@
+# HTTPS sertifikası Let's Encrypt ile otomatik alınır (alan adının A kaydı bu sunucuyu göstermeli; 80 ve 443 açık olmalı).
+{$DOMAIN} {
+	encode gzip
+	reverse_proxy api:8787
+	header {
+		Strict-Transport-Security "max-age=31536000"
+		X-Content-Type-Options "nosniff"
+		Referrer-Policy "same-origin"
+	}
+}

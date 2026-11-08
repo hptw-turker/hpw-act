@@ -1,0 +1,45 @@
+--- tests/original/independent-ui.cjs
++++ tests/fixture-adapted/independent-ui.cjs
+@@ -6,7 +6,7 @@
+ const NOW=new Date().toISOString(),OLD=new Date(Date.now()-3600e3).toISOString();
+ const CAN={claim:true,release:false,snooze:true,dismiss:true};
+ const W=(o={})=>({id:IA,tenant_id:TA,tenant_code:'AAA',tenant_name:'SIRKET_A',tenant_status:'active',rule:'invite_failed',occurrence:1,state:'open',owner_role:'consultant',claimed_by:null,claimed_by_name:null,snoozed_until:null,dismissed_until:null,state_reason:null,opened_at:OLD,due_at:NOW,resolved_at:null,evidence:{failed:2,byProfile:{HR_ADMIN:2}},eval_status:'ok',eval_error:null,last_ok_eval_at:NOW,last_eval_at:NOW,version:3,can:CAN,...o});
+-const DATA=(items)=>({contract:'hpw-act-work-items/1',generatedAt:NOW,items,evaluations:[{tenant_id:TA,tenant_code:'AAA',rule:'invite_failed',status:'ok',detail:null,last_ok_at:NOW,last_attempt_at:NOW}],evaluationFailures:[],evaluationDeferred:[],evaluationTrigger:'list_open',freshnessMinutes:5});
++const DATA=(items)=>({contract:'hpw-act-work-items/1',generatedAt:NOW,items,evaluations:[{tenant_id:TA,tenant_code:'AAA',rule:'invite_failed',status:'ok',detail:null,last_ok_at:NOW,last_attempt_at:NOW,active_item_state:'open'}],evaluationFailures:[],evaluationDeferred:[],evaluationTrigger:'list_open',freshnessMinutes:5});
+ const delay=ms=>new Promise(r=>setTimeout(r,ms));const results=[];
+ (async()=>{const browser=await chromium.launch({headless:true});const setup=H.makeSetup(browser);
+ async function record(id,x,expected,observed,pass){results.push({id,expected,observed,status:pass?'PASS':'FAIL',mode:'actual delivered web; Chromium; controlled HTTP',errors:x.errors});await x.p.screenshot({path:path.join(OUT,id+'.png'),fullPage:true});console.log(id,pass?'PASS':'FAIL',JSON.stringify(observed));await x.context.close()}
+
+--- tests/original/independent-api.mjs
++++ tests/cas-api.mjs
+@@ -1,6 +1,8 @@
++// Adapted CAS probe: actual packaged Fastify/evaluator; FOR UPDATE is intentionally not modeled.
++// A stale write is forced to exercise the extra version predicate. Not a PostgreSQL lock test.
+ // Actual packaged Fastify + evaluateTenant. Deterministic transactional DB model;
+ // NOT a PostgreSQL/RLS/lock implementation test. Schedule is explicit, no sleeps.
+-import {resolve} from 'node:path';import {pathToFileURL} from 'node:url';import {mkdirSync,writeFileSync} from 'node:fs';
++import {resolve} from 'node:path';import {pathToFileURL} from 'node:url';import {mkdirSync,writeFileSync,readFileSync} from 'node:fs';
+ process.env.HPW_ENV='test';process.env.NODE_ENV='test';
+ const R=process.env.HPW_API_RUNTIME,OUT=process.env.OUT||resolve(import.meta.dirname,'evidence/independent-api');mkdirSync(OUT,{recursive:true});
+ const {pool}=await import(pathToFileURL(R+'/db.js'));const {evaluateTenant}=await import(pathToFileURL(R+'/workitems.js'));
+@@ -28,6 +30,7 @@
+  if(sql.startsWith('INSERT INTO platform_command')){pendingCommands.push([args[1],{route:args[2],payload_hash:args[3],response_status:200,response_body:JSON.parse(args[5])}]);return rows()}
+  if(sql.startsWith('UPDATE platform_work_item SET')){
+   const current=clone(staged??item);
++  if(sql.includes('WHERE id = $1 AND version = $8')&&current.version!==args[7])return rows();
+   if(sql.includes("state = 'claimed'")){staged={...current,state:'claimed',claimed_by:args[1],version:current.version+1};}
+   else if(sql.includes("state = 'open'")){staged={...current,state:'open',claimed_by:null,version:current.version+1};}
+   else if(sql.includes("state = 'dismissed'")){staged={...current,state:'dismissed',dismissed_until:args[1],state_reason:args[2],version:current.version+1};}
+@@ -53,7 +56,10 @@
+ try{
+  const offered=await post('dismiss',{expectedVersion:3,reason:'Audit reason',until:'2026-10-28T21:00:00.000Z'},'offered-max');
+  const boundary=await post('dismiss',{expectedVersion:3,reason:'Audit reason',until:'2026-10-28T10:00:00.000Z'},'actual-max');
+- results.push({id:'V211-MAX-DATE-API',pass:offered.statusCode===200,expected:'The date offered as maximum by the UI must be accepted',observed:{fixedNow:new Date(Date.now()).toISOString(),uiOffered:{status:offered.statusCode,body:offered.json()},exact30DaysControl:{status:boundary.statusCode,body:boundary.json()}}});
++ results.push({id:'V211-MAX-DATE-API',pass:offered.statusCode===422&&boundary.statusCode===200,expected:'Old over-limit body stays rejected; exact 30-day boundary stays accepted',observed:{fixedNow:new Date(Date.now()).toISOString(),uiOffered:{status:offered.statusCode,body:offered.json()},exact30DaysControl:{status:boundary.statusCode,body:boundary.json()}}});
++
++ item=initial();commands.clear();const ui=JSON.parse(readFileSync(process.env.UI_RESULTS,'utf8')).find(x=>x.id==='V211-E-MAX-DISMISS-DATE').observed.posts[0].body;
++ const fixed=await post('dismiss',ui,'new-ui-max');results.push({id:'V2111-UI-BODY-API',pass:fixed.statusCode===200,observed:{ui,status:fixed.statusCode,body:fixed.json()}});
+ }finally{Date.now=savedNow}
+ writeFileSync(resolve(OUT,'results.json'),JSON.stringify({mode:'Actual packaged Fastify and evaluator, controlled transactional DB model. NOT real PostgreSQL.',results},null,2));
+ console.log(JSON.stringify(results.map(({queries,...x})=>x),null,2));await app.close();await pool.end();process.exitCode=results.every(x=>x.pass)?0:1;
+

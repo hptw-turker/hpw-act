@@ -1,0 +1,41 @@
+[
+  {
+    "id": "LAST-LOGIN-VALID-DATE",
+    "schema": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time"
+    },
+    "value": "2026-09-27T03:00:00.000Z",
+    "expected": "accept",
+    "error": null,
+    "pass": true
+  },
+  {
+    "id": "CANCEL-REASON-VALID-TEXT",
+    "schema": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "value": "İhtiyaç ortadan kalktı",
+    "expected": "accept",
+    "error": null,
+    "pass": true
+  },
+  {
+    "id": "READY-REASONS-OBJECT",
+    "schema": {
+      "type": "string"
+    },
+    "value": {
+      "unexpected": true
+    },
+    "expected": "reject",
+    "error": "$: string bekleniyordu, object geldi",
+    "pass": true
+  }
+]

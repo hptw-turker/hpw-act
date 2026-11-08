@@ -1,0 +1,16 @@
+{
+ "format": "hpw-act-result-bundle",
+ "formatVersion": "1",
+ "tenantCode": "ATLAS",
+ "cycleCode": "2026-ANA",
+ "instrumentCode": "HPTW-CBA",
+ "instrumentVersion": "2026-v3",
+ "scoringRuleVersion": "HPTW-2026-02",
+ "language": "tr",
+ "exportedAt": "2026-09-22T10:00:00Z",
+ "benchmarkSets": [
+  "sector",
+  "scale",
+  "certified"
+ ]
+}

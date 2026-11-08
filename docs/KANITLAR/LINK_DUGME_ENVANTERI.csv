@@ -1,0 +1,44 @@
+sayfa,etiket,selector,tur,roller,ortam,gerekli_kayit,islem,kalici_etki,negatif_senaryo,kanit
+index.html,Yeniden dene / Uygulamayı aç,#retry / #open,düğme,herkes,ikisi,çalışan servis,health-probe.js → app.html,yok (yönlendirme),servis kapalı → uyarı ve 3 sn yeniden deneme; yanlış ortam/build → geçiş yok,"tur E1/E2, D1"
+Giriş,Giriş yap,button:Giriş yap,form,herkes,ikisi,aktif hesap,POST /api/auth/login,oturum + çerez,yanlış parola 401 (11c); 8 deneme 429 (R-8); pasif hesap 401,"tur 1, 11c"
+Giriş,İlk yöneticiyi kur,#b-email #b-pw #b-key,form,yalnız kurulum öncesi,BOŞ,platform kullanıcısı yok,POST /api/platform/bootstrap,app_user (platform),yanlış anahtar 403 (E4); ikinci kurulum 409 (E5),tur E3–E5
+Giriş,Parolamı unuttum,a:Parolamı unuttum,link,herkes,ikisi,-,/#/parola,-,-,tur 11b
+Parola,Bağlantı gönder,#email + button,form,herkes,ikisi,-,POST /api/auth/forgot,password_token + outbox,hesap yoksa aynı yanıt; hız sınırı,"tur 11b, R-8"
+Parola,Parolayı belirle,#pw #pw2,form,bağlantı sahibi,ikisi,geçerli token,POST /api/auth/reset/:token,parola + oturumlar kapanır,kullanılmış/süresi dolmuş token 404; zayıf parola 400,"tur 11b–11d, R-2"
+Davet,Parolayı belirle / Daveti hesabıma bağla,#pw #pw2,form,davetli,ikisi,geçerli davet,POST /api/invitations/:token/accept,"app_user parola, membership, oturum",ikinci kullanım 404 (6e); mevcut parola yanlış 401 (R-5),"tur 6d/6e, R-5"
+Müşteriler,Şirketi oluştur,#code #name #adminEmail,form,platform,ikisi,-,POST /api/platform/tenants,tenant + ilk İK üyeliği + davet(ready),"yinelenen kod 409, kısa ad 400 (E2E-1)","tur 2, 10"
+Müşteriler,Aç,button:Aç,düğme,platform (yetkili liste),ikisi,tenant,POST switch-tenant → /t/:tid,oturum tenant bağlamı,yetkili listede değilse 403 (R-2),"tur 2b, 10a"
+Müşteriler,Test posta kutusu (platform),MailSandbox,tablo/link,platform,sandbox modunda,.eml,GET /api/platform/mail-sandbox,-,SMTP/üretimde 404,D4 benzeri; tur 6c2 (şirket)
+Genel bakış,Adım bağlantıları (aç),a:aç,link,tüm profiller,ikisi,tenant,/t/:tid/<sayfa>,-,-,"tur 2b/2c, D3"
+Organizasyon,Birimi ekle,#ucode #uname #utype,form,"HR_ADMIN, HR_PARTNER(şirket geneli)",ikisi,tenant,POST /api/t/:tid/org/units,org_unit (+tip),tanımsız tip 422; VIEWER 403,tur 3
+Organizasyon,Rolü ekle,#rcode #runit #rtitle #rprof,form,"HR_ADMIN, HR_PARTNER (verebildiği profil)",ikisi,birim,POST /api/t/:tid/org/roles,org_role,"HRBP HR_ADMIN profili → grant_not_allowed (N05, doğrulanmadı)",kod
+Organizasyon (Excel),Şablonu indir,button:Şablonu indir,indirme,"HR_ADMIN, HR_PARTNER",ikisi,tenant,GET /templates/org.xlsx,-,-,tur 3b
+Organizasyon (Excel),Doğrula ve önizle,input[type=file] + button,yükleme,"HR_ADMIN, HR_PARTNER",ikisi,xlsx,POST /imports/org,import_job (validated/failed),hatalı satır → failed + hata dosyası (3c),tur 3c/3c2
+Organizasyon (Excel),Onayla ve işle,button:Onayla,düğme,"HR_ADMIN, HR_PARTNER",ikisi,validated job,POST /imports/:id/commit,org_* tablolar + audit,hatalı job 409; sürüm değişti 409 revalidate (R-6),tur 3d
+Organizasyon (Excel),Hata satırlarını indir,button,indirme,aynı,ikisi,failed job,GET /imports/:id/errors.xlsx,-,gizli değer taşımaz,tur 3c
+Soru seti,Listeye ekle (ek soru),#ccode #ctext,form,"HR_ADMIN, HR_PARTNER",ikisi,-,yerel liste,-,desteklenmeyen ölçek 422 (E2E-4),tur 4
+Soru seti,Soru setini yayımla,button:Soru setini yayımla,düğme,"HR_ADMIN, HR_PARTNER",ikisi,en az 1 madde,POST /instruments,instrument_version + item_metric + metric_version,0 madde: düğme kapalı (R41),tur 4
+Dönemler,Dönemi aç,#ccode #ps #pe #iv,form,"HR_ADMIN, HR_PARTNER",ikisi,soru seti,POST /cycles,survey_cycle,yinelenen kod 409,"tur 5, 9"
+Dönemler,sonuç yükle / yeni sürüm yükle,a,link,aynı,ikisi,dönem,/yukle/results?cycleId,-,soru seti yoksa 422 cycle_without_instrument,tur 5
+Sonuçlar (Excel),Şablonu indir,button,indirme,"HR_ADMIN, HR_PARTNER",ikisi,dönem+soru seti,GET /templates/results.xlsx?cycleId,-,-,tur 5b
+Sonuçlar (Excel),Doğrula ve önizle,input[type=file],yükleme,aynı,ikisi,xlsx,POST /imports/results?cycleId,import_job + pinned,"dağılım çelişkisi, satır dönemi, benchmark sınır (R-6)",tur 5c
+Sonuçlar (Excel),Onayla ve işle,button:Onayla,düğme,aynı,ikisi,validated job,POST /imports/:id/commit (confirmReplace),"result (batch, revizyon), benchmark, hedefler under_review",FULL_REPLACE düşürecek hücre → teyit (R-6); pin değişti 409,"tur 5d, 9"
+Kullanıcılar,Ekle (tek kullanıcı),#ue #un #ur,form,HR_ADMIN,ikisi,roller,POST /users,app_user + person + membership + assignment + invitation(ready),HRBP 403 (R-4); geçersiz e-posta 400,tur 6
+Kullanıcılar,Davetleri gönder / Seçilenlere yeniden gönder,button,düğme,HR_ADMIN,ikisi,ready/pending davet,POST /invitations/send,outbox + invitation(pending) + audit,hazır davet yoksa kapalı; sandbox etiketli,tur 6b
+Kullanıcılar,Şablonu indir / yükle (Excel),link/upload,yükleme,HR_ADMIN,ikisi,xlsx,POST /imports/users,kullanıcı/rol/kapsam,HRBP yükleme 403; verilemeyen profil grant_not_allowed (R-4),"R-3, R-4"
+Kullanıcılar,iptal (erişim iptali),button:iptal,düğme,HR_ADMIN,ikisi,üyelik,POST /users/:mid/revoke,membership revoked + oturumlar iptal + audit,başka şirketin üyeliği 404,"tur 12, R-5"
+Kullanıcılar,Test posta kutusu: daveti aç,MailSandbox link,link,HR_ADMIN,sandbox modunda,davet postası,/#/davet/:token,-,tek kullanımlık (6e),"tur 6c2, D4"
+Birim sonuçları,Dönem/Birim seçici,#cycle #unit,seçim,kapsamdaki profiller,ikisi,yayımlı sonuç,GET /cycles/:cid/units/:uid/results,-,kapsam dışı birim listede yok (7); gizli sonuç sayısız,tur 7
+Hedefler,Öneriyi gör,button:Öneriyi gör,düğme,UNIT_MANAGER+ (birimde),ikisi,sonuç,POST targets?preview=1,yok,kayıt yazmaz (R-7),tur 7b
+Hedefler,Öneriyi kabul et,button:Öneriyi kabul et,düğme,UNIT_MANAGER+ (birimde),ikisi,önizleme,POST targets (Idempotency-Key),local_target (+audit),aralık dışı 422; aynı anahtar tekrar → aynı yanıt (R-7); >2 hedef 409,tur 7c
+Hedefler,onayla / reddet (inceleme),button,düğme,"HR_ADMIN, HR_PARTNER (kapsamda)",ikisi,under_review hedef,POST targets/:id/review,status + baseline keep/rebase + history,gerekçesiz 400; başlangıç değiştiyse karar zorunlu 422 (R-7),R-7
+Aksiyonlar,Aksiyonu aç,#ts #tpl / #ctitle #ccad #due,form,UNIT_MANAGER+ (birimde),ikisi,kabul edilmiş hedef,POST targets/:id/actions (Idempotency-Key),action + requirement,şablon uyuşmaz 422; kapasite 409; acil yetkisiz 403 (R-7),tur 7d
+Aksiyonlar,Kaydı ekle (kanıt),#ed #ea #ek,form,ACTION_OWNER+ (birimde),ikisi,in_progress aksiyon,POST actions/:id/evidence,"evidence (slot, fulfills_slot) + audit",gelecek tarih 422 (7f); aynı slot 422 (7f2); kapsam dışı 403,tur 7e/7f
+Aksiyonlar,Tamamlandı beyanı,button,düğme,ACTION_OWNER+ (birimde),ikisi,in_progress,POST declare-complete,lifecycle/verification (policy_met→closed),kapalı işe kanıt 409,"tur 7g, E2E-7"
+Aksiyonlar,Doğrula / Reddet,button (gerekçe),düğme,"HR_ADMIN, HR_PARTNER, REGION_MANAGER (birimde)",ikisi,declared_complete,POST actions/:id/verify,verification + audit,eksik kanıt 422 coverage_insufficient (8); kendi kanıtı 403; muafiyet yalnız HR_ADMIN,tur 8/8b
+Aksiyonlar,Duraklat / Sürdür / İptal,button (gerekçe),düğme,sahip profiller,ikisi,aksiyon,POST actions/:id/transition,lifecycle + audit,gerekçesiz 400 (R-7),R-7
+Takip,değerlendir,button,düğme,kapsamdaki profiller,ikisi,hedef + takip dönemi,GET targets/:id/followup?cycleId,outcome_assessment (incelemedeyse yazmaz),ölçülmedi → NOT_MEASURED; gizli → sayısız; incelemede → UNDER_REVIEW,tur 9b/9c
+Takip,Karşılaştırılabilir onayla / Karşılaştırılamaz,button,düğme,"HR_ADMIN, HR_PARTNER (kapsamda)",ikisi,PENDING_REVIEW değerlendirme,POST followup/review,comparability_review (assessment_id),sürüm uyuşmazsa 409 assessment_stale; incelemede 409,"kod (N25), E2E-8"
+Dikkat,okundu / ertele / aç,button/link,düğme,tüm profiller (kapsam),ikisi,dikkat öğesi,POST attention/:id/...,attention_item,kapsam dışı öğe listede yok (N07),D5
+Başlık,Şirket geçişi (çoklu üyelik),select,seçim,customer,ikisi,2+ üyelik,POST switch-tenant,oturum tenant,yetkisiz 403 (R-5),R-5
+Başlık,Çıkış,button:Çıkış,düğme,herkes,ikisi,oturum,POST /api/auth/logout,oturum iptal,-,tur 11

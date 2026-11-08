@@ -1,0 +1,454 @@
+[
+ {
+  "name": "YH-S-giris",
+  "user": "sb003.kl",
+  "path": "",
+  "region": {
+   "from": "[data-testid=yh-giris]"
+  },
+  "marks": [
+   [
+    ".tb-icerik .kv2 .etk",
+    0
+   ],
+   [
+    ".tb-icerik .kv2 .etk",
+    1
+   ],
+   [
+    ".tb-icerik .kv2 .etk",
+    2
+   ],
+   "[data-testid=yh-giris-incele]"
+  ]
+ },
+ {
+  "name": "YH-S-mobil",
+  "user": "sb003.kl",
+  "path": "",
+  "mobile": true,
+  "region": {
+   "from": "[data-testid=yh-giris]",
+   "pad": 0,
+   "full": true
+  },
+  "marks": [
+   "[data-testid=yh-giris-incele]"
+  ]
+ },
+ {
+  "name": "YH-S-bas",
+  "user": "sb003.kl",
+  "path": "yol-haritasi",
+  "region": {
+   "top": true,
+   "to": ".b-ozet"
+  },
+  "marks": [
+   "nav a[href$='yol-haritasi']",
+   ".tb-baslik h1",
+   [
+    ".b-ozet > div",
+    0
+   ],
+   [
+    ".b-ozet > div",
+    1
+   ],
+   [
+    ".b-ozet > div",
+    2
+   ]
+  ]
+ },
+ {
+  "name": "YH-S-sonuc",
+  "user": "sb003.kl",
+  "path": "yol-haritasi",
+  "region": {
+   "from": [
+    ".b-row",
+    0
+   ],
+   "to": [
+    ".b-row",
+    1
+   ],
+   "full": true
+  },
+  "marks": [
+   [
+    ".b-row .tb-icerik .h3",
+    0
+   ],
+   [
+    ".ikikolon .etk",
+    0
+   ],
+   [
+    ".ikikolon .etk",
+    1
+   ]
+  ]
+ },
+ {
+  "name": "YH-S-gundem",
+  "user": "sb003.kl",
+  "path": "yol-haritasi",
+  "region": {
+   "from": ".degwrap:has(#yh-gundem)",
+   "full": true
+  },
+  "marks": [
+   [
+    "#yh-gundem th",
+    1
+   ],
+   [
+    "#yh-gundem th",
+    2
+   ],
+   [
+    "#yh-gundem th",
+    5
+   ]
+  ]
+ },
+ {
+  "name": "YH-S-plan",
+  "user": "sb003.kl",
+  "path": "yol-haritasi",
+  "region": {
+   "from": "[data-testid=yh-plan-1]",
+   "full": true
+  },
+  "marks": [
+   "[data-testid=yh-plan-1] .fazbas",
+   "[data-testid=yh-plan-1] .kv2 .deg >> nth=0",
+   "[data-testid=yh-plan-1] .kv2 .uckolon",
+   "[data-testid=yh-rol-1-IK]",
+   "[data-testid=yh-rol-1-YONETIM]",
+   "[data-testid=yh-rol-1-YONETIM] .yh-opt",
+   "[data-testid=yh-rol-1-CALISAN]",
+   "#yh-takvim-1",
+   "#yh-takvim-1 .yh-opt"
+  ]
+ },
+ {
+  "name": "YH-S-adim",
+  "user": "sb003.kl",
+  "path": "yol-haritasi",
+  "region": {
+   "from": "[data-testid=yh-rol-1-YONETIM]",
+   "pad": 24
+  },
+  "marks": [
+   "[data-testid=yh-rol-1-YONETIM] .kare, [data-testid=yh-rol-1-YONETIM] .cap >> nth=0",
+   [
+    "[data-testid=yh-rol-1-YONETIM] .yh-opt span",
+    0
+   ],
+   [
+    "[data-testid=yh-rol-1-YONETIM] .yh-opt span",
+    1
+   ],
+   [
+    "[data-testid=yh-rol-1-YONETIM] .yh-opt span",
+    2
+   ],
+   [
+    "[data-testid=yh-rol-1-YONETIM] li .cap",
+    0
+   ]
+  ]
+ },
+ {
+  "name": "YH-S-takvim",
+  "user": "sb003.kl",
+  "path": "yol-haritasi",
+  "region": {
+   "from": ".degwrap:has(.kicker:has-text('Uygulama takvimi'))",
+   "to": ".degwrap:has(#yh-izleme)",
+   "full": true
+  },
+  "marks": [
+   ".degwrap:has(.kicker:has-text('Uygulama takvimi')) .deghead",
+   "#yh-izleme",
+   [
+    "#yh-izleme th",
+    4
+   ]
+  ]
+ },
+ {
+  "name": "YH-I-ust",
+  "user": "ik",
+  "path": "yol-haritasi",
+  "region": {
+   "top": true,
+   "to": [
+    ".b-row",
+    0
+   ]
+  },
+  "marks": [
+   "nav a[href$='yol-haritasi']",
+   [
+    ".b-ozet > div",
+    0
+   ],
+   [
+    ".b-ozet > div",
+    1
+   ],
+   [
+    ".b-ozet > div",
+    2
+   ],
+   [
+    ".b-row .adl",
+    0
+   ]
+  ]
+ },
+ {
+  "name": "YH-I-birimler",
+  "user": "ik",
+  "path": "yol-haritasi",
+  "region": {
+   "from": ".degwrap:has(#yh-birimler)",
+   "full": true
+  },
+  "marks": [
+   [
+    "#yh-birimler th",
+    1
+   ],
+   [
+    "#yh-birimler th",
+    2
+   ],
+   [
+    "#yh-birimler th",
+    3
+   ],
+   [
+    "#yh-birimler th",
+    4
+   ],
+   [
+    "#yh-birimler th",
+    5
+   ],
+   "[data-testid=yh-incele-SB003]"
+  ]
+ },
+ {
+  "name": "YH-I-ik",
+  "user": "ik",
+  "path": "yol-haritasi",
+  "region": {
+   "from": ".degwrap:has(#yh-ik)",
+   "to": [
+    "#yh-ik tbody tr",
+    4
+   ],
+   "full": true
+  },
+  "marks": [
+   ".degwrap:has(#yh-ik) > .cap, .degwrap:has(#yh-ik) p.cap >> nth=1",
+   [
+    "#yh-ik th",
+    2
+   ],
+   [
+    "#yh-ik tbody tr .yh-opt",
+    0
+   ]
+  ]
+ },
+ {
+  "name": "YH-I-donem",
+  "user": "ik",
+  "path": "donemler",
+  "region": {
+   "from": "table.table",
+   "to": "a[href*='yukle/roadmap']",
+   "full": true
+  },
+  "marks": [
+   "a[href*='yukle/results']",
+   "a[href*='yukle/roadmap']"
+  ]
+ },
+ {
+  "name": "YH-I-yukle",
+  "user": "ik",
+  "path": "yukle/roadmap?cycleId=88f67228-0f8d-4c88-a36f-b9834249f2ad",
+  "region": {
+   "top": true,
+   "to": "main button:has-text('Onayla ve işle')"
+  },
+  "marks": [
+   "main button:has-text('Şablonu indir'), main a:has-text('Şablonu indir')",
+   "main :text('Dosya seç')",
+   "main button:has-text('Doğrula ve önizle')",
+   "main button:has-text('Onayla ve işle')"
+  ]
+ },
+ {
+  "name": "YH-E-giris",
+  "user": "gmy01.yldz",
+  "path": "",
+  "region": {
+   "from": "[data-testid=yh-giris]"
+  },
+  "marks": [
+   [
+    "[data-testid=yh-giris] th",
+    1
+   ],
+   [
+    "[data-testid=yh-giris] th",
+    2
+   ],
+   [
+    "[data-testid=yh-giris] th",
+    3
+   ],
+   "[data-testid=yh-giris-incele]"
+  ]
+ },
+ {
+  "name": "YH-E-ik",
+  "user": "gmy01.yldz",
+  "path": "yol-haritasi",
+  "region": {
+   "from": ".degwrap:has(#yh-ik)",
+   "to": [
+    "#yh-ik tbody tr",
+    3
+   ],
+   "full": true
+  },
+  "marks": [
+   [
+    "#yh-ik th",
+    2
+   ],
+   [
+    "[data-testid^=yh-durum-]",
+    0
+   ]
+  ]
+ },
+ {
+  "name": "YH-R-giris",
+  "user": "mud01.aydn",
+  "path": "",
+  "region": {
+   "from": "[data-testid=yh-giris]"
+  },
+  "marks": [
+   [
+    "[data-testid=yh-giris] th",
+    1
+   ],
+   [
+    "[data-testid=yh-giris] th",
+    2
+   ],
+   "[data-testid=yh-giris-incele]"
+  ]
+ },
+ {
+  "name": "YH-R-birimler",
+  "user": "mud01.aydn",
+  "path": "yol-haritasi",
+  "region": {
+   "from": ".degwrap:has(#yh-birimler)",
+   "full": true
+  },
+  "marks": [
+   [
+    "#yh-birimler th",
+    2
+   ],
+   [
+    "#yh-birimler th",
+    4
+   ],
+   "[data-testid=yh-incele-SB036]"
+  ]
+ },
+ {
+  "name": "YH-R-plan",
+  "user": "mud01.aydn",
+  "path": "yol-haritasi",
+  "click": [
+   "[data-testid=yh-incele-SB036]"
+  ],
+  "region": {
+   "from": "[data-testid=yh-plan-1] .yh-roller",
+   "to": "#yh-takvim-1",
+   "full": true
+  },
+  "marks": [
+   "[data-testid=yh-rol-1-IK]",
+   "[data-testid=yh-rol-1-YONETIM] .yh-opt",
+   "#yh-takvim-1 .yh-opt"
+  ]
+ },
+ {
+  "name": "YH-H-ik",
+  "user": "gmy01.aydn",
+  "path": "yol-haritasi",
+  "region": {
+   "from": ".degwrap:has(#yh-ik)",
+   "to": [
+    "#yh-ik tbody tr",
+    3
+   ],
+   "full": true
+  },
+  "marks": [
+   [
+    "#yh-ik th",
+    0
+   ],
+   [
+    "#yh-ik tbody tr .yh-opt",
+    0
+   ]
+  ]
+ },
+ {
+  "name": "YH-V-giris",
+  "user": "izleyici.gmy03",
+  "path": "",
+  "region": {
+   "from": "[data-testid=yh-giris]"
+  },
+  "marks": [
+   [
+    ".tb-icerik .kv2 .etk",
+    0
+   ],
+   "[data-testid=yh-giris-incele]"
+  ]
+ },
+ {
+  "name": "YH-V-plan",
+  "user": "izleyici.gmy03",
+  "path": "yol-haritasi",
+  "region": {
+   "from": "[data-testid=yh-plan-1] .yh-roller",
+   "to": "#yh-takvim-1",
+   "full": true
+  },
+  "marks": [
+   "[data-testid=yh-rol-1-YONETIM] li",
+   "#yh-takvim-1 td:last-child"
+  ]
+ }
+]

@@ -1,0 +1,60 @@
+/* HPW Act — tasarım tokenları. Tek dosya; başka hiçbir yerde sabit renk, ölçü veya aralık üretilmez.
+   Kaynak: Happy Place to Work® Web Sitesi Tasarım ve Üretim Brifi (22.09.2026), ürün arayüzüne uyarlama: docs/design/hpw-act-arayuz-sistemi.md */
+:root {
+  /* Renk — üç renk, fazlası yok */
+  --hpw-red: #CF051E;
+  --hpw-ink: #231A15;
+  --hpw-white: #FFFFFF;
+  /* v2.14 Tasarım B — yardımcı tonlar: sarı (ikincil düğme), gri tonlar (karşılaştırma çubuğu, yumuşak zemin, ikincil metin) */
+  --hpw-yellow: #F2C14E;
+  --hpw-soft: #EDEAE7;
+  --hpw-mid: #B9B2AD;
+  --hpw-gray: #8A817C;
+  --hpw-mute: #6B625D;
+
+  /* Tipografi — tek aile, iki ağırlık */
+  --font: Poppins, Montserrat, sans-serif;
+  --w-regular: 400;
+  --w-bold: 700;
+
+  /* Ölçek (masaüstü → mobil clamp). Kural: bir ekranda ya dev ya küçük; ekranın baskın öğesi : gövde ≥ 3:1 */
+  --t-display-xxl: clamp(64px, 11vw, 176px);  --lh-display-xxl: 0.92; --ls-display-xxl: -0.035em;
+  --t-display-xl:  clamp(52px, 8vw, 128px);   --lh-display-xl: 0.96;  --ls-display-xl: -0.025em;
+  --t-h1:          clamp(40px, 5.5vw, 88px);  --lh-h1: 1.02;          --ls-h1: -0.015em;
+  --t-h2:          clamp(32px, 3.5vw, 56px);  --lh-h2: 1.06;          --ls-h2: -0.01em;
+  --t-body-l:      clamp(18px, 1.5vw, 24px);  --lh-body-l: 1.35;
+  --t-body:        16px;                      --lh-body: 1.4;
+  --t-caption:     12px;                      --lh-caption: 1.3;      --ls-caption: 0.04em;
+
+  /* Aralık — 12 px tabanı; ara değer yok */
+  --s-1: 12px;
+  --s-3: 36px;
+  --s-2: 24px;
+  --s-4: 48px;
+  --s-6: 72px;
+  --s-8: 96px;
+  --s-12: 144px;
+
+  /* Grid */
+  --grid-cols: 12;
+  --gutter: 24px;
+  --margin: 72px;
+  --max: 1440px;
+
+  /* Çizgi ve odak */
+  --hairline: 1px;
+  --focus: 2px;
+
+  /* Hareket — tek seferlik giriş, tersleme geçişi; 150–300 ms */
+  --motion: 200ms;
+}
+
+@media (max-width: 1279px) {
+  :root { --grid-cols: 6; --margin: 48px; }
+}
+@media (max-width: 767px) {
+  :root { --grid-cols: 4; --margin: 24px; --gutter: 12px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  :root { --motion: 0ms; }
+}

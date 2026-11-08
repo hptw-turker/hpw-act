@@ -1,0 +1,12 @@
+// v2.15.0 mobil kulp denetimi: demo sunucusu (8787, Saha + Ant Yapı verisi) açıkken `node tools/tests/fe/v2150-mobil-kulp.cjs`. Telefon/tablet boyutlarında "Nasıl okunur?" kulpuyla çakışan yazı ve yatay taşma arar.
+const { chromium, devices } = require('playwright'); const B='http://127.0.0.1:8787';
+const L=[['sb003.kl@saha',['','yol-haritasi','hedefler','aksiyonlar','sonuclar','dikkat']],['ik@saha',['','yol-haritasi','donemler','kullanicilar','organizasyon']],['gmy01.yldz@saha',['','yol-haritasi']],['mudur.antasya@antyapi',['','yol-haritasi']],['ust.yonetim@antyapi',['','yol-haritasi']],['alt001.ylmaz@saha',['','aksiyonlar']]];
+(async()=>{const b=await chromium.launch(); let n=0,bad=0; for (const dev of ['iPhone SE','iPhone 13','Pixel 5','iPad Mini']) for (const [e,paths] of L){const ctx=await b.newContext({...devices[dev]});
+ await ctx.request.post(B+'/api/auth/login',{data:{email:e+'.demo.hpw-act.local',password:'Demo-Kullanici-2026'}});const me=await(await ctx.request.get(B+'/api/auth/me')).json(); if(!me.tenantId) throw new Error('login '+e); const p=await ctx.newPage();
+ for (const path of paths){await p.goto(`${B}/app.html#/t/${me.tenantId}/${path}`);await p.waitForLoadState('networkidle');await p.waitForTimeout(700);
+  const r=await p.evaluate(()=>{const k=document.querySelector('.kulp'); if(!k) return {nokulp:true}; const kb=k.getBoundingClientRect(); const W=document.documentElement.clientWidth;
+   const hits=[]; const tw=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT); let t; while((t=tw.nextNode())){ if(!t.textContent.trim()) continue; const el=t.parentElement; if(k.contains(el)||el.closest('.panel')) continue; const rg=document.createRange(); rg.selectNodeContents(t); for (const rc of rg.getClientRects()){ if(rc.right>kb.left+0.5&&rc.left<kb.right&&rc.bottom>kb.top&&rc.top<kb.bottom){hits.push(t.textContent.trim().slice(0,30));break;} } }
+   return {doc:document.documentElement.scrollWidth,W,hits:hits.slice(0,3)}});
+  n++; if (r.nokulp) continue; if (r.doc>r.W||r.hits.length){bad++;console.log(dev,e,path||'giris',JSON.stringify(r));}}
+ if (e.startsWith('sb003')&&dev==='iPhone SE'){await p.goto(`${B}/app.html#/t/${me.tenantId}/yol-haritasi`);await p.waitForLoadState('networkidle');await p.waitForTimeout(700);await p.screenshot({path:'/tmp/hpw-mobil-kulp.png'});}
+ await ctx.close();} await b.close(); console.log('ekran',n,'sorunlu',bad);})();

@@ -1,0 +1,593 @@
+{
+ "surum": "2.6.1",
+ "not": "Yalnız çalıştırılan test \"doğrulandı\" sayıldı. Mac/Safari denenmedi (Linux + Chromium).",
+ "ozet": {
+  "uygulandı ve doğrulandı": 28,
+  "uygulandı ama doğrulanmadı": 19,
+  "kısmi": 45,
+  "açık": 21,
+  "izin/dış bağımlılık bekliyor": 3
+ },
+ "sonuclar": [
+  {
+   "id": "K-001",
+   "durum": "uygulandı ve doğrulandı",
+   "kanit": "ops/paketle-teslimat.sh: sh -n; temiz klasörden başlatıcı ile açılış (KANITLAR/TEST_KOSULARI/launch-bos.log, launch-demo.log)"
+  },
+  {
+   "id": "K-002",
+   "durum": "uygulandı ama doğrulanmadı",
+   "kanit": "başlatıcı migrasyon hatasında fail ile durur (|| fail); bilerek bozuk migrasyonla denenmedi"
+  },
+  {
+   "id": "K-003",
+   "durum": "kısmi",
+   "kanit": "GELISTIRICI_KAYNAK tsconfig.base.json ve lock dosyalarını içerir; paket kökünden derleme bu turda çalıştırılmadı"
+  },
+  {
+   "id": "K-004",
+   "durum": "kısmi",
+   "kanit": "çalışma zamanı bağımlılık kontrolü var (exit 3); tsconfig.base eksikliği için ayrı kapı yok"
+  },
+  {
+   "id": "K-005",
+   "durum": "uygulandı ve doğrulandı",
+   "kanit": "tur E1/E2: kök index.html → gerçek ürün; /hpw-act-prototip.html 404 (launch-bos çıktısı)"
+  },
+  {
+   "id": "K-006",
+   "durum": "kısmi",
+   "kanit": "Müşteriler listesi \"henüz müşteri yok\" (1b); diğer sayfaların boş durumları tek tek sınanmadı"
+  },
+  {
+   "id": "K-007",
+   "durum": "uygulandı ama doğrulanmadı",
+   "kanit": "validateConfig: HPW_ENV_FILE yoksa dur; DEMO+SMTP+boş allowlist reddi; kasıtlı hatalı dosyayla denenmedi"
+  },
+  {
+   "id": "K-008",
+   "durum": "kısmi",
+   "kanit": "DEMO 127.0.0.1:8787, BOŞ localhost:8788 ayrı host; aynı anda çalıştı (D8); çerezin diğerine gönderilmediği ayrıca ölçülmedi"
+  },
+  {
+   "id": "K-009",
+   "durum": "uygulandı ama doğrulanmadı",
+   "kanit": "org importer ve /org/roles ctx.grantable (N05); HRBP ile HR_ADMIN rolü denemesi test edilmedi (kullanıcı Exceli için R-4 doğrulandı)"
+  },
+  {
+   "id": "K-010",
+   "durum": "kısmi",
+   "kanit": "import commit audit var; rol değişikliği etki önizlemesi yok"
+  },
+  {
+   "id": "K-011",
+   "durum": "kısmi",
+   "kanit": "requireUnitProfile (N06); tur 8/8b: kapsam dışı yönetici 403; A-yönetici+B-izleyici birleşik senaryo test edilmedi"
+  },
+  {
+   "id": "K-012",
+   "durum": "uygulandı ama doğrulanmadı",
+   "kanit": "membership_scope effective_from/to çözümde; süreli ek yetki testi yok"
+  },
+  {
+   "id": "K-013",
+   "durum": "kısmi",
+   "kanit": "review/followup-review requireUnitProfile; dikkat listesi kapsam filtreli; B kimliğiyle HRBP testi yazılmadı"
+  },
+  {
+   "id": "K-014",
+   "durum": "uygulandı ve doğrulandı",
+   "kanit": "yetki her istekte çözülür; R-3 rol CLOSE sonrası açık oturumda kapsam sıfır"
+  },
+  {
+   "id": "K-015",
+   "durum": "uygulandı ama doğrulanmadı",
+   "kanit": "rol effective_from artık kontrol ediliyor; gelecek tarihli rol testi yok"
+  },
+  {
+   "id": "K-016",
+   "durum": "kısmi",
+   "kanit": "takvim geçerliliği (validYmd) var; CREATE ilişkide valid_to hâlâ yazılmıyor"
+  },
+  {
+   "id": "K-017",
+   "durum": "uygulandı ama doğrulanmadı",
+   "kanit": "Ek_Erisim bağımsız upsert (N09); test yok"
+  },
+  {
+   "id": "K-018",
+   "durum": "uygulandı ama doğrulanmadı",
+   "kanit": "include_descendants güncellenir, CLOSE bugün kapatır; test yok"
+  },
+  {
+   "id": "K-019",
+   "durum": "uygulandı ama doğrulanmadı",
+   "kanit": "auth_password_token_consume pasif hesabı reddeder (0004); test yok"
+  },
+  {
+   "id": "K-020",
+   "durum": "uygulandı ama doğrulanmadı",
+   "kanit": "forgot/reset/invite hız sınırı; giriş için R-8 doğrulandı"
+  },
+  {
+   "id": "K-021",
+   "durum": "uygulandı ama doğrulanmadı",
+   "kanit": "anahtar aktör+yöntem+yol bağlı, başka aktörde önbellek dönmez; aynı aktör R-7 doğrulandı"
+  },
+  {
+   "id": "K-022",
+   "durum": "açık",
+   "kanit": "eşzamanlı çift çağrı rezervasyonu yok (N11/N12)"
+  },
+  {
+   "id": "K-023",
+   "durum": "açık",
+   "kanit": "aynı dönem yayınında cycle kilidi yok (N12)"
+  },
+  {
+   "id": "K-024",
+   "durum": "açık",
+   "kanit": "hedef limiti veritabanıyla zorlanmıyor (N12)"
+  },
+  {
+   "id": "K-025",
+   "durum": "uygulandı ama doğrulanmadı",
+   "kanit": "FULL_REPLACE boş benchmarkı temizler (N13); test yok"
+  },
+  {
+   "id": "K-026",
+   "durum": "kısmi",
+   "kanit": "PATCH benchmarkı korur; ayrı CLEAR modu yok"
+  },
+  {
+   "id": "K-027",
+   "durum": "açık",
+   "kanit": "N14 yapılmadı"
+  },
+  {
+   "id": "K-028",
+   "durum": "açık",
+   "kanit": "N14 yapılmadı"
+  },
+  {
+   "id": "K-029",
+   "durum": "açık",
+   "kanit": "N15 yapılmadı"
+  },
+  {
+   "id": "K-030",
+   "durum": "açık",
+   "kanit": "N15 yapılmadı"
+  },
+  {
+   "id": "K-031",
+   "durum": "açık",
+   "kanit": "N16 yapılmadı"
+  },
+  {
+   "id": "K-032",
+   "durum": "açık",
+   "kanit": "N16 yapılmadı"
+  },
+  {
+   "id": "K-033",
+   "durum": "kısmi",
+   "kanit": "rebase yeni taslak öneri, approved_target boş, tarihçe; R-7 başlangıç=40 doğrulandı, ayrı onay akışı ekranda yok"
+  },
+  {
+   "id": "K-034",
+   "durum": "uygulandı ama doğrulanmadı",
+   "kanit": "keep kararı tarihçeye yazılır; test yok"
+  },
+  {
+   "id": "K-035",
+   "durum": "uygulandı ama doğrulanmadı",
+   "kanit": "Dagilimlar/Resmi_Toplamlar satır cycle_code reddi; Sonuclar için R-6 doğrulandı"
+  },
+  {
+   "id": "K-036",
+   "durum": "kısmi",
+   "kanit": "ok:\"false\" 400 (E2E-7), geçersiz tarih INVALID; tanım sürümü katalog seti"
+  },
+  {
+   "id": "K-037",
+   "durum": "açık",
+   "kanit": "N19 yapılmadı"
+  },
+  {
+   "id": "K-038",
+   "durum": "kısmi",
+   "kanit": "eşdeğerlik metin+ölçek; indeks üyeliği dahil değil"
+  },
+  {
+   "id": "K-039",
+   "durum": "kısmi",
+   "kanit": "yaprak kuralı (R12); ara eksiklik açıklaması yok"
+  },
+  {
+   "id": "K-040",
+   "durum": "açık",
+   "kanit": "N20 HPW referans mutabakatı yok"
+  },
+  {
+   "id": "K-041",
+   "durum": "kısmi",
+   "kanit": "ufuk takip döneminden; politikaya göre öneri değişimi yok"
+  },
+  {
+   "id": "K-042",
+   "durum": "kısmi",
+   "kanit": "assumptions API yanıtında; ekranda tam gösterilmiyor"
+  },
+  {
+   "id": "K-043",
+   "durum": "kısmi",
+   "kanit": "özel plan var; birim tipi eşlemesi yok"
+  },
+  {
+   "id": "K-044",
+   "durum": "açık",
+   "kanit": "N22 merkezi sorumluluk ayrımı yok"
+  },
+  {
+   "id": "K-045",
+   "durum": "uygulandı ve doğrulandı",
+   "kanit": "E2E-7: aynı gün ikinci olay plan slotunu karşılamaz (5/5), altı olay senaryosunun kuralı"
+  },
+  {
+   "id": "K-046",
+   "durum": "açık",
+   "kanit": "telafi onay politikası modellenmedi"
+  },
+  {
+   "id": "K-047",
+   "durum": "kısmi",
+   "kanit": "E1 politika karşılanınca iş kapanır ve yükten düşer (E2E-7 closed); dördüncü iş açılışı test edilmedi"
+  },
+  {
+   "id": "K-048",
+   "durum": "kısmi",
+   "kanit": "eksik beyan declared_complete kalır ve sayılır"
+  },
+  {
+   "id": "K-049",
+   "durum": "uygulandı ama doğrulanmadı",
+   "kanit": "assessment_stale 409 (N25); test yok"
+  },
+  {
+   "id": "K-050",
+   "durum": "uygulandı ama doğrulanmadı",
+   "kanit": "followup_before_baseline 422, under_review → UNDER_REVIEW yazma yok; test yok"
+  },
+  {
+   "id": "K-051",
+   "durum": "kısmi",
+   "kanit": "audit olayları ayrı; işlem+audit aynı transaction; değerlendirme upsert"
+  },
+  {
+   "id": "K-052",
+   "durum": "kısmi",
+   "kanit": "GET incelemede yazmaz; diğer sabit veride hâlâ upsert"
+  },
+  {
+   "id": "K-053",
+   "durum": "kısmi",
+   "kanit": "kira/DLQ (R-9); 500 davet+yavaş sağlayıcı simülasyonu yok"
+  },
+  {
+   "id": "K-054",
+   "durum": "kısmi",
+   "kanit": "perm_fail politikası; eski bekleyen posta iptali yok"
+  },
+  {
+   "id": "K-055",
+   "durum": "açık",
+   "kanit": "salt okunur platform denetçisi yok"
+  },
+  {
+   "id": "K-056",
+   "durum": "kısmi",
+   "kanit": "servis hesabı NOBYPASSRLS, PUBLIC EXECUTE iptali; migrasyon sahibi ayrı değil"
+  },
+  {
+   "id": "K-057",
+   "durum": "açık",
+   "kanit": "N29 yapılmadı"
+  },
+  {
+   "id": "K-058",
+   "durum": "açık",
+   "kanit": "N29 yapılmadı"
+  },
+  {
+   "id": "K-059",
+   "durum": "kısmi",
+   "kanit": "dikkat linkleri sayfaya gider; kaydı seçili açmaz"
+  },
+  {
+   "id": "K-060",
+   "durum": "kısmi",
+   "kanit": "takip ekranında seçim sıfırlanır; yükleme önizlemesi sayfa değişince temizlenmez"
+  },
+  {
+   "id": "K-061",
+   "durum": "kısmi",
+   "kanit": "Linux: yalnız paket + Node/PostgreSQL ile açılış ve tarayıcıdan kurulum doğrulandı; Mac denenmedi"
+  },
+  {
+   "id": "K-062",
+   "durum": "kısmi",
+   "kanit": "dinamik şablon doğru kodlarla (tur 3b/5b); SABLON dosyası yanlış yükleme hatası test edilmedi"
+  },
+  {
+   "id": "K-063",
+   "durum": "kısmi",
+   "kanit": "TESLIMAT_MANIFESTI.json hash listesi; temiz önbellekten tek komutla kurulum test edilmedi"
+  },
+  {
+   "id": "K-064",
+   "durum": "açık",
+   "kanit": "route manifesti yok"
+  },
+  {
+   "id": "K-065",
+   "durum": "açık",
+   "kanit": "N33"
+  },
+  {
+   "id": "K-066",
+   "durum": "açık",
+   "kanit": "N33"
+  },
+  {
+   "id": "K-067",
+   "durum": "kısmi",
+   "kanit": "kapanış tablosu sayıları satırlardan; artifact hash var; negatif test her satırda değil"
+  },
+  {
+   "id": "K-068",
+   "durum": "kısmi",
+   "kanit": "paketleme sh -n ile durur; prototip testleri ayrı raporlanır"
+  },
+  {
+   "id": "K-069",
+   "durum": "izin/dış bağımlılık bekliyor",
+   "kanit": "HPW referans paketi gerekir"
+  },
+  {
+   "id": "K-070",
+   "durum": "izin/dış bağımlılık bekliyor",
+   "kanit": "metodolog onayı"
+  },
+  {
+   "id": "K-071",
+   "durum": "izin/dış bağımlılık bekliyor",
+   "kanit": "pilot"
+  },
+  {
+   "id": "K-072",
+   "durum": "kısmi",
+   "kanit": "demo dump geri yükleme doğrulandı; RPO/RTO ölçülmedi"
+  },
+  {
+   "id": "K-073",
+   "durum": "kısmi",
+   "kanit": "BOŞ paket + Linux ön koşulla teknik kurulum ve tarayıcıdan iki şirket (tur 10); org/sonuç Excel, kullanıcı ekrandan; soru seti ekrandan"
+  },
+  {
+   "id": "K-074",
+   "durum": "açık",
+   "kanit": "eşzamanlı yayın/yetki kaldırma senaryosu yok"
+  },
+  {
+   "id": "K-075",
+   "durum": "açık",
+   "kanit": "N33"
+  },
+  {
+   "id": "K-076",
+   "durum": "kısmi",
+   "kanit": "iki ortam aynı anda ayrı host/DB/hesap (D8); demo yedek/geri yükleme doğrulandı; kontrollü sıfırlama-geri yükleme turu yapılmadı"
+  },
+  {
+   "id": "H-001",
+   "durum": "uygulandı ve doğrulandı",
+   "kanit": "kök: index.html, NASIL_ACARIM.html, runtime-manifest.json, CALISTIRMA, SABLONLAR, assets (unzip listesi)"
+  },
+  {
+   "id": "H-002",
+   "durum": "kısmi",
+   "kanit": "Mac denenmedi; aynı .command Linux sh ile çalıştı (launch-demo.log)"
+  },
+  {
+   "id": "H-003",
+   "durum": "kısmi",
+   "kanit": "Mac denenmedi; Linux launch-bos.log"
+  },
+  {
+   "id": "H-004",
+   "durum": "uygulandı ve doğrulandı",
+   "kanit": "tur E2 / D1: file:// → gerçek uygulama"
+  },
+  {
+   "id": "H-005",
+   "durum": "uygulandı ve doğrulandı",
+   "kanit": "index.html sır içermez (dosya incelemesi); CORS/Origin:null yok"
+  },
+  {
+   "id": "H-006",
+   "durum": "uygulandı ama doğrulanmadı",
+   "kanit": "servis yokken uyarı + 3 sn yeniden deneme; kapalı servisle ekran testi yapılmadı"
+  },
+  {
+   "id": "H-007",
+   "durum": "uygulandı ama doğrulanmadı",
+   "kanit": "adres yazılmaz; yanlış adres senaryosu yok"
+  },
+  {
+   "id": "H-008",
+   "durum": "uygulandı ve doğrulandı",
+   "kanit": "Linux: başlatıcı → servis → index.html (launch-*.log)"
+  },
+  {
+   "id": "H-009",
+   "durum": "uygulandı ama doğrulanmadı",
+   "kanit": "env eşleşmezse yazma yok; test edilmedi"
+  },
+  {
+   "id": "H-010",
+   "durum": "uygulandı ama doğrulanmadı",
+   "kanit": "build kimliği kontrolü; eski build testi yok"
+  },
+  {
+   "id": "H-011",
+   "durum": "uygulandı ve doğrulandı",
+   "kanit": "paket /tmp/teslim altına taşınıp çalıştı"
+  },
+  {
+   "id": "H-012",
+   "durum": "kısmi",
+   "kanit": "ön koşul mesajları var; Node/PostgreSQL yokken denenmedi"
+  },
+  {
+   "id": "H-013",
+   "durum": "uygulandı ve doğrulandı",
+   "kanit": "tur 1, 6d, 11"
+  },
+  {
+   "id": "H-014",
+   "durum": "uygulandı ve doğrulandı",
+   "kanit": "tur 7, 10b/10c, 8"
+  },
+  {
+   "id": "H-015",
+   "durum": "uygulandı ve doğrulandı",
+   "kanit": "tur E3–E5"
+  },
+  {
+   "id": "H-016",
+   "durum": "kısmi",
+   "kanit": "demo verisi kalıcı (dump); yeniden başlatma sonrası kalıcılık ölçülmedi"
+  },
+  {
+   "id": "H-017",
+   "durum": "uygulandı ve doğrulandı",
+   "kanit": "paketleme temizlik kapısı (BOS_BASLANGIC/assets ve CALISTIRMA kontrol listesi); test kopyası ayrı"
+  },
+  {
+   "id": "H-018",
+   "durum": "uygulandı ve doğrulandı",
+   "kanit": "tur 11 çıkış/yeniden giriş sonrası kayıtlar"
+  },
+  {
+   "id": "H-019",
+   "durum": "uygulandı ve doğrulandı",
+   "kanit": "D8 + tur 10b/10c"
+  },
+  {
+   "id": "H-020",
+   "durum": "uygulandı ve doğrulandı",
+   "kanit": "tur 3, 3d"
+  },
+  {
+   "id": "H-021",
+   "durum": "uygulandı ve doğrulandı",
+   "kanit": "tur 3c"
+  },
+  {
+   "id": "H-022",
+   "durum": "uygulandı ve doğrulandı",
+   "kanit": "tur 4"
+  },
+  {
+   "id": "H-023",
+   "durum": "uygulandı ve doğrulandı",
+   "kanit": "tur 5c/5d"
+  },
+  {
+   "id": "H-024",
+   "durum": "kısmi",
+   "kanit": "API testleri R-6; ekrandan hatalı sonuç dosyası turda yok"
+  },
+  {
+   "id": "H-025",
+   "durum": "uygulandı ve doğrulandı",
+   "kanit": "tur 3b/3c/5b"
+  },
+  {
+   "id": "H-026",
+   "durum": "kısmi",
+   "kanit": "500 kullanıcı demo tohumunda yükleyici yoluyla; ekrandan 500 satırlık XLSX yüklemesi turda yok"
+  },
+  {
+   "id": "H-027",
+   "durum": "uygulandı ve doğrulandı",
+   "kanit": "tur 6b/6c2/6d, D4"
+  },
+  {
+   "id": "H-028",
+   "durum": "uygulandı ve doğrulandı",
+   "kanit": "tur 11b–11d"
+  },
+  {
+   "id": "H-029",
+   "durum": "uygulandı ve doğrulandı",
+   "kanit": "tur 8, 10b/10c"
+  },
+  {
+   "id": "H-030",
+   "durum": "uygulandı ve doğrulandı",
+   "kanit": "tur 7–8b"
+  },
+  {
+   "id": "H-031",
+   "durum": "uygulandı ve doğrulandı",
+   "kanit": "tur 9c"
+  },
+  {
+   "id": "H-032",
+   "durum": "kısmi",
+   "kanit": "menü/rota linkleri; kayıt seçili derin link yok"
+  },
+  {
+   "id": "H-033",
+   "durum": "kısmi",
+   "kanit": "FULL_REPLACE teyidi kodda; turda değil"
+  },
+  {
+   "id": "H-034",
+   "durum": "kısmi",
+   "kanit": "index.html dürüst durum; servis kesintisi turda değil"
+  },
+  {
+   "id": "H-035",
+   "durum": "kısmi",
+   "kanit": "disabledReason bazı düğmelerde"
+  },
+  {
+   "id": "H-036",
+   "durum": "kısmi",
+   "kanit": "yalnız Chromium (Playwright); Safari/klavye denenmedi"
+  },
+  {
+   "id": "H-037",
+   "durum": "kısmi",
+   "kanit": "LINK_DUGME_ENVANTERI.csv koddan; her satır için negatif test yok"
+  },
+  {
+   "id": "H-038",
+   "durum": "uygulandı ve doğrulandı",
+   "kanit": "tur ve smoke yalnız açılan son paketten"
+  },
+  {
+   "id": "H-039",
+   "durum": "uygulandı ve doğrulandı",
+   "kanit": "KANITLAR/TEST_KOSULARI"
+  },
+  {
+   "id": "H-040",
+   "durum": "uygulandı ve doğrulandı",
+   "kanit": "bu dosya ve kapanış tabloları"
+  }
+ ]
+}

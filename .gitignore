@@ -1,0 +1,11 @@
+node_modules/
+dist/
+dist-single/
+apps/api/var/
+apps/api/.env.*
+!apps/api/.env.example
+ops/sunucu/.env
+ops/sunucu/yedekler/
+*.zip
+*.dump
+.DS_Store

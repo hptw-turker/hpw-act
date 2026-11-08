@@ -1,0 +1,43 @@
+# HPW Act — iki bağımsız ortam. BU ORTAMDA DOCKER YOK: `docker compose build && up` TEST EDİLMEDİ (F99-05); plan artefaktıdır.
+# Sırlar zorunlu ortam değişkenlerinden gelir (${VAR:?} — eksikse compose durur); .env.demo/.env.bos dosyalarına sessizce dayanılmaz.
+# Servis hesapları db container ilk kurulumunda oluşturulur (ops/docker/init-roles.sh); hpw_app/hpw_worker üyeliği migrate adımında (GRANT_APP_ROLES_TO) verilir; final imajda psql yoktur ve gerekmez.
+services:
+  db-demo:
+    image: postgres:16
+    environment: { POSTGRES_PASSWORD: "${DEMO_PG_PASSWORD:?DEMO_PG_PASSWORD gerekli}", POSTGRES_DB: hpw_act_demo, HPW_ENV: demo, HPW_API_PASSWORD: "${DEMO_API_PASSWORD:?DEMO_API_PASSWORD gerekli}" }
+    volumes: [ "pgdata-demo:/var/lib/postgresql/data", "./ops/docker/init-roles.sh:/docker-entrypoint-initdb.d/10-roles.sh:ro" ]
+    healthcheck: { test: ["CMD-SHELL", "pg_isready -U postgres -d hpw_act_demo"], interval: 10s, timeout: 5s, retries: 10 }
+  api-demo:
+    build: { context: ., dockerfile: apps/api/Dockerfile }
+    depends_on: { db-demo: { condition: service_healthy } }
+    environment:
+      HPW_ENV: demo
+      PORT: "8787"
+      APP_BASE_URL: "${DEMO_APP_BASE_URL:?DEMO_APP_BASE_URL gerekli (https://...)}"
+      COOKIE_SECURE: "true"
+      SETUP_KEY: "${DEMO_SETUP_KEY:?}"
+      HPW_DEMO_DATA: "1"
+      DATABASE_URL: "postgres://hpw_api_demo:${DEMO_API_PASSWORD:?}@db-demo:5432/hpw_act_demo"
+      MIGRATE_DATABASE_URL: "postgres://postgres:${DEMO_PG_PASSWORD:?}@db-demo:5432/hpw_act_demo"
+      MAIL_ALLOWLIST: "${MAIL_ALLOWLIST:-}"
+    command: ["sh", "-c", "GRANT_APP_ROLES_TO=hpw_api_demo node dist/src/migrate.js && exec node dist/src/server.js"]   # fail-fast: migrasyon/grant başarısızsa API başlamaz
+    ports: [ "8787:8787" ]
+  db-bos:
+    image: postgres:16
+    environment: { POSTGRES_PASSWORD: "${BOS_PG_PASSWORD:?BOS_PG_PASSWORD gerekli}", POSTGRES_DB: hpw_act_bos, HPW_ENV: bos, HPW_API_PASSWORD: "${BOS_API_PASSWORD:?BOS_API_PASSWORD gerekli}" }
+    volumes: [ "pgdata-bos:/var/lib/postgresql/data", "./ops/docker/init-roles.sh:/docker-entrypoint-initdb.d/10-roles.sh:ro" ]
+    healthcheck: { test: ["CMD-SHELL", "pg_isready -U postgres -d hpw_act_bos"], interval: 10s, timeout: 5s, retries: 10 }
+  api-bos:
+    build: { context: ., dockerfile: apps/api/Dockerfile }
+    depends_on: { db-bos: { condition: service_healthy } }
+    environment:
+      HPW_ENV: bos
+      PORT: "8788"
+      APP_BASE_URL: "${BOS_APP_BASE_URL:?BOS_APP_BASE_URL gerekli (https://...)}"
+      COOKIE_SECURE: "true"
+      SETUP_KEY: "${BOS_SETUP_KEY:?}"
+      DATABASE_URL: "postgres://hpw_api_bos:${BOS_API_PASSWORD:?}@db-bos:5432/hpw_act_bos"
+      MIGRATE_DATABASE_URL: "postgres://postgres:${BOS_PG_PASSWORD:?}@db-bos:5432/hpw_act_bos"
+    command: ["sh", "-c", "GRANT_APP_ROLES_TO=hpw_api_bos node dist/src/migrate.js && exec node dist/src/server.js"]   # fail-fast
+    ports: [ "8788:8788" ]
+volumes: { pgdata-demo: {}, pgdata-bos: {} }

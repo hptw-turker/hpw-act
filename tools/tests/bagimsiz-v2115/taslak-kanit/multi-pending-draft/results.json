@@ -1,0 +1,20 @@
+[
+  {
+    "id": "V2115-MULTI-2-DISMISS",
+    "status": "ERROR",
+    "error": "TimeoutError: locator.waitFor: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByText(/reddedildi|ertelendi/i).first() to be visible\u001b[22m\n\u001b[2m    24 × locator resolved to hidden <option value=\"snoozed\">ertelendi</option>\u001b[22m\n",
+    "stack": "locator.waitFor: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByText(/reddedildi|ertelendi/i).first() to be visible\u001b[22m\n\u001b[2m    24 × locator resolved to hidden <option value=\"snoozed\">ertelendi</option>\u001b[22m\n\n    at /workspace/scratch/65494bb393f9/audit2115/tests/multi-pending-ui.cjs:44:56"
+  },
+  {
+    "id": "V2115-MULTI-3-DISMISS",
+    "status": "ERROR",
+    "error": "TimeoutError: locator.waitFor: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByText(/reddedildi|ertelendi/i).first() to be visible\u001b[22m\n\u001b[2m    24 × locator resolved to hidden <option value=\"snoozed\">ertelendi</option>\u001b[22m\n",
+    "stack": "locator.waitFor: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByText(/reddedildi|ertelendi/i).first() to be visible\u001b[22m\n\u001b[2m    24 × locator resolved to hidden <option value=\"snoozed\">ertelendi</option>\u001b[22m\n\n    at /workspace/scratch/65494bb393f9/audit2115/tests/multi-pending-ui.cjs:44:56"
+  },
+  {
+    "id": "V2115-MULTI-3-SNOOZE",
+    "status": "ERROR",
+    "error": "TimeoutError: locator.waitFor: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByText(/reddedildi|ertelendi/i).first() to be visible\u001b[22m\n\u001b[2m    24 × locator resolved to hidden <option value=\"snoozed\">ertelendi</option>\u001b[22m\n",
+    "stack": "locator.waitFor: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByText(/reddedildi|ertelendi/i).first() to be visible\u001b[22m\n\u001b[2m    24 × locator resolved to hidden <option value=\"snoozed\">ertelendi</option>\u001b[22m\n\n    at /workspace/scratch/65494bb393f9/audit2115/tests/multi-pending-ui.cjs:44:56"
+  }
+]

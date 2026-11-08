@@ -1,0 +1,17 @@
+{
+  "name": "@hpw-act/domain-core",
+  "version": "0.1.0",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "test": "node --import tsx --test test/*.test.ts",
+    "lint": "node ../../tools/scripts/tr-kontrol.mjs"
+  },
+  "devDependencies": {
+    "@types/node": "^22.20.4",
+    "tsx": "4.19",
+    "typescript": "5.6"
+  }
+}

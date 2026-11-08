@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HPW Act · __ENV_TITLE__</title>
+<style>
+  :root { --ink:#1a1a1a; --paper:#fff; --red:#e0112b; --muted:#6b6b6b; }
+  html,body { margin:0; background:var(--paper); color:var(--ink); font-family: Poppins, "Helvetica Neue", Arial, sans-serif; }
+  main { max-width: 760px; margin: 0 auto; padding: 72px 24px; }
+  .brand { color: var(--red); font-weight: 700; font-size: 18px; margin: 0 0 24px; }
+  h1 { font-size: 34px; line-height: 1.15; margin: 0 0 12px; font-weight: 700; }
+  .env { display:inline-block; border:2px solid var(--ink); padding:6px 12px; font-weight:700; letter-spacing:.04em; text-transform:uppercase; margin: 0 0 24px; }
+  p { font-size: 17px; line-height: 1.55; }
+  .muted { color: var(--muted); font-size: 14px; }
+  #status { border-left: 4px solid var(--ink); padding: 12px 16px; margin: 24px 0; min-height: 48px; }
+  #status.err { border-color: var(--red); }
+  button { background: var(--ink); color: #fff; border: 0; padding: 12px 20px; font: inherit; font-weight: 700; cursor: pointer; }
+  button.secondary { background: #fff; color: var(--ink); border: 2px solid var(--ink); }
+  code { background:#f2f2f2; padding:2px 6px; }
+  noscript p { color: var(--red); }
+</style>
+</head>
+<body>
+<main>
+  <p class="brand">Happy Place to Work® Act</p>
+  <div class="env">__ENV_LABEL__</div>
+  <h1>Aynı gerçek uygulamanın girişi</h1>
+  <p>Bu dosya yalnız ortamı doğrulayıp sizi <strong>__ENV_TITLE__</strong> kurulumunun çalışan uygulamasına geçirir. Uygulama, veritabanı ve posta kuyruğu bu bilgisayarda kendi ortamında çalışır; tarayıcı dosyası tek başına hiçbir kayıt yazmaz.</p>
+  <div id="status">Yerel servis kontrol ediliyor…</div>
+  <p><button id="retry" type="button">Yeniden dene</button> <button id="open" type="button" class="secondary" disabled>Uygulamayı aç</button></p>
+  <p class="muted" id="hint"></p>
+  <noscript><p>Bu giriş için JavaScript gerekir.</p></noscript>
+</main>
+<script>
+(function () {
+  var EXPECT = { env: '__ENV__', origin: '__ORIGIN__', build: '__BUILD_ID__', launcher: '__LAUNCHER__' };
+  var status = document.getElementById('status'), open = document.getElementById('open'), hint = document.getElementById('hint'), retry = document.getElementById('retry');
+  var gen = 0, redirectTimer = null, retryTimer = null, appUrl = null, PROBE_TIMEOUT = 6000;
+  function show(msg, err) { status.textContent = msg; status.className = err ? 'err' : ''; }
+  function reset() { gen++; if (redirectTimer) { clearTimeout(redirectTimer); redirectTimer = null; } if (retryTimer) { clearTimeout(retryTimer); retryTimer = null; } appUrl = null; open.disabled = true; window.__HPW_ACT_HEALTH = null; } // V03: her sondada önceki yönlendirme ve düğme iptal
+  function go() { if (appUrl) window.location.replace(appUrl); }
+  function probe() {
+    reset(); var my = gen; show('Yerel servis ve hazırlık durumu kontrol ediliyor…', false);
+    var s = document.createElement('script'); s.src = EXPECT.origin + '/api/health-probe.js?t=' + Date.now(); s.async = true; var done = false;
+    var to = setTimeout(function () { if (done || my !== gen) return; done = true; try { document.head.removeChild(s); } catch (e) {} show('Servis zamanında yanıt vermedi; başlatıcı çalışıyorsa bekleyin, değilse "' + EXPECT.launcher + '" dosyasını çift tıklayın.', true); retryTimer = setTimeout(probe, 4000); }, PROBE_TIMEOUT);
+    s.onload = function () {
+      if (done || my !== gen) return; done = true; clearTimeout(to); var h = window.__HPW_ACT_HEALTH; try { document.head.removeChild(s); } catch (e) {}
+      if (!h || !h.ok) { show('Servis yanıt verdi ama durum bilgisi okunamadı; başlatıcıyı yeniden çalıştırın.', true); return; }
+      if (h.env !== EXPECT.env) { show('Bu adreste ' + String(h.env).toUpperCase() + ' ortamı çalışıyor; bu giriş yalnız ' + EXPECT.env.toUpperCase() + ' ortamını açar. Yanlış ortamda geçiş yapılmaz. Doğru başlatıcı: ' + EXPECT.launcher, true); return; }
+      if (EXPECT.build && h.build !== EXPECT.build) { show('Servis farklı bir sürüm çalıştırıyor (bulunan: ' + (h.build || 'bilinmiyor') + ', beklenen: ' + EXPECT.build + '). Başlatıcı kendi eski sürümünü durdurup yenisini açar; başlatıcıyı çalıştırın ve bu sayfa hazır olunca kendiliğinden geçer.', true); retryTimer = setTimeout(probe, 5000); return; }
+      if (!h.ready) { show('Servis ayakta ama veriyle işlem yapmaya hazır değil: ' + ((h.reasons || []).join('; ') || 'bilinmeyen neden') + '. Hazır olunca bu sayfa kendiliğinden geçer; veri sıfırlanmaz.', true); retryTimer = setTimeout(probe, 4000); return; } // V02: yalnız hazır olunca geçiş
+      appUrl = EXPECT.origin + (h.appPath || '/app.html'); open.disabled = false;
+      show('Bağlantı hazır · ' + EXPECT.env.toUpperCase() + ' · sürüm ' + h.version + ' · şema ' + (h.schema || '?') + ' · posta: ' + (h.mail === 'sandbox' ? 'test kutusu (gerçek gönderim yok)' : 'SMTP yapılandırılmış') + '. Uygulama açılıyor…', false);
+      redirectTimer = setTimeout(function () { if (my === gen) go(); }, 600);
+    };
+    s.onerror = function () {
+      if (done || my !== gen) return; done = true; clearTimeout(to); try { document.head.removeChild(s); } catch (e) {}
+      show('Yerel servis çalışmıyor. CALISTIRMA klasöründeki "' + EXPECT.launcher + '" dosyasını çift tıklayın; servis hazır olunca bu sayfa kendiliğinden uygulamaya geçer. (Mac\u2019te ilk açılışta dosyaya sağ tıklayıp "Aç" seçmeniz gerekebilir.)', true);
+      retryTimer = setTimeout(probe, 3000);
+    };
+    document.head.appendChild(s);
+  }
+  retry.addEventListener('click', probe); open.addEventListener('click', go);
+  hint.textContent = 'Bu sayfa hiçbir parola, anahtar ya da oturum bilgisi içermez; yalnız yerel servisin ortam, sürüm ve hazırlık durumunu doğrular.';
+  probe();
+})();
+</script>
+</body>
+</html>

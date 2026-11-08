@@ -1,0 +1,10 @@
+{
+  "_not": "Yayımlanmış bir migrasyon dosyasının, sonradan (hatalı olarak) ek satırlarla dağıtılmış ara sürümleri. Runner bu checksum'ları o dosyanın uygulanmış hâli olarak kabul eder; dosya yeniden çalıştırılmaz, defter kanonik checksum'a güncellenir ve olay kaydedilir. Yeni şema değişiklikleri her zaman yeni numaralı migrasyona gider.",
+  "0005_consistency.sql": {
+    "canonical": "002b470eb5a1a9a31ce9eff61c71ddd814181d9640cb9e276743a636ade5dd7b",
+    "aliases": {
+      "084743af806d25065a73bb66e8eff7e9c96aa05073ff93f9c597c413f8a0c267": "build 15ce6a59468e paketi: 0005 + M10 sütunları (resource_unit_id, required_profiles)",
+      "a57c65d28482999b94fe55d07e9e7638373b6f681c7a1682334ffe3f5072cc08": "build f8c70ceb1359 paketi: 0005 + M10 + Y01/Y02 sütunları (resource_scope, owner_token)"
+    }
+  }
+}

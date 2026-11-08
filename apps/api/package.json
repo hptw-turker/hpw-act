@@ -1,0 +1,37 @@
+{
+  "name": "@hpw-act/api",
+  "private": true,
+  "type": "module",
+  "version": "0.5.0",
+  "scripts": {
+    "dev": "tsx watch src/server.ts",
+    "start": "tsx src/server.ts",
+    "test": "mkdir -p var && rm -f var/contract-samples.jsonl && ALLOW_DB_RESET=1 TEST_DB=hpw_act_test sh test/reset-db.sh && DATABASE_URL=postgres://hpw_api:hpw_api@localhost:5432/hpw_act_test MIGRATE_DATABASE_URL=postgres://postgres:postgres@localhost:5432/hpw_act_test HPW_ENV=test HPW_CONTRACT_CAPTURE=var/contract-samples.jsonl tsx --test --test-concurrency=1 test/textnorm.test.ts test/e2e.test.ts test/r01-r44.test.ts test/v01-v28.test.ts test/v291.test.ts test/v2100.test.ts test/v2100-regresyon.test.ts test/v2101.test.ts test/v2110.test.ts test/davet-teslimat.test.ts test/v2111.test.ts test/v2114.test.ts test/v2115.test.ts test/v2150.test.ts test/v300.test.ts test/config-mfa.test.ts && node --import tsx scripts/contract-verify.mts var/contract-samples.jsonl && node --import tsx scripts/openapi-gen.mts --check && node --import tsx scripts/contract-audit.mts",
+    "migrate": "tsx src/migrate.ts",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "build": "tsc -p tsconfig.json",
+    "seed:demo": "tsx src/seed-demo.ts",
+    "contract:infer": "node --import tsx scripts/contract-infer.mts var/contract-samples.jsonl && node --import tsx scripts/openapi-gen.mts",
+    "test:parca1": "mkdir -p var && rm -f var/contract-samples.jsonl && ALLOW_DB_RESET=1 TEST_DB=hpw_act_test sh test/reset-db.sh && DATABASE_URL=postgres://hpw_api:hpw_api@localhost:5432/hpw_act_test MIGRATE_DATABASE_URL=postgres://postgres:postgres@localhost:5432/hpw_act_test HPW_ENV=test HPW_CONTRACT_CAPTURE=var/contract-samples.jsonl tsx --test --test-concurrency=1 test/textnorm.test.ts test/e2e.test.ts test/r01-r44.test.ts test/v01-v28.test.ts test/v291.test.ts",
+    "test:parca2": "DATABASE_URL=postgres://hpw_api:hpw_api@localhost:5432/hpw_act_test MIGRATE_DATABASE_URL=postgres://postgres:postgres@localhost:5432/hpw_act_test HPW_ENV=test HPW_CONTRACT_CAPTURE=var/contract-samples.jsonl tsx --test --test-concurrency=1 test/v2100.test.ts test/v2100-regresyon.test.ts test/v2101.test.ts test/v2110.test.ts test/davet-teslimat.test.ts test/v2111.test.ts test/v2114.test.ts test/v2115.test.ts test/v2150.test.ts test/v300.test.ts test/config-mfa.test.ts",
+    "test:sozlesme": "node --import tsx scripts/contract-verify.mts var/contract-samples.jsonl && node --import tsx scripts/openapi-gen.mts --check && node --import tsx scripts/contract-audit.mts"
+  },
+  "dependencies": {
+    "@fastify/cookie": "^9.3.1",
+    "@fastify/multipart": "^8.3.0",
+    "@fastify/static": "^7.0.4",
+    "@hpw-act/domain-core": "file:../../packages/domain-core",
+    "ajv": "^8.20.0",
+    "exceljs": "^4.4.0",
+    "fastify": "^4.28.1",
+    "nodemailer": "^6.9.16",
+    "pg": "^8.13.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.9.0",
+    "@types/pg": "^8.11.10",
+    "tsx": "^4.19.2",
+    "typescript": "^5.8.3",
+    "@types/nodemailer": "^6.4.17"
+  }
+}

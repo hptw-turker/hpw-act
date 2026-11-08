@@ -1,0 +1,213 @@
+# -*- coding: utf-8 -*-
+"""v2.15.0 rol kılavuzlarına eklenen "6 · Yol haritası" bölümünün içeriği.
+Ekran görüntüleri Saha Bankacılık (sentetik demo) örnek yol haritasından alınır; gerçek müşteri verisi kullanılmaz."""
+
+# Şekil açıklamaları: (düğme / alan, ne işe yarar). Numara sırası ekrandaki kırmızı işaretlerle aynıdır.
+LEG = {
+ 'YH-S-giris': [('Birim yönetimi adımları', 'Sunumdaki eylem planlarında birim yönetimine (size) yazılan adımlar. Her kare bir adım; kırmızı dolu kare tamamlandı. Altında kaçının tamamlandığı ve kaçının devam ettiği yazar.'),
+                ('İK adımları', 'Aynı planlarda İnsan Kaynakları\'na yazılan adımlar. İK işaretler; siz izlersiniz.'),
+                ('Takvim', 'Eylem planlarındaki "İlk 30 gün / İlk 90 gün / 6 ay" satırları. Termini geçen satır varsa kırmızı yazar; altında sıradaki termin görünür.'),
+                ('Yol haritasını incele', 'Biriminizin yol haritasını açar.')],
+ 'YH-S-mobil': [('Yol haritasını incele', 'Telefonda bölüm tek sütuna dizilir; düğme bölümün altındadır.')],
+ 'YH-S-bas': [('Yol haritası (menü)', 'Yol haritası ekranını her yerden açar.'),
+              ('Başlık', 'Birimin adı, dönem ve sunumun adı; altında yol haritasının başlangıç günü (sunumun yapıldığı gün).'),
+              ('Birim yönetimi adımları', 'Bütün eylem planlarında birim yönetimine yazılan adımlardan kaçının tamamlandığı.'),
+              ('İK adımları', 'İnsan Kaynakları\'na yazılan adımlardan kaçının tamamlandığı.'),
+              ('Takvim', 'Termini geçen takvim satırı sayısı ve sıradaki termin.')],
+ 'YH-S-sonuc': [('Ana sonuç', 'Sunumdaki "birim yönetimi için ana sonuç" cümlesi ve açıklaması, aynen.'),
+                ('Görece güçlü yönler', 'Birimin dayanabileceği güçlü yönler; sunumdaki metin ve değerlerle.'),
+                ('Üç önceliğin birimdeki karşılığı', 'Şirket genelinde belirlenen üç gelişim önceliği ve bu birimdeki bulgu.')],
+ 'YH-S-gundem': [('Yorumda değinen', 'Açık uçlu yorum yazanlardan kaç kişinin bu konuya değindiği (sunumdaki sayı).'),
+                 ('İlgili anket göstergesi', 'Konuyla ilgili anket maddesi ya da göstergesi.'),
+                 ('Fark', 'Birim değeri ile şirket geneli arasındaki fark (puan). Yanıt sayısı gizlilik eşiğinin altındaysa sayı yazmaz.')],
+ 'YH-S-plan': [('Eylem planı başlığı', 'Planın numarası ve adı, sunumdaki sırayla.'),
+               ('Veri dayanağı', 'Planın dayandığı göstergeler: siyah çubuk bu birim, gri çubuk şirket geneli.'),
+               ('İzlenecek ölçüt', 'Planın başarısının hangi değerle izleneceği: mevcut değer, şirket geneli ve sunumdaki hedef. Bir sonraki ölçüm yüklendiğinde takip değeri altında görünür.'),
+               ('İnsan Kaynakları sütunu', 'İK\'ya yazılan adımlar ve durumları.'),
+               ('Birim yönetimi sütunu', 'Size yazılan adımlar. Kareler ve "x / y tamamlandı" ilerlemeyi gösterir.'),
+               ('Durum seçimi', 'Başlamadı, Devam ediyor, Tamamlandı. Seçili olan koyu görünür; yetkiniz varsa tıklayarak değiştirirsiniz.'),
+               ('Çalışanlar sütunu', 'Çalışanlardan beklenenler. Bilgi içindir; durum tutulmaz.'),
+               ('Takvim', 'Planın takvim satırları: aşama, termin (başlangıç günü + gün), yapılacak iş, durum. Termini geçen satırda kırmızı "termini geçti" yazar.'),
+               ('Takvim durumu', 'Açık ya da Tamamlandı. Satırdaki iş yapıldığında "Tamamlandı"ya basılır.')],
+ 'YH-S-adim': [('İlerleme', 'Bu sütundaki adımlardan kaçının tamamlandığı.'),
+               ('Başlamadı', 'Adıma henüz başlanmadı. Yeni yüklenen her adım böyle başlar.'),
+               ('Devam ediyor', 'Adım üzerinde çalışılıyor.'),
+               ('Tamamlandı', 'Adım yapıldı. Kare kırmızıya döner.'),
+               ('Son güncelleme', 'Durumun en son ne zaman değiştirildiği. Kimin değiştirdiği işlem geçmişinde kayıtlıdır.')],
+ 'YH-S-takvim': [('Uygulama takvimi', 'Sunumdaki aşamalar (ilk 90 gün, 3–6 ay, 6–12 ay) ve her aşamada yapılacaklar; bilgi içindir.'),
+                 ('İzleme göstergeleri', 'Başarının hangi göstergelerle izleneceği: mevcut, sektör, şirket geneli.'),
+                 ('Hedef / izleme yaklaşımı', 'Sunumdaki hedef ya da izleme yaklaşımı (ör. "mevcut + 2,5 puan"), aynen.')],
+ 'YH-I-ust': [('Yol haritası (menü)', 'Yol haritası ekranını açar.'),
+              ('Birim yönetimi adımları', 'Bütün birimlerde birim yönetimine yazılan adımlardan kaçının tamamlandığı.'),
+              ('İK adımları', 'Bütün birimlerde İK\'ya yazılan adımlardan kaçının tamamlandığı.'),
+              ('Termini geçmiş takvim satırı', 'Bütün birimlerde termini geçmiş ve henüz "Tamamlandı" işaretlenmemiş takvim satırı sayısı.'),
+              ('Üç öncelik', 'Sunumlarda şirket genelinde belirlenen üç gelişim önceliği.')],
+ 'YH-I-birimler': [('Eylem planı', 'Birimin sunumundaki eylem planı sayısı.'),
+                   ('Birim yönetimi adımları', 'Birim yönetimine yazılan adımlar; kırmızı dolu kare tamamlandı.'),
+                   ('İK adımları', 'Bu birimde İK\'ya yazılan adımlar.'),
+                   ('Takvim', 'Takvim satırlarından kaçının tamamlandığı ve termini geçenler.'),
+                   ('Sıradaki termin', 'Termini henüz gelmemiş en yakın açık takvim satırının tarihi.'),
+                   ('Yol haritasını incele', 'O birimin yol haritasını açar.')],
+ 'YH-I-ik': [('İlerleme', 'Bütün birimlerdeki İK adımlarından kaçının tamamlandığı.'),
+             ('Adım', 'Sunumdaki eylem planında İnsan Kaynakları sütununa yazılan adım, aynen.'),
+             ('Durum seçimi', 'Başlamadı, Devam ediyor, Tamamlandı. Tıkladığınız anda kaydedilir.')],
+ 'YH-I-donem': [('Sonuç yükle', 'Dönemin anket sonuçlarını yükler. Yol haritası, sonucu yüklenmiş döneme yüklenir.'),
+                ('Yol haritası formunu yükle', 'Sonucu yüklenmiş her dönem için yol haritası formunun yükleme ekranını açar.')],
+ 'YH-I-yukle': [('Şablonu indir (.xlsx)', 'Şirketinize ve döneme özel boş yol haritası formunu indirir (17 sayfa, sunumun bölüm sırasıyla).'),
+                ('Dosya seç', 'Doldurulmuş formu seçer. Yalnız .xlsx kabul edilir; formüller çalıştırılmaz.'),
+                ('Doğrula ve önizle', 'Formu denetler. Hata varsa sayfa, satır ve sütunuyla listelenir; hata satırlarını Excel olarak indirebilirsiniz.'),
+                ('Onayla ve işle', 'Hatasız formu yükler. Aynı birimde önceki yol haritası varsa eski sürüm saklanır; değişmeyen adımların durumu korunur.')],
+ 'YH-E-giris': [('Birim yönetimi adımları', 'Her birimde birim yönetimine yazılan adımlardan kaçının tamamlandığı.'),
+                ('Takvim', 'Termini geçen takvim satırı varsa kırmızı yazar.'),
+                ('Sıradaki termin', 'Termini henüz gelmemiş en yakın açık takvim satırı.'),
+                ('Yol haritasını incele', 'Yol haritası ekranını açar.')],
+ 'YH-E-ik': [('Adım', 'İK\'ya yazılan adım, aynen.'),
+             ('Durum', 'Adımın durumu. Sizde yalnız yazı olarak görünür; durumu İK değiştirir.')],
+ 'YH-R-giris': [('Birim yönetimi adımları', 'Bölgenizdeki her birimin birim yönetimi adımları.'),
+                ('Takvim', 'Termini geçen takvim satırları.'),
+                ('Yol haritasını incele', 'Yol haritası ekranını açar.')],
+ 'YH-R-birimler': [('Birim yönetimi adımları', 'Birimin yönetimine yazılan adımlar.'),
+                   ('Takvim', 'Takvim satırlarından kaçının tamamlandığı ve termini geçenler.'),
+                   ('Yol haritasını incele', 'O birimin yol haritasını açar.')],
+ 'YH-R-plan': [('İnsan Kaynakları sütunu', 'İK\'nın adımları. Sizde durum yalnız yazı olarak görünür.'),
+               ('Birim yönetimi adımı', 'Kapsamınızdaki birimlerde birim yönetimi adımlarının durumunu işaretleyebilirsiniz.'),
+               ('Takvim durumu', 'Takvim satırını "Açık" ya da "Tamamlandı" olarak işaretlersiniz.')],
+ 'YH-H-ik': [('Birim', 'Yalnız kapsamınızdaki birimlerin İK adımları listelenir.'),
+             ('Durum seçimi', 'Başlamadı, Devam ediyor, Tamamlandı. Tıkladığınız anda kaydedilir.')],
+ 'YH-V-giris': [('Birim yönetimi adımları', 'Kapsamınızdaki birimin adımlarından kaçının tamamlandığı.'),
+                ('Yol haritasını incele', 'Yol haritasını açar.')],
+ 'YH-V-plan': [('Adım ve durumu', 'Adımın durumu yalnız yazı olarak görünür; seçim düğmeleri yoktur.'),
+               ('Takvim durumu', 'Açık ya da Tamamlandı; yalnız görüntülenir.')],
+}
+
+ORTAK_GIRIS = ('Şirketinize önce HPTW birim raporları (sunum) verilir. Sunumun "Yol haritası" bölümündeki eylem planları, roller, takvim ve hedefler HPW Act\'e aynen aktarılır. '
+               'HPW Act sunumdaki metni ve sayıları değiştirmez; yalnız her adımın ve takvim satırının durumunu, terminini ve gecikmesini ekler.')
+ORTAK_AYRI = ('Yol haritası, madde bazlı hedef–aksiyon–kanıt sisteminden ayrı bir katmandır: onu tetiklemez ve değiştirmez. '
+              'Sunumdaki hedef (ör. "mevcut + 2,5 puan") olduğu gibi gösterilir. Çalışan alıntıları aktarılmaz; sunumda kalır.')
+
+KIM = [('İK yöneticisi', 'Bütün birimler', 'İK adımları, birim yönetimi adımları, takvim; formu yükler'),
+       ('İK iş ortağı', 'Kapsamındaki birimler', 'İK adımları, birim yönetimi adımları, takvim'),
+       ('Üst yönetim', 'Bütün birimler', 'Hiçbiri (salt okur)'),
+       ('Bölge müdürü', 'Bölgesindeki birimler', 'Birim yönetimi adımları, takvim'),
+       ('Birim / şube müdürü', 'Yalnız kendi birimi', 'Birim yönetimi adımları, takvim'),
+       ('İzleyici', 'Kapsamındaki birimler', 'Hiçbiri (salt okur)'),
+       ('Aksiyon sorumlusu', '—', 'Yol haritası ekranı yok')]
+
+def ROL(**k): return k
+
+R = {}
+R['01-HPW-Sistem-Yoneticisi'] = ROL(
+ alt='Sunumdan HPW Act\'e aktarım süreci ve formun yüklenmesi',
+ giris=[ORTAK_GIRIS, 'Sizin işiniz süreci başlatmak ve formun doğru yüklendiğinden emin olmaktır. Adımların durumunu siz işaretlemezsiniz; bu, şirket kullanıcılarının iş kaydıdır.', ORTAK_AYRI],
+ surec=True,
+ ekran=[('Dönemler ve sonuçlar — Yol haritası nereden yüklenir?', 'Şirketin ekranına Şirketler tablosundaki "Aç" ile geçin. "Dönemler ve sonuçlar" ekranında, sonucu yüklenmiş her dönemin altında yol haritası formu bağlantısı vardır.', 'YH-I-donem'),
+        ('Yükleme ekranı — Form nasıl yüklenir?', 'Bütün Excel yüklemeleriyle aynı hat: şablonu indir, doldur, doğrula, onayla. Bu görüntü aynı ekranın şirket İK yöneticisi oturumundan alınmıştır; sizde de aynı görünür. Düğmeler kapalıysa yetkiniz bu şirket durumunda kurulum işlemine izin vermiyordur; gerekirse müdahale modunu gerekçeyle açın.', 'YH-I-yukle'),
+        ('Yol haritası ekranı — Yükleme sonrası ne görünür?', 'Yükleme tamamlanınca menüde "Yol haritası" ekranı dolar: şirket özeti, üç öncelik, birimler tablosu, İK adımları. Şirketin ekranında bu sayfayı açarak aktarımı denetleyebilirsiniz.', 'YH-I-birimler')],
+ adim=[('Sunumdan formları doldurt', 'Sunumlar ve boş formlar "Doldurma promptu" ile diğer Claude oturumuna verilir. 1. turda Organizasyon ve Soru seti, 2. turda Anket sonuçları ve Yol haritası formları doldurulur. Çalışan alıntıları forma yazılmaz.', None),
+       ('Şirketi aç, İK yöneticisini davet et', 'Mevcut akış aynen geçerlidir (Bölüm 4). Organizasyon ve soru seti yüklenir, dönem açılır, sonuçlar yüklenir.', None),
+       ('Şirkete özel yol haritası formunu indir', 'Şirketin "Dönemler ve sonuçlar" ekranında "<dönem> için formu yükle" bağlantısını açın ve "Şablonu indir (.xlsx)"e basın. Şablon şirket kodunu ve dönemi taşır; 2. turda bu şablon doldurulur.', 'YH-I-donem'),
+       ('Doğrula ve önizle', 'Doldurulan formu seçip "Doğrula ve önizle"ye basın. HPW Act birimi, maddeyi, plan numarasını, tarihleri, sayıları ve tekrarları denetler; hatayı sayfa, satır ve sütunuyla gösterir. Hata varken onay verilemez.', 'YH-I-yukle'),
+       ('Onayla ve işle', 'Hatasız formu "Onayla ve işle" ile yükleyin. Yol haritasının başlangıç günü formdaki tarihtir (sunumun yapıldığı gün); terminler buradan hesaplanır.', None),
+       ('Aktarımı denetle', 'Yol haritası ekranında birimler tablosunu sunumla karşılaştırın: birim sayısı, eylem planı sayısı, adımlar. Sunumda düzeltme olursa form düzeltilip yeniden yüklenir; eski sürüm saklanır, değişmeyen adımların durumu korunur.', 'YH-I-birimler')],
+ sss=[('Adımların durumunu ben işaretleyebilir miyim?', 'Hayır. Adım ve takvim durumu şirket kullanıcılarının iş kaydıdır; HPW personeline bu yetki verilmez.'),
+      ('Form reddedildi, ne yapmalıyım?', 'Hata listesindeki sayfa, satır ve sütunu düzeltin ya da "Hata satırlarını indir (.xlsx)" ile listeyi doldurma oturumuna geri verin; sonra yeniden yükleyin.'),
+      ('Sunum ertelendi, başlangıç günü değişti.', 'Formu yeni başlangıç günüyle yeniden yükleyin. Terminler yeniden hesaplanır, işaretlemeler korunur.')])
+
+R['02-IK-Yoneticisi'] = ROL(
+ alt='Formu yüklemek, İK adımlarını işaretlemek, birimleri izlemek',
+ giris=[ORTAK_GIRIS, 'Siz yol haritası formunu yükler, bütün birimlerdeki İK adımlarını tek listede işaretler ve birimlerin ilerleyişini izlersiniz. Gerekirse birim yönetimi adımlarını ve takvim satırlarını da işaretleyebilirsiniz.', ORTAK_AYRI],
+ surec=True,
+ ekran=[('Yol haritası — Şirket genelinde neredeyiz?', 'Menüdeki "Yol haritası" ekranının üstü: şirket özeti ve üç öncelik.', 'YH-I-ust'),
+        ('Birimler — Hangi birim nerede?', 'Her satır bir birimin yol haritasıdır.', 'YH-I-birimler'),
+        ('İK\'nın adımları — İK bu ay ne yapmalı?', 'Bütün birimlerin eylem planlarında İnsan Kaynakları sütununa yazılan adımlar tek listede.', 'YH-I-ik'),
+        ('Birim yol haritası — Bir birimin planı', '"Yol haritasını incele" ile açılır. Bölümler sunumdaki sırayla dizilir: ana sonuç, güçlü yönler ve öncelikler, gündem, eylem planları, uygulama adımları, roller, uygulama takvimi, izleme hedefleri.', 'YH-S-plan'),
+        ('Yükleme — Yol haritası formu', '"Dönemler ve sonuçlar" ekranındaki "<dönem> için formu yükle" bağlantısıyla açılır.', 'YH-I-yukle')],
+ adim=[('Formu indir ve doldurt', '"Dönemler ve sonuçlar"da sonucu yüklenmiş dönemin altındaki "<dönem> için formu yükle"yi açın, "Şablonu indir (.xlsx)"e basın. Formu sunumlarla birlikte doldurma oturumuna verin.', 'YH-I-donem'),
+       ('Doğrula, onayla', 'Doldurulan formu seçin, "Doğrula ve önizle"ye basın; hata yoksa "Onayla ve işle". Hata varsa satır ve sütunuyla listelenir.', 'YH-I-yukle'),
+       ('Birimleri izle', 'Yol haritası ekranında birimler tablosuna bakın: kırmızı "termini geçti" yazan birimler önce. "Yol haritasını incele" ile birimin planını açın.', 'YH-I-birimler'),
+       ('İK adımını işaretle', '"İK\'nın adımları" listesinde adımın durumunu seçin: işe başladığınızda "Devam ediyor", bitirdiğinizde "Tamamlandı". Seçim anında kaydedilir; ilerleme kareleri güncellenir.', 'YH-I-ik'),
+       ('Takvim satırını kapat', 'Birim yol haritasında planın takvim tablosunda satırdaki iş yapıldıysa "Tamamlandı"ya basın. Termini geçen ve açık kalan satır kırmızı görünür.', None)],
+ sss=[('Durumu yanlış işaretledim.', 'Doğru durumu yeniden seçin. Her değişiklik işlem geçmişine kaydedilir; eski kayıt silinmez.'),
+      ('Durum seçerken çakışma uyarısı çıktı.', 'Aynı adımı siz sayfayı açtıktan sonra başka biri güncellemiş. Sayfayı yenileyip güncel durumu görün, gerekirse yeniden seçin.'),
+      ('Sunumda düzeltme yapıldı.', 'Formu düzeltip yeniden yükleyin. Önceki sürüm saklanır; metni değişmeyen adımların durumu korunur, değişen adım "Başlamadı"dan başlar.'),
+      ('Yol haritası hedefe ya da aksiyona bağlanıyor mu?', 'Hayır. Madde bazlı hedef, aksiyon ve kanıt aynen çalışır; isterseniz birim yöneticisi sunumdaki bir konu için ayrıca hedef ve aksiyon açabilir.')])
+
+R['03-IK-Is-Ortagi'] = ROL(
+ alt='Kapsamdaki birimlerde İK ve birim yönetimi adımlarını takip etmek',
+ giris=[ORTAK_GIRIS, 'Siz yalnız kapsamınızdaki birimlerin yol haritalarını görürsünüz. Bu birimlerde İK adımlarını, birim yönetimi adımlarını ve takvim satırlarını işaretleyebilirsiniz. Formu yükleme işi şirket geneli İK yöneticisinindir.', ORTAK_AYRI],
+ surec=False,
+ ekran=[('Birimler — Kapsamımdaki birimler nerede?', 'Yol haritası ekranındaki birimler tablosunda yalnız kapsamınızdaki birimler listelenir.', 'YH-I-birimler'),
+        ('İK\'nın adımları — Kapsamımda İK ne yapmalı?', 'Kapsamınızdaki birimlerin İK adımları tek listede.', 'YH-H-ik'),
+        ('Birim yol haritası — Planın adımları', 'Birimin planında İK ve birim yönetimi sütunlarındaki adımları işaretleyebilirsiniz.', 'YH-S-plan')],
+ adim=[('Yol haritasını aç', 'Menüden "Yol haritası"na girin. Üstteki şeritte kapsamınızın özeti, altta birimler tablosu görünür.', None),
+       ('İK adımını işaretle', '"İK\'nın adımları" listesinde adımın durumunu seçin. Seçim anında kaydedilir.', 'YH-H-ik'),
+       ('Birimin planına bak', '"Yol haritasını incele" ile birimin planını açın. Birim yönetimi adımlarında birim müdürüyle konuştuğunuz durumu gerekirse siz de işaretleyebilirsiniz.', 'YH-S-adim'),
+       ('Takvimi izle', 'Termini geçen takvim satırlarını birim müdürüyle görüşün; satırdaki iş yapıldıysa "Tamamlandı" işaretlenir.', None)],
+ sss=[('Bazı birimleri göremiyorum.', 'Yalnız kapsamınızdaki birimler görünür. Kapsam İK yöneticisi tarafından belirlenir.'),
+      ('Formu yükleyebilir miyim?', 'Hayır. Toplu yükleme şirket geneli yetki ister; formu İK yöneticisi yükler.'),
+      ('Birim müdürünün adımını ben mi işaretlemeliyim?', 'Normalde adımı yapan rol işaretler. Sizin yetkiniz destek içindir; işaretlemeden önce birim müdürüyle konuşun.')])
+
+R['04-Ust-Yonetim'] = ROL(
+ alt='Sunumdaki yol haritasını giriş ekranından ve yol haritası ekranından izlemek',
+ giris=[ORTAK_GIRIS, 'Siz bütün birimlerin yol haritasını görürsünüz; salt okursunuz. Adım ve takvim durumunu işi yapan roller (birim yönetimi, İK) işaretler.', ORTAK_AYRI],
+ surec=False,
+ ekran=[('Genel bakış — Birimler sunumdaki planda nerede?', 'Giriş ekranınızda (Genel bakış) yol haritası bölümü: her birimin birim yönetimi adımları, termini geçen takvim satırları ve sıradaki termin.', 'YH-E-giris'),
+        ('Yol haritası — Şirket genelinde neredeyiz?', 'Menüdeki "Yol haritası" ekranı: şirket özeti, üç öncelik ve birimler tablosu.', 'YH-I-birimler'),
+        ('İK\'nın adımları — İK nerede?', 'İK adımlarını izlersiniz; durum sizde yalnız yazı olarak görünür.', 'YH-E-ik'),
+        ('Birim yol haritası — Bir birimin planı', 'Birimin planı sunumdaki sırayla. Sizde durum seçim düğmeleri görünmez.', 'YH-V-plan')],
+ adim=[('Giriş ekranına bak', 'Genel bakıştaki "Yol haritası" bölümünde termini geçen satırı olan birimleri görün.', 'YH-E-giris'),
+       ('Birimin planını aç', '"Yol haritasını incele" ile yol haritası ekranına, oradan birimin satırındaki düğmeyle birimin planına geçin.', None),
+       ('Gecikmeyi sor', 'Termini geçen satırlar için birim yöneticisine ya da İK\'ya sorun. Sistem sizin adınıza durum değiştirmez.', None)],
+ sss=[('Neden işaretleme düğmesi yok?', 'Üst yönetim yol haritasını izler; durumu işi yapan rol işaretler.'),
+      ('Hedefler sunumdakiyle aynı mı?', 'Evet. Sunumdaki hedef metni ve sayıları aynen gösterilir; HPW Act gerçekçi aralıkla karşılaştırmaz.')])
+
+R['05-Bolge-Muduru'] = ROL(
+ alt='Bölgedeki birimlerin yol haritalarını izlemek, birim yönetimi adımlarını ve takvimi işaretlemek',
+ giris=[ORTAK_GIRIS, 'Siz bölgenizdeki birimlerin yol haritalarını görürsünüz. Bu birimlerde birim yönetimi adımlarını ve takvim satırlarını işaretleyebilirsiniz; İK adımlarını izlersiniz.', ORTAK_AYRI],
+ surec=False,
+ ekran=[('Genel bakış — Bölgemdeki birimler nerede?', 'Giriş ekranınızdaki yol haritası bölümü.', 'YH-R-giris'),
+        ('Birimler — Hangi birim nerede?', 'Yol haritası ekranında bölgenizdeki birimler.', 'YH-R-birimler'),
+        ('Birim yol haritası — Adımlar ve takvim', 'Birimin planında birim yönetimi adımları ve takvim satırları sizde seçilebilir; İK adımları yalnız yazıdır.', 'YH-R-plan')],
+ adim=[('Giriş ekranına bak', 'Genel bakışta termini geçen satırı olan birimleri görün.', 'YH-R-giris'),
+       ('Birimin planını aç', 'Yol haritası ekranında birimin satırındaki "Yol haritasını incele"ye basın.', 'YH-R-birimler'),
+       ('Adımı ya da takvim satırını işaretle', 'Birim müdürüyle konuştuğunuz duruma göre adımın durumunu seçin; takvim satırındaki iş yapıldıysa "Tamamlandı"ya basın.', 'YH-S-adim')],
+ sss=[('Bölge dışı birimleri göremiyorum.', 'Yalnız bölge ağacınızdaki birimler görünür.'),
+      ('İK adımını neden seçemiyorum?', 'İK adımlarını İK yöneticisi ve İK iş ortağı işaretler; siz izlersiniz.')])
+
+R['06-Birim-Sube-Muduru'] = ROL(
+ alt='Biriminizin yol haritasını giriş ekranından izlemek ve adımlarınızı işaretlemek',
+ giris=[ORTAK_GIRIS, 'Siz yalnız kendi biriminizin yol haritasını görürsünüz. Sunumda birim yönetimine yazılan adımlar ve takvim satırları sizin işinizdir: başladığınızda ve bitirdiğinizde durumunu işaretlersiniz. İK adımlarını izlersiniz; çalışanlar sütunu bilgi içindir.', ORTAK_AYRI],
+ surec=False,
+ ekran=[('Genel bakış — Sunumdaki planda neredeyiz?', 'Giriş ekranınızda (Bugün ne yapmalıyım?) "Bekleyen iş" bölümünün hemen altında yol haritası özeti vardır.', 'YH-S-giris'),
+        ('Telefonda', 'Aynı bölüm telefonda tek sütuna dizilir.', 'YH-S-mobil'),
+        ('Yol haritası — Başlık ve özet', 'Menüdeki "Yol haritası" doğrudan biriminizin yol haritasını açar.', 'YH-S-bas'),
+        ('Ana sonuç, güçlü yönler ve öncelikler', 'Sunumdaki ilk bölümlerin aynısı.', 'YH-S-sonuc'),
+        ('Birimin gündemi — Geride kalan maddeler', 'Çalışanların ortak gündemi: yorumda değinen sayısı ve ilgili gösterge.', 'YH-S-gundem'),
+        ('Eylem planı — Kim, neyi, ne zamana kadar yapacak?', 'Her plan bir kartta: veri dayanağı, izlenecek ölçüt, üç rolün adımları, takvim.', 'YH-S-plan'),
+        ('Uygulama takvimi ve izleme hedefleri', 'Sayfanın sonunda aşamalar ve başarının izleneceği göstergeler.', 'YH-S-takvim')],
+ adim=[('Giriş ekranında yol haritasına bak', 'Giriş yaptığınızda "Yol haritası" bölümünde adımlarınızın ve takvimin durumunu görürsünüz. Termini geçen satır varsa kırmızı yazar. "Yol haritasını incele"ye basın.', 'YH-S-giris'),
+       ('Eylem planını bul', 'Yol haritasında "Eylem planları" bölümüne inin. Biriminizin adını taşıyan sütun sizin adımlarınızdır.', None),
+       ('Adımı işaretle', 'Adıma başladığınızda "Devam ediyor", bitirdiğinizde "Tamamlandı"ya basın. Seçim anında kaydedilir; altında son güncelleme tarihi görünür, kare kırmızıya döner.', 'YH-S-adim'),
+       ('Takvim satırını kapat', 'Planın takvim tablosunda satırdaki iş yapıldıysa "Tamamlandı"ya basın. Termin, yol haritasının başlangıç gününden hesaplanır.', None),
+       ('İzleme hedefini hatırla', 'Sayfanın sonundaki izleme göstergeleri bir sonraki ölçümde neye bakılacağını gösterir. Yeni dönemin sonuçları yüklenince planın altında takip değeri görünür.', 'YH-S-takvim')],
+ sss=[('Giriş ekranımda yol haritası bölümü yok.', 'Şirketinizde biriminiz için henüz yol haritası yüklenmemiştir. Yüklenince bölüm kendiliğinden görünür.'),
+      ('İK adımını neden seçemiyorum?', 'O adımlar İK\'nın işidir; İK işaretler, siz izlersiniz.'),
+      ('Çalışanlar sütununda düğme yok.', 'Çalışanlardan beklenenler bilgi içindir; durum tutulmaz.'),
+      ('Sayıların yerinde "yanıt sayısı gizlilik eşiğinin altında" yazıyor.', 'Biriminizde yanıt sayısı az olduğu için sayılar gösterilmez; plan ve adımlar yine görünür.'),
+      ('Yol haritası adımı hedef ya da aksiyon yerine geçer mi?', 'Hayır. Yol haritası ayrı takip edilir. İsterseniz sunumdaki bir konu için ayrıca madde bazlı hedef ve aksiyon açabilirsiniz (Bölüm 4).')])
+
+R['07-Aksiyon-Sorumlusu'] = ROL(
+ alt='Yol haritası bu rolde görünmez',
+ giris=[ORTAK_GIRIS, 'Aksiyon sorumlusu rolünde menüde "Yol haritası" yoktur ve giriş ekranınızda yol haritası bölümü görünmez. Yol haritasındaki adımları birim yönetimi ve İK işaretler.', 'Size verilen işler değişmez: birim yöneticinizin açtığı aksiyonların gerçekleşmelerini "Aksiyonlar ve kanıt" ekranında kaydedersiniz (Bölüm 4). Sunumdaki planda size düşen bir iş varsa birim yöneticiniz bunu ayrıca aksiyon olarak açabilir.'],
+ surec=False, ekran=[], adim=[],
+ sss=[('Yol haritasını görmem gerekiyor.', 'Birim yöneticinizle konuşun; gerekirse İK yöneticisi rolünüzü değiştirir.')])
+
+R['08-Izleyici'] = ROL(
+ alt='Kapsamdaki birimlerin yol haritasını izlemek',
+ giris=[ORTAK_GIRIS, 'Siz kapsamınızdaki birimlerin yol haritalarını görürsünüz; salt okursunuz. Kapsamınızda tek birim varsa "Yol haritası" doğrudan o birimin yol haritasını açar.', ORTAK_AYRI],
+ surec=False,
+ ekran=[('Genel bakış — Sunumdaki planda neredeyiz?', 'Giriş ekranınızdaki yol haritası bölümü.', 'YH-V-giris'),
+        ('Birim yol haritası — Adımlar ve takvim', 'Adım ve takvim durumu yalnız yazı olarak görünür.', 'YH-V-plan')],
+ adim=[('Giriş ekranına bak', 'Genel bakıştaki "Yol haritası" bölümünde adımların ve takvimin durumunu görün.', 'YH-V-giris'),
+       ('Yol haritasını aç', '"Yol haritasını incele" ile planı açın; bölümler sunumdaki sırayla dizilir.', None)],
+ sss=[('Düğme göremiyorum.', 'İzleyici rolünde işaretleme düğmesi yoktur.')])

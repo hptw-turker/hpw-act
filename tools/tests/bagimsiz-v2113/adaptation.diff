@@ -1,0 +1,23 @@
+--- tests/reconcile-ui.cjs	2026-09-28 16:19:18.450189476 +0000
++++ tests/outcome-adapted/reconcile-ui.cjs	2026-09-28 16:19:51.551433815 +0000
+@@ -1,7 +1,7 @@
+ // Independent acceptance probes: actual delivered web, controlled HTTP and clock.
+ // Original command is deliberately NOT committed in competing-update cases.
+ const fs=require('fs'),path=require('path');
+-const {chromium}=require('../pw.cjs');
++const {chromium}=require('../../pw.cjs');
+ const H=require(path.join(process.env.HPW_SOURCE,'tools/tests/fe/harness.cjs'));
+ const OUT=process.env.OUT;fs.mkdirSync(OUT,{recursive:true});
+ const TA='aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa',IA='11111111-1111-4111-8111-111111111111';
+@@ -15,6 +15,11 @@
+  try{
+   const posts=[],reads=[];let stage='initial',firstBody=null;
+   x=await setup({platform:true,timezoneId:'Europe/Istanbul',handler:async({q,req,rt,send})=>{
++   // v2.11.4 DÜZENEK UYARLAMASI (beklentiler aynı): yeni komut sonucu ucu (GET /api/platform/commands/:key/outcome) için senaryonun kendi olgusuna uygun yanıt.
++   // own-saved-control: özgün komut kaydedildi → applied (özgün anahtar ve iş/işlem yolu); other-*: özgün komut kaydedilmedi → not_found; okunamaz aşama → 503.
++   if(q.startsWith('/api/platform/commands/')&&q.endsWith('/outcome')){if(stage==='unreadable'){await send({error:'unavailable',message:'Okuma geçici olarak kullanılamıyor'},503);return true}
++    const key=decodeURIComponent(q.split('/')[4]);const own=mode==='own-saved-control'&&posts.length>0&&key===posts[0].key;
++    await send(own?{contract:'hpw-act-command-outcome/1',key,status:'applied',route:'POST /work-items/'+IA+'/dismiss',tenantId:TA,responseStatus:200,response:{workItem:{id:IA,state:'dismissed',version:4}},recordedAt:T0}:{contract:'hpw-act-command-outcome/1',key,status:'not_found',route:null,tenantId:null,responseStatus:null,response:null,recordedAt:null});return true}
+    if(q==='/api/platform/work-items'){
+     reads.push({url:req.url(),stage});
+     if(stage==='unreadable'){await send({error:'unavailable',message:'Okuma geçici olarak kullanılamıyor'},503);return true}

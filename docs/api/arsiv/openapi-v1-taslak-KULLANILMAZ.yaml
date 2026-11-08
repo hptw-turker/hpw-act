@@ -1,0 +1,364 @@
+openapi: 3.1.0
+info:
+  title: HPW Act API (Faz 0)
+  version: 0.1.0
+  description: |
+    Komut zarfı: tüm yazma isteklerinde `Idempotency-Key` (uuid v7), `If-Match` (aggregate version),
+    `X-Correlation-Id`, `X-Causation-Id` başlıkları. Sürüm uyuşmazlığı 409 `VersionConflict`.
+    Aynı Idempotency-Key ile tekrar istek aynı yanıtı döner (command_log).
+servers:
+  - url: /api/v1
+components:
+  parameters:
+    IdempotencyKey: { name: Idempotency-Key, in: header, required: true, schema: { type: string, format: uuid } }
+    IfMatch: { name: If-Match, in: header, required: true, schema: { type: integer } }
+    Correlation: { name: X-Correlation-Id, in: header, required: false, schema: { type: string } }
+  schemas:
+    VersionConflict:
+      type: object
+      properties:
+        currentVersion: { type: integer }
+        yourVersion: { type: integer }
+        changedBy: { type: string }
+        changedFields: { type: array, items: { type: string } }
+    SemanticConflict:
+      type: object
+      properties:
+        reason: { type: string, enum: [aggregate_cancelled, aggregate_closed, unit_closed] }
+        occurredAt: { type: string, format: date-time }
+        options: { type: array, items: { type: string, enum: [attach_as_comment, discard] } }
+    Result:
+      type: object
+      properties:
+        unitId: { type: string }
+        itemVersionId: { type: string }
+        cycleId: { type: string }
+        rawScore: { type: [number, "null"] }
+        normalizedScore: { type: [number, "null"], description: "n < eşik ise null" }
+        n: { type: integer }
+        responseRate: { type: number }
+        suppressed: { type: boolean }
+        qualityFlags: { type: array, items: { type: string } }
+    InstrumentItem:
+      description: Takip birimi. Boyut ve indeks türetilmiş görünümdür.
+      type: object
+      required: [code, text, scale, interactionArea, responsibilityCenter, origin]
+      properties:
+        code: { type: string, example: GUR-03 }
+        text: { type: string }
+        textEn: { type: string }
+        dimensionCode: { type: [string, "null"] }
+        scale: { type: string, enum: [likert5_topbox, likert5_mean, nps_0_10, binary, custom] }
+        polarity: { type: string, enum: [positive, negative] }
+        interactionArea: { type: string, enum: [work, manager, colleagues, employer_brand, system, self, outcome] }
+        responsibilityCenter: { type: string, enum: [line_manager, team, hr_policy, talent_system, central_function, top_management, employer_brand, outcome, individual] }
+        origin: { type: string, enum: [core, module, custom] }
+        leverTags: { type: array, items: { type: string } }
+    InstrumentVersion:
+      type: object
+      properties:
+        instrumentCode: { type: string }
+        version: { type: string }
+        scoringRuleVersion: { type: string }
+        dimensions: { type: array, items: { type: object, properties: { code: { type: string }, name: { type: string }, category: { type: string }, module: { type: string, enum: [core, engagement, ecosystem, custom] } } } }
+        items: { type: array, items: { $ref: '#/components/schemas/InstrumentItem' } }
+        indices: { type: array, items: { type: object, properties: { code: { type: string }, name: { type: string }, rule: { type: string, enum: [mean_of_items, mean_of_dimensions] }, members: { type: array, items: { type: string } }, purpose: { type: string, enum: [certification, report] } } } }
+    ResultBundleManifest:
+      description: Sonuç paketi (hpw-act-result-bundle v1) — manifest.json, instrument.csv, results_item.csv, results_index.csv (isteğe bağlı), benchmarks.csv (isteğe bağlı). CSV ayırıcı ';'.
+      type: object
+      required: [format, formatVersion, tenantCode, cycleCode, instrumentCode, instrumentVersion, scoringRuleVersion]
+      properties:
+        format: { type: string, enum: [hpw-act-result-bundle] }
+        formatVersion: { type: string, enum: ["1"] }
+        tenantCode: { type: string }
+        cycleCode: { type: string }
+        instrumentCode: { type: string }
+        instrumentVersion: { type: string }
+        scoringRuleVersion: { type: string }
+        language: { type: string }
+        exportedAt: { type: string, format: date-time }
+        benchmarkSets: { type: array, items: { type: string } }
+    DetectionSummary:
+      type: object
+      properties:
+        instrumentCode: { type: string }
+        version: { type: string }
+        itemCount: { type: integer }
+        dimensionCount: { type: integer }
+        modules: { type: object, properties: { core: { type: integer }, engagement: { type: integer }, ecosystem: { type: integer }, custom: { type: integer } } }
+        removedDimensions: { type: array, items: { type: object, properties: { code: { type: string }, name: { type: string } } } }
+        customItems: { type: array, items: { type: object, properties: { code: { type: string }, text: { type: string }, dimensionCode: { type: string } } } }
+        indexReconciliation: { type: array, items: { type: object, properties: { indexCode: { type: string }, unitId: { type: string }, official: { type: number }, computed: { type: [number, "null"] }, delta: { type: [number, "null"] }, ok: { type: boolean } } } }
+        warnings: { type: array, items: { type: string } }
+    PanelSpec:
+      description: Enstrümandan türetilen panel; şirket boyut çıkardıysa paneli yoktur, özel maddeler ayrı panelde.
+      type: object
+      properties:
+        id: { type: string }
+        kind: { type: string, enum: [item_table, dimension_summary, heatmap_unit_item, nps, custom_items, index_card, responsibility_map, interaction_areas] }
+        title: { type: string }
+        metricCodes: { type: array, items: { type: string } }
+        note: { type: string }
+    LocalTargetProposal:
+      description: DIŞ nesne (DTO). API, arayüz, export ve bildirim yalnız bunu görür; gizli birimde sayısal alan yoktur. SQL sözlüğüyle aynı (local_target.kind / source).
+      oneOf:
+        - type: object
+          required: [unitId, kind, baseline, low, high, target, fixed, source, monitoringRole, interventionOwnerRole]
+          properties:
+            unitId: { type: string }
+            kind: { type: string, enum: [numeric, maintain] }
+            baseline: { type: number }
+            low: { type: number }
+            high: { type: number }
+            target: { type: number }
+            fixed: { type: boolean }
+            source: { type: string, enum: [peer_history, methodologist_band, approved, exception, fixed_member] }
+            peerObservation: { type: object, properties: { suggested: { type: number }, upper: { type: number }, sampleSize: { type: integer } } }
+            monitoringRole: { type: string, description: "şubede sonucu izleyen rol" }
+            interventionOwnerRole: { type: string, description: "bu müdahaleyi yapmaya yetkili rol" }
+        - type: object
+          required: [unitId, kind, reason, rationale, monitoringRole, interventionOwnerRole]
+          properties:
+            unitId: { type: string }
+            kind: { type: string, enum: [priority_only] }
+            reason: { type: string, enum: [privacy] }
+            rationale: { type: string, description: "üst birim önceliği kalıbı; sayı içermez" }
+            monitoringRole: { type: string }
+            interventionOwnerRole: { type: string }
+        - type: object
+          required: [unitId, kind, reason]
+          properties:
+            unitId: { type: string }
+            kind: { type: string, enum: [validation_required, none] }
+            reason: { type: string, enum: [low_data_confidence, no_baseline, zero_weight, not_in_arithmetic] }
+    CorporateAmbition:
+      type: object
+      properties:
+        id: { type: string }
+        version: { type: integer }
+        cycleId: { type: string }
+        scopeUnitId: { type: string }
+        metricVersionId: { type: string }
+        baselineScore: { type: [number, "null"] }
+        desiredValue: { type: number, description: "istenen değer; kota değil, yerel hedef algoritmasına girdi olmaz" }
+        targetDate: { type: string, format: date }
+        ownerRoleId: { type: string }
+        status: { type: string, enum: [draft, pending_reconciliation, supported, gap_decided, unsupported, approved, closed] }
+    LocalTarget:
+      type: object
+      properties:
+        id: { type: string }
+        version: { type: integer }
+        unitId: { type: string }
+        metricVersionId: { type: string }
+        cycleId: { type: string }
+        proposal: { $ref: '#/components/schemas/LocalTargetProposal' }
+        approvedTarget: { type: [number, "null"] }
+        approvedExceptionId: { type: [string, "null"] }
+        targetDate: { type: string, format: date }
+        ownerRoleId: { type: string }
+        interventionOwnerRoleId: { type: [string, "null"] }
+        status: { type: string }
+        cohortId: { type: string }
+    TargetReconciliationRun:
+      type: object
+      required: [id, status, algorithmVersion, policyVersion, cohortSnapshotHash, corporateAmbition, supportedProjection, upperScenario, gap, options, localProposals, hiddenParticipants]
+      properties:
+        id: { type: string }
+        status: { type: string, enum: [SUPPORTED, GAP, UNSUPPORTED] }
+        algorithmVersion: { type: string }
+        policyVersion: { type: string }
+        cohortSnapshotHash: { type: string }
+        corporateAmbition: { type: number }
+        supportedProjection: { type: number, description: "dondurulmuş kohort + resmî ağırlıkla projeksiyon; gelecek skor tahmini değil" }
+        upperScenario: { type: number, description: "mevcut politika ve kaynak varsayımları altındaki üst senaryo; fiziksel tavan değil" }
+        gap: { type: number }
+        options: { type: array, items: { type: string, enum: [LOWER_AMBITION, ACCEPT_STRETCH_WITHIN_BOUNDS, ADD_CENTRAL_INTERVENTION, CHANGE_TIME_HORIZON] } }
+        stretchAdjustments: { type: array, items: { type: object, properties: { unitId: { type: string }, from: { type: number }, to: { type: number } } }, description: "GAP: seçenek; uygulanmaz; gizli birimler dahil değil" }
+        localProposals: { type: array, items: { $ref: '#/components/schemas/LocalTargetProposal' } }
+        hiddenParticipants: { type: array, items: { type: string } }
+        nonArithmetic: { type: array, items: { type: object, properties: { unitId: { type: string }, reason: { type: string, enum: [no_baseline, contribution, support, zero_weight] } } } }
+        decision: { type: [string, "null"], enum: [lower_ambition, accept_stretch_within_bounds, add_central_intervention, change_time_horizon, null] }
+        explanation: { type: array, items: { type: string } }
+    ContributionProjection:
+      description: Türetilmiş; hedef değil; yalnız bölge/merkez kapsamındaki görüntüleyene döner (ifşa kararı).
+      type: object
+      properties:
+        reconciliationRunId: { type: string }
+        localTargetId: { type: string }
+        frozenWeight: { type: number }
+        projectedContribution: { type: number }
+    DisclosureDecision:
+      type: object
+      properties:
+        allowed: { type: boolean }
+        reason: { type: string, enum: [ok, unknown_unit, unknown_viewer, suppressed_unit, secondary_suppression, differencing, contribution_unit_scope, comment_threshold] }
+    ExecutionSnapshot:
+      description: Dört ayrı durum ekseni; tek enum'a sıkıştırılmaz.
+      type: object
+      properties:
+        lifecycle: { type: string, enum: [planned, in_progress, declared_complete, closed, cancelled, paused, superseded] }
+        verification: { type: string, enum: [pending, auto_verified, human_verified, partial, needs_review, invalidated] }
+        health: { type: string, enum: [on_track, at_risk, blocked, overdue] }
+        outcome: { type: string, enum: [not_measured, pending_review, improved, no_meaningful_change, deteriorated, not_comparable] }
+    OutcomeAssessment:
+      type: object
+      properties:
+        status: { type: string, enum: [EVALUATED, PENDING_REVIEW, NOT_COMPARABLE] }
+        attainment: { type: string, enum: [ACHIEVED, PARTIAL, MISSED, NOT_EVALUATED] }
+        observedChange: { type: number }
+        observedAboveTarget: { type: boolean, description: "gözlem; 'hedef doğrulandı' değil" }
+        attributionEvidenceGrade: { type: string, enum: [A, B, C, D], description: "C = zamansal ilişki; nedensellik kanıtlanmadı" }
+        estimatedEffect: { type: [number, "null"], description: "yalnız A/B; kayıtlı tasarım + karşılaştırma grubu + inceleme gerektirir" }
+        comparabilityReviewId: { type: [string, "null"] }
+    Action:
+      type: object
+      properties:
+        id: { type: string }
+        version: { type: integer }
+        kind: { type: string, enum: [standalone, master, local_execution] }
+        parentActionId: { type: [string, "null"] }
+        unitId: { type: string }
+        executionStatus: { type: [string, "null"], description: "master için null; dağılım GET /actions/{id}/distribution" }
+        impactStatus: { type: string }
+        executionConfidence: { type: [number, "null"] }
+        impactConfidence: { type: [number, "null"] }
+    Verification:
+      type: object
+      properties:
+        ladder: { type: string, enum: [declared, submitted, verified, partially_verified, review_required, rejected, kpi_confirmed, outcome_confirmed] }
+        coverage: { type: number }
+        confidence: { type: string, enum: [HIGH, MEDIUM, LOW] }
+        score: { type: number }
+        anomalyFlags: { type: array, items: { type: string } }
+paths:
+  /cycles/{cycleId}/imports:
+    post:
+      summary: Sonuç içe alma (HPTW native JSON veya CSV)
+      parameters: [ { $ref: '#/components/parameters/IdempotencyKey' } ]
+      responses: { '202': { description: import job } }
+  /cycles/{cycleId}/bundles:
+    post:
+      summary: Sonuç paketi yükle (manifest + instrument + results_item [+ results_index, benchmarks]); taslak olarak doğrulanır, enstrüman algılanır, paneller türetilir
+      parameters: [ { $ref: '#/components/parameters/IdempotencyKey' } ]
+      responses: { '201': { description: import_batch (draft) + DetectionSummary, content: { application/json: { schema: { $ref: '#/components/schemas/DetectionSummary' } } } }, '422': { description: paket hatası (unknown_item, distribution_n_mismatch, topbox_mismatch, invalid_scale, manifest_*) } }
+  /instruments/{instrumentVersionId}:
+    get:
+      responses: { '200': { description: InstrumentVersion, content: { application/json: { schema: { $ref: '#/components/schemas/InstrumentVersion' } } } } }
+  /instruments/{instrumentVersionId}/panels:
+    get:
+      summary: Türetilmiş paneller
+      responses: { '200': { description: PanelSpec listesi, content: { application/json: { schema: { type: array, items: { $ref: '#/components/schemas/PanelSpec' } } } } } }
+  /imports/{importId}/publish:
+    # taslak → doğrulandı → yayımlandı (tek görünürlük geçişi); düzeltme eski gözlemi silmez, correction_run önizleme ister
+  /imports/{importId}/corrections/preview:
+    post:
+      summary: Düzeltmenin etkilediği hedef, onay, projeksiyon ve sonuçları önizle
+      responses: { '200': { description: CorrectionRun (previewed) } }
+    post:
+      parameters: [ { $ref: '#/components/parameters/IdempotencyKey' } ]
+      responses: { '202': { description: commit süreci başladı } }
+  /units/{unitId}/results:
+    get:
+      parameters: [ { name: cycle, in: query, schema: { type: string } } ]
+      responses: { '200': { description: baskılanmış değerler null, content: { application/json: { schema: { type: array, items: { $ref: '#/components/schemas/Result' } } } } } }
+  /ambitions:
+    post:
+      summary: Kurumsal/bölge ambition (istenen değer) oluştur — yerel hedef algoritmasına girdi olmaz
+      parameters: [ { $ref: '#/components/parameters/IdempotencyKey' } ]
+      responses: { '201': { description: CorporateAmbition, content: { application/json: { schema: { $ref: '#/components/schemas/CorporateAmbition' } } } } }
+  /ambitions/{ambitionId}/cohort:
+    post:
+      summary: Kohortu dondur (policy, resmî ağırlıklar)
+      parameters: [ { $ref: '#/components/parameters/IdempotencyKey' } ]
+      responses: { '201': { description: Cohort.Frozen } }
+  /ambitions/{ambitionId}/reconcile:
+    post:
+      summary: Yerel öneriler (bağımsız) + uzlaştırma; fark dağıtılmaz
+      parameters: [ { $ref: '#/components/parameters/IdempotencyKey' } ]
+      responses: { '201': { description: TargetReconciliationRun, content: { application/json: { schema: { $ref: '#/components/schemas/TargetReconciliationRun' } } } } }
+  /reconciliations/{runId}/decide:
+    post:
+      summary: GAP/UNSUPPORTED kararı (ambition'ı düşür / esnetmeyi bilerek kabul et / merkezi müdahale / süre)
+      parameters: [ { $ref: '#/components/parameters/IdempotencyKey' }, { $ref: '#/components/parameters/IfMatch' } ]
+      responses: { '200': { description: decided }, '409': { description: version conflict, content: { application/json: { schema: { $ref: '#/components/schemas/VersionConflict' } } } } }
+  /local-targets:
+    get:
+      summary: Görüntüleyenin kapsamındaki yerel hedefler — madde düzeyinde (metricKind=item; boyut/indeks hedefi 422 not_item_level); yalnız DTO; her satır ifşa kararından geçer
+      responses: { '200': { description: yerel hedef listesi, content: { application/json: { schema: { type: array, items: { $ref: '#/components/schemas/LocalTarget' } } } } } }
+  /local-targets/{targetId}/accept:
+    post:
+      summary: Şube kabulü (açık adım); aralık içi değişiklik aynı uçta
+      parameters: [ { $ref: '#/components/parameters/IdempotencyKey' }, { $ref: '#/components/parameters/IfMatch' } ]
+      responses: { '200': { description: accepted }, '409': { description: version conflict, content: { application/json: { schema: { $ref: '#/components/schemas/VersionConflict' } } } } }
+  /local-targets/{targetId}/exception:
+    post:
+      summary: Uygun değil — istisna talebi; talep eden onaylayamaz
+      parameters: [ { $ref: '#/components/parameters/IdempotencyKey' } ]
+      responses: { '201': { description: ExceptionRequest } }
+  /local-targets/bulk-approve:
+    post:
+      summary: Politika içi paketleri toplu onayla; istisnalar dışarıda kalır
+      parameters: [ { $ref: '#/components/parameters/IdempotencyKey' } ]
+      responses: { '202': { description: BulkJob } }
+  /local-targets/{targetId}/explain:
+    get:
+      summary: Neden 55 — mevcut durum, makul aralık, dayanak; katkı yalnız bölge/merkez kapsamında
+      responses: { '200': { description: explanation (DTO; sayısal alanlar ifşa kararına bağlı) } }
+  /actions:
+    post:
+      parameters: [ { $ref: '#/components/parameters/IdempotencyKey' } ]
+      responses: { '201': { description: Action, content: { application/json: { schema: { $ref: '#/components/schemas/Action' } } } } }
+  /actions/{actionId}/deploy:
+    post:
+      summary: Ana aksiyonu kapsam kuralıyla dağıt → local_execution × N (süreç)
+      parameters: [ { $ref: '#/components/parameters/IdempotencyKey' }, { $ref: '#/components/parameters/IfMatch' } ]
+      responses: { '202': { description: deployment job } }
+  /actions/{actionId}/distribution:
+    get:
+      responses: { '200': { description: "{verified, partially_verified, evidence_pending, in_progress, delayed, not_started, cancelled: n}" } }
+  /actions/{actionId}/declare-complete:
+    post:
+      summary: Sahip "tamamlandı" der → evidence_pending
+      parameters: [ { $ref: '#/components/parameters/IdempotencyKey' }, { $ref: '#/components/parameters/IfMatch' } ]
+      responses:
+        '200': { description: evidence_pending }
+        '409': { description: semantic conflict, content: { application/json: { schema: { $ref: '#/components/schemas/SemanticConflict' } } } }
+  /actions/{actionId}/evidence:
+    post:
+      parameters: [ { $ref: '#/components/parameters/IdempotencyKey' } ]
+      responses: { '201': { description: Evidence.Submitted } }
+  /evidence/{evidenceId}/verify:
+    # sıra: geçerlilik (tür, kapsam, tarih penceresi, tekil gerçekleşme) → E0–E4 politikası → inceleme önceliği; E3 her zaman insan, E4 her zaman örneklem
+    post:
+      parameters: [ { $ref: '#/components/parameters/IdempotencyKey' }, { $ref: '#/components/parameters/IfMatch' } ]
+      responses:
+        '200': { description: Verification, content: { application/json: { schema: { $ref: '#/components/schemas/Verification' } } } }
+        '403': { description: SoD ihlali (verifier == submitter) }
+  /actions/{actionId}/check-ins:
+    post:
+      parameters: [ { $ref: '#/components/parameters/IdempotencyKey' }, { $ref: '#/components/parameters/IfMatch' } ]
+      responses: { '201': { description: CheckIn.Recorded }, '409': { description: version or semantic conflict } }
+  /org/reorg-events:
+    post:
+      parameters: [ { $ref: '#/components/parameters/IdempotencyKey' } ]
+      responses: { '201': { description: draft } }
+  /org/reorg-events/{eventId}/approve:
+    post:
+      parameters: [ { $ref: '#/components/parameters/IdempotencyKey' }, { $ref: '#/components/parameters/IfMatch' } ]
+      responses: { '202': { description: workflow started } }
+  /attention/{itemId}/dismiss:
+    post:
+      summary: acknowledge (yalnız bilgi) | snooze (until) | reroute (toRoleId+reason) | resolve (yalnız sahip) | exempt (gerekçe+yetki); listeden çıkarmak yükümlülüğü bitirmez
+      parameters: [ { $ref: '#/components/parameters/IdempotencyKey' } ]
+      responses: { '200': { description: item + obligationCleared } }
+  /attention:
+    get:
+      parameters: [ { name: audience, in: query, schema: { type: string, default: me } } ]
+      responses: { '200': { description: dikkat öğeleri } }
+  /scorecard:
+    get:
+      parameters:
+        - { name: cycle, in: query, schema: { type: string } }
+        - { name: view, in: query, schema: { type: string, enum: [frozen, current], default: frozen } }
+      responses: { '200': { description: scorecard rows (baskılanmış skorlar null) } }

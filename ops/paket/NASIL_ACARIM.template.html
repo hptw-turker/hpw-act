@@ -1,0 +1,24 @@
+<!doctype html><html lang="tr"><head><meta charset="utf-8"><title>Nasıl açarım? · HPW Act __ENV_TITLE__</title>
+<style>body{font-family:Poppins,"Helvetica Neue",Arial,sans-serif;max-width:800px;margin:0 auto;padding:56px 24px;color:#1a1a1a;line-height:1.55}h1{font-size:30px}h2{font-size:20px;margin-top:32px}.red{color:#e0112b;font-weight:700}code{background:#f2f2f2;padding:2px 6px}li{margin:6px 0}</style></head>
+<body>
+<p class="red">Happy Place to Work® Act · __ENV_TITLE__</p>
+<h1>Nasıl açarım?</h1>
+<h2>Tek seferlik ön koşul (teknik operatör)</h2>
+<p>Bu bilgisayarda <strong>Node.js 22+</strong> ve <strong>PostgreSQL 16+</strong> kurulu olmalı (Mac: Postgres.app ya da Homebrew <code>postgresql@16</code>; Linux: <code>postgresql-16</code>). Başka hiçbir şey kurulmaz; internet gerekmez. Bu iki kurulum yapılmadıysa başlatıcı anlaşılır bir mesajla durur ve hiçbir şey çalışıyormuş gibi davranmaz.</p>
+<h2>Her açılış</h2>
+<ol>
+<li><strong>CALISTIRMA / __LAUNCHER__</strong> dosyasını çift tıklayın. Mac'te ilk açılışta dosyaya sağ tıklayıp <em>Aç</em> seçmeniz ve macOS'in "internetten indirilen dosya" uyarısını bir kez onaylamanız gerekir; bu işletim sistemi izni atlanamaz.</li>
+<li>Açılan pencere veritabanını ve uygulamayı bu bilgisayarda başlatır (ilk açılışta bir dakika kadar sürer) ve <strong>index.html</strong> tarayıcıda açılır. Pencereyi kapatmayın, küçültün; kapatınca servis düzgün durdurulur.</li>
+<li><strong>index.html</strong> ortamı ve sürümü doğrular, sonra aynı gerçek uygulamaya geçer (<code>__ORIGIN__</code>). Servis çalışmıyorsa dosya açık bir uyarı gösterir ve hazır olunca kendiliğinden devam eder; hiçbir zaman sahte "hazır" demez.</li>
+</ol>
+<h2>İlk giriş</h2>
+__FIRST_LOGIN__
+<h2>Davetleri ve bağlantıları test etme</h2>
+<p>Kullanıcılar → Davetleri gönder gerçek davet ve kuyruk kaydı üretir. Bu kurulumda gerçek e-posta sağlayıcısı yoktur: postalar <strong>test/sandbox kutusuna</strong> yazılır ve aynı sayfanın altındaki "Test posta kutusu" tablosunda görünür; "daveti aç" bağlantısı gerçek hesap kabul akışını çalıştırır. Sandbox gerçek teslimat değildir ve ekranda öyle etiketlenir. Parola sıfırlama bağlantıları platform yöneticisinin Müşteriler sayfasındaki test kutusunda görünür; üretimde bu görünüm kapalıdır.</p>
+<h2>Sınırlar</h2>
+<ul>
+<li>Bu paket yalnız bu bilgisayarda çalışır; sunucuya yayın, gerçek toplu e-posta ve başka kullanıcıların uzaktan erişimi ayrı onay ve kurulum gerektirir.</li>
+<li>Veriler <code>CALISTIRMA/pgdata-__ENV__</code> altında kalıcıdır; sırlar ve ortam dosyası <code>CALISTIRMA/.env-__ENV__</code> (özel izinli) altındadır; her açılışta şema kontrolü yapılır ve migrasyon başarısızsa uygulama açılmaz; sayfa yenileme, çıkış/giriş ve yeniden başlatma sonrası korunur. __RESET_NOTE__</li>
+<li>Bu klasördeki dosyalarda parola, kurulum anahtarı ya da oturum bilgisi yoktur; sırlar ilk çalıştırmada üretilip yalnız <code>CALISTIRMA</code> altındaki gizli dosyalara yazılır.</li>
+</ul>
+</body></html>

@@ -1,0 +1,1176 @@
+{
+ "G01-giris": [
+  [
+   1,
+   "E-posta alanı"
+  ],
+  [
+   2,
+   "Parola alanı"
+  ],
+  [
+   3,
+   "Giriş yap"
+  ],
+  [
+   4,
+   "Parolamı unuttum"
+  ],
+  [
+   5,
+   "Dil seçimi (TR/EN)"
+  ],
+  [
+   6,
+   "Ortam etiketi"
+  ]
+ ],
+ "P01-musteriler": [
+  [
+   1,
+   "Sekmeler: Şirketler / Ekip ve erişim / İşlem geçmişi"
+  ],
+  [
+   2,
+   "Sıralama / filtre"
+  ],
+  [
+   3,
+   "Şirket adı (bağlantı: detaya gider)"
+  ],
+  [
+   4,
+   "Şirket satırı: durum, kurulum ilerlemesi, üye ve davet sayıları"
+  ],
+  [
+   5,
+   "Sütun başlıkları"
+  ]
+ ],
+ "I01-genel-bakis": [
+  [
+   1,
+   "Kullanıma açılış kartı"
+  ],
+  [
+   2,
+   "Adım"
+  ],
+  [
+   3,
+   "Durum"
+  ],
+  [
+   4,
+   "Ne eksik / ne var"
+  ],
+  [
+   5,
+   "aç bağlantısı"
+  ]
+ ],
+ "I02-kontrol-kulesi": [
+  [
+   1,
+   "Kurumsal istek"
+  ],
+  [
+   2,
+   "Kohort"
+  ],
+  [
+   3,
+   "Ana aksiyon"
+  ],
+  [
+   4,
+   "Dağıtım / yerel uygulama"
+  ],
+  [
+   5,
+   "Merkezi kuyruk"
+  ],
+  [
+   6,
+   "Aksiyonlar"
+  ]
+ ],
+ "I03-kurumsal-planlama": [
+  [
+   1,
+   "Dönem"
+  ],
+  [
+   2,
+   "Madde"
+  ],
+  [
+   3,
+   "İstek (TB %)"
+  ],
+  [
+   4,
+   "Gerekçe"
+  ],
+  [
+   5,
+   "İstek öner"
+  ],
+  [
+   6,
+   "Kurumsal istek listesi"
+  ]
+ ],
+ "I04-openai-baglanti": [
+  [
+   1,
+   "Bağlantı durumu"
+  ],
+  [
+   2,
+   "API anahtarı alanı"
+  ],
+  [
+   3,
+   "Anahtarı değiştir / Bağlantıyı kur"
+  ],
+  [
+   4,
+   "Bağlantıyı kaldır"
+  ]
+ ],
+ "I05-organizasyon": [
+  [
+   1,
+   "Birim listesi"
+  ],
+  [
+   2,
+   "Kod"
+  ],
+  [
+   3,
+   "Birim"
+  ],
+  [
+   4,
+   "Tip"
+  ],
+  [
+   5,
+   "Üst"
+  ],
+  [
+   6,
+   "Durum"
+  ],
+  [
+   7,
+   "Yeni birim: Birim kodu"
+  ],
+  [
+   8,
+   "Birimi ekle"
+  ],
+  [
+   9,
+   "Excel ile yükle / şablonu indir"
+  ]
+ ],
+ "I07-soru-seti": [
+  [
+   1,
+   "Sürüm"
+  ],
+  [
+   2,
+   "Madde"
+  ],
+  [
+   3,
+   "Ek (ek soru işareti)"
+  ],
+  [
+   4,
+   "Listeye ekle"
+  ],
+  [
+   5,
+   "Ek soru: Madde metni"
+  ]
+ ],
+ "I08-donemler": [
+  [
+   1,
+   "Dönem"
+  ],
+  [
+   2,
+   "Tarih"
+  ],
+  [
+   3,
+   "Soru seti"
+  ],
+  [
+   4,
+   "Durum"
+  ],
+  [
+   5,
+   "Sonuç satırı"
+  ],
+  [
+   6,
+   "Dönem kodu"
+  ],
+  [
+   7,
+   "Başlangıç"
+  ],
+  [
+   8,
+   "Bitiş"
+  ],
+  [
+   9,
+   "Dönemi aç"
+  ]
+ ],
+ "I09-sonuc-yukle": [
+  [
+   1,
+   "Şablonu indir (.xlsx)"
+  ],
+  [
+   2,
+   "Doldurulmuş dosya (.xlsx)"
+  ],
+  [
+   3,
+   "Doğrula ve önizle"
+  ],
+  [
+   4,
+   "Onayla ve işle"
+  ]
+ ],
+ "I10-kullanicilar": [
+  [
+   1,
+   "E-posta"
+  ],
+  [
+   2,
+   "Ad"
+  ],
+  [
+   3,
+   "Profil"
+  ],
+  [
+   4,
+   "Roller"
+  ],
+  [
+   5,
+   "Davet"
+  ],
+  [
+   6,
+   "Teslimat"
+  ],
+  [
+   7,
+   "Kabul"
+  ],
+  [
+   8,
+   "Son giriş"
+  ],
+  [
+   9,
+   "Davetleri gönder"
+  ],
+  [
+   10,
+   "Excel ile toplu yükle / şablonu indir"
+  ],
+  [
+   11,
+   "Yeni kullanıcı: E-posta"
+  ]
+ ],
+ "H01-hedefler-liste": [
+  [
+   1,
+   "Dönem"
+  ],
+  [
+   2,
+   "Birim"
+  ],
+  [
+   3,
+   "Madde"
+  ],
+  [
+   4,
+   "Başlangıç"
+  ],
+  [
+   5,
+   "Aralık"
+  ],
+  [
+   6,
+   "Hedef"
+  ],
+  [
+   7,
+   "Dayanak"
+  ],
+  [
+   8,
+   "Durum"
+  ],
+  [
+   9,
+   "Aksiyon"
+  ]
+ ],
+ "H02-oneri": [
+  [
+   1,
+   "Madde seçimi"
+  ],
+  [
+   2,
+   "Hedef değer alanı"
+  ],
+  [
+   3,
+   "Öneriyi gör"
+  ],
+  [
+   4,
+   "Öneriyi kabul et"
+  ],
+  [
+   5,
+   "Öneri metni (aralık, dayanak, takip)"
+  ],
+  [
+   6,
+   "Yapay zekâdan yardım al"
+  ]
+ ],
+ "H03-ai-plan-ust": [
+  [
+   1,
+   "Hedef seçimi"
+  ],
+  [
+   2,
+   "Yapay zekâdan yardım al"
+  ],
+  [
+   3,
+   "Planı yeniden oluştur"
+  ],
+  [
+   4,
+   "Kapsam, güven ve hazırlanma zamanı"
+  ],
+  [
+   5,
+   "01 Yönetici özeti"
+  ],
+  [
+   6,
+   "02 Ne görüyoruz? (olgu)"
+  ]
+ ],
+ "H04-ai-plan-orta": [
+  [
+   1,
+   "03 Bunun arkasında ne olabilir? (olası açıklama)"
+  ],
+  [
+   2,
+   "04 Ne doğrulamalıyız?"
+  ],
+  [
+   3,
+   "05 Hedef önerisi: mevcut, izinli aralık, önerilen"
+  ],
+  [
+   4,
+   "Öneri etiketi (karar değildir)"
+  ]
+ ],
+ "H05-ai-plan-aksiyonlar": [
+  [
+   1,
+   "06 12 aylık aksiyon planı"
+  ],
+  [
+   2,
+   "Dönem ve kayıt sıklığı"
+  ],
+  [
+   3,
+   "Aksiyon adı"
+  ],
+  [
+   4,
+   "Amaç / Neden önerildi"
+  ],
+  [
+   5,
+   "Sorumlu rol ve iş birliği"
+  ]
+ ],
+ "H06-ai-plan-alt": [
+  [
+   1,
+   "07 Şirketten gereken destek"
+  ],
+  [
+   2,
+   "08 Takvim ve izleme"
+  ],
+  [
+   3,
+   "09 Korunması gerekenler"
+  ],
+  [
+   4,
+   "10 Eksik veri ve varsayımlar"
+  ]
+ ],
+ "H07-aksiyon-aktarimi": [
+  [
+   1,
+   "Seçilen aksiyonları taslağa aktar"
+  ]
+ ],
+ "A05-ai-planini-gor": [
+  [
+   1,
+   "Taslak (planlandı) durumu ve AI kökeni notu"
+  ],
+  [
+   2,
+   "Başlat"
+  ]
+ ],
+ "S00-genel-bakis": [
+  [
+   1,
+   "Kurulum durumu"
+  ]
+ ],
+ "S01-birim-sonuclari": [
+  [
+   1,
+   "Dönem"
+  ],
+  [
+   2,
+   "Birim"
+  ],
+  [
+   3,
+   "Başlık: birim, dönem, madde sayısı, yanıt sayısı"
+  ],
+  [
+   4,
+   "Madde"
+  ],
+  [
+   5,
+   "Metrik (Top Box)"
+  ],
+  [
+   6,
+   "Değer (birim)"
+  ],
+  [
+   7,
+   "Şirket Δ (fark)"
+  ],
+  [
+   8,
+   "n (yanıt sayısı)"
+  ],
+  [
+   9,
+   "Etkileşim"
+  ],
+  [
+   10,
+   "Sorumluluk merkezi"
+  ],
+  [
+   11,
+   "Aday rol"
+  ],
+  [
+   12,
+   "Karar"
+  ]
+ ],
+ "S02-endeksler": [
+  [
+   1,
+   "Endeks"
+  ],
+  [
+   2,
+   "Resmî HPW"
+  ],
+  [
+   3,
+   "Tanım sürümü · durum"
+  ],
+  [
+   4,
+   "Türetilmiş tahmin"
+  ],
+  [
+   5,
+   "Not"
+  ]
+ ],
+ "S03-hedefler": [
+  [
+   1,
+   "Dönem"
+  ],
+  [
+   2,
+   "Birim"
+  ],
+  [
+   3,
+   "Madde"
+  ],
+  [
+   4,
+   "Başlangıç"
+  ],
+  [
+   5,
+   "Aralık"
+  ],
+  [
+   6,
+   "Hedef"
+  ],
+  [
+   7,
+   "Dayanak"
+  ],
+  [
+   8,
+   "Durum"
+  ],
+  [
+   9,
+   "Aksiyon"
+  ],
+  [
+   10,
+   "Yeni hedef: madde"
+  ],
+  [
+   11,
+   "Hedef değer"
+  ],
+  [
+   12,
+   "Öneriyi gör"
+  ]
+ ],
+ "S05-aksiyonlar": [
+  [
+   1,
+   "Dönem"
+  ],
+  [
+   2,
+   "Birim"
+  ],
+  [
+   3,
+   "Aksiyon"
+  ],
+  [
+   4,
+   "Madde"
+  ],
+  [
+   5,
+   "Doğrulama"
+  ],
+  [
+   6,
+   "Sağlık"
+  ],
+  [
+   7,
+   "Kayıt"
+  ],
+  [
+   8,
+   "Termin"
+  ],
+  [
+   9,
+   "aç"
+  ],
+  [
+   10,
+   "Yeni aksiyon: hedef"
+  ],
+  [
+   11,
+   "Kütüphane şablonu"
+  ],
+  [
+   12,
+   "Termin alanı"
+  ],
+  [
+   13,
+   "Aksiyonu aç"
+  ]
+ ],
+ "S08-takip": [
+  [
+   1,
+   "Dönem"
+  ],
+  [
+   2,
+   "Birim"
+  ],
+  [
+   3,
+   "Takip dönemi"
+  ],
+  [
+   4,
+   "Hedef"
+  ],
+  [
+   5,
+   "Başlangıç"
+  ],
+  [
+   6,
+   "hedef"
+  ]
+ ],
+ "S09-dikkat": [
+  [
+   1,
+   "Önem"
+  ],
+  [
+   2,
+   "Konu"
+  ]
+ ],
+ "E01-aksiyonlar": [
+  [
+   1,
+   "Aksiyon"
+  ],
+  [
+   2,
+   "Madde"
+  ],
+  [
+   3,
+   "Kayıt (karşılanan plan dönemi · olay)"
+  ],
+  [
+   4,
+   "Termin"
+  ]
+ ],
+ "E03-dikkat": [
+  [
+   1,
+   "Önem"
+  ],
+  [
+   2,
+   "Konu"
+  ]
+ ],
+ "B01-hrbp-hedefler": [
+  [
+   1,
+   "Birim seçimi (kapsam)"
+  ],
+  [
+   2,
+   "Madde"
+  ],
+  [
+   3,
+   "Durum"
+  ]
+ ],
+ "B03-hrbp-dikkat": [
+  [
+   1,
+   "Bekleyen işler"
+  ],
+  [
+   2,
+   "Tür"
+  ]
+ ],
+ "R01-bolge-birimler": [
+  [
+   1,
+   "Birim seçimi (bölge ağacı)"
+  ],
+  [
+   2,
+   "Madde"
+  ],
+  [
+   3,
+   "Değer"
+  ],
+  [
+   4,
+   "Şirket Δ"
+  ]
+ ],
+ "R02-bolge-aksiyonlar": [
+  [
+   1,
+   "Birim seçimi (bölge ağacı)"
+  ],
+  [
+   2,
+   "Aksiyon"
+  ],
+  [
+   3,
+   "Doğrulama"
+  ],
+  [
+   4,
+   "Sağlık"
+  ]
+ ],
+ "R03-bolge-dikkat": [
+  [
+   1,
+   "Bekleyen işler"
+  ],
+  [
+   2,
+   "Tür"
+  ]
+ ],
+ "Y01-yonetim-genel": [
+  [
+   1,
+   "Kurulum durumu"
+  ]
+ ],
+ "Y02-yonetim-kule": [
+  [
+   1,
+   "Kurumsal istek"
+  ],
+  [
+   2,
+   "Kohort"
+  ],
+  [
+   3,
+   "Ana aksiyon"
+  ],
+  [
+   4,
+   "Merkezi kuyruk"
+  ],
+  [
+   5,
+   "Aksiyonlar"
+  ],
+  [
+   6,
+   "Kurumsal planlama: İstek öner"
+  ]
+ ],
+ "Y03-yonetim-birimler": [
+  [
+   1,
+   "Birim seçimi"
+  ],
+  [
+   2,
+   "Değer"
+  ],
+  [
+   3,
+   "Şirket Δ"
+  ]
+ ],
+ "V01-izleyici-birimler": [
+  [
+   1,
+   "Birim seçimi"
+  ],
+  [
+   2,
+   "Madde"
+  ],
+  [
+   3,
+   "Değer"
+  ],
+  [
+   4,
+   "Karar"
+  ]
+ ],
+ "V02-izleyici-hedefler": [
+  [
+   1,
+   "Hedef listesi"
+  ],
+  [
+   2,
+   "Durum"
+  ]
+ ],
+ "P00-mfa-kurulum": [
+  [
+   1,
+   "Doğrulama uygulamasına eklenecek anahtar (maskelendi)"
+  ],
+  [
+   2,
+   "6 haneli kod alanı"
+  ],
+  [
+   3,
+   "Doğrula ve kurulumu tamamla"
+  ]
+ ],
+ "P00b-kurtarma-kodlari": [
+  [
+   1,
+   "Kurtarma kodları (maskelendi)"
+  ],
+  [
+   2,
+   "Kodları kaydettim, devam et"
+  ]
+ ],
+ "P02-sirket-ozet": [
+  [
+   1,
+   "Sekmeler: Özet / Kurulum / Dönemler ve ilerleme"
+  ],
+  [
+   2,
+   "Şirket özeti"
+  ],
+  [
+   3,
+   "Merkeze dön"
+  ]
+ ],
+ "P03-sirket-kurulum": [
+  [
+   1,
+   "Kurulum adımları tablosu"
+  ],
+  [
+   2,
+   "Adım sütunu"
+  ],
+  [
+   3,
+   "Durum sütunu"
+  ]
+ ],
+ "P04-sirket-donemler": [
+  [
+   1,
+   "Dönem listesi"
+  ],
+  [
+   2,
+   "İzlenen dönem yap"
+  ]
+ ],
+ "P05-ekip-erisim": [
+  [
+   1,
+   "Personel listesi (rol, durum)"
+  ],
+  [
+   2,
+   "Şirket seçimi (atamalar)"
+  ]
+ ],
+ "P06-islem-gecmisi": [
+  [
+   1,
+   "İşlem kayıtları"
+  ],
+  [
+   2,
+   "Sütunlar"
+  ]
+ ],
+ "P07-sirket-ekraninda-hpw": [
+  [
+   1,
+   "HPW bağlam satırı (hangi şirkette, hangi rol)"
+  ],
+  [
+   2,
+   "Müdahale modunu aç"
+  ]
+ ],
+ "I06-sorumluluk-haritasi": [
+  [
+   1,
+   "Madde / alan"
+  ],
+  [
+   2,
+   "Merkez"
+  ],
+  [
+   3,
+   "Kapsam"
+  ],
+  [
+   4,
+   "Geçerlilik"
+  ],
+  [
+   5,
+   "İstisna"
+  ]
+ ],
+ "I11-dikkat-ik": [
+  [
+   1,
+   "Önem"
+  ],
+  [
+   2,
+   "Konu"
+  ],
+  [
+   3,
+   "git (ilgili ekrana)"
+  ],
+  [
+   4,
+   "ertele"
+  ]
+ ],
+ "I12-ana-aksiyon-yonetimi": [
+  [
+   1,
+   "Ana aksiyon"
+  ],
+  [
+   2,
+   "Sürüm"
+  ],
+  [
+   3,
+   "Durum"
+  ],
+  [
+   4,
+   "Yerel yanıt"
+  ],
+  [
+   5,
+   "Yerel uygulama"
+  ],
+  [
+   6,
+   "Kod / Başlık / Ritim / Ufuk"
+  ],
+  [
+   7,
+   "Yayımla"
+  ],
+  [
+   8,
+   "Dağıt"
+  ]
+ ],
+ "S10-yapay-zeka-destegi": [
+  [
+   1,
+   "Yapay zekâ desteği (isteğe bağlı)"
+  ],
+  [
+   2,
+   "Hedef seçimi"
+  ],
+  [
+   3,
+   "Yapay zekâdan yardım al"
+  ]
+ ],
+ "S06-aksiyon-detay": [
+  [
+   1,
+   "Tarih"
+  ],
+  [
+   2,
+   "Katılımcı"
+  ],
+  [
+   3,
+   "Olay anahtarı"
+  ],
+  [
+   4,
+   "Kaydı ekle"
+  ],
+  [
+   5,
+   "Tamamlandı beyanı"
+  ],
+  [
+   6,
+   "Kanıt listesi: Tarih"
+  ],
+  [
+   7,
+   "Katılımcı sütunu"
+  ],
+  [
+   8,
+   "Geçerlilik"
+  ]
+ ],
+ "S07-dagitimlar": [
+  [
+   1,
+   "Ana aksiyon"
+  ],
+  [
+   2,
+   "Sürüm"
+  ],
+  [
+   3,
+   "Durum"
+  ],
+  [
+   4,
+   "Yerel yanıt"
+  ],
+  [
+   5,
+   "Yerel uygulama"
+  ]
+ ],
+ "Y04-yonetim-kuyruk": [
+  [
+   1,
+   "Önem"
+  ],
+  [
+   2,
+   "Konu"
+  ]
+ ],
+ "B02-hrbp-dogrulama": [
+  [
+   1,
+   "Doğrula (İK / bölge)"
+  ],
+  [
+   2,
+   "Reddet (iade)"
+  ],
+  [
+   3,
+   "Kanıt listesi"
+  ],
+  [
+   4,
+   "Geçerlilik"
+  ]
+ ],
+ "S01c-birim-sonuclari-degerli": [
+  [
+   1,
+   "Dönem"
+  ],
+  [
+   2,
+   "Birim"
+  ],
+  [
+   3,
+   "Başlık: birim · dönem · madde sayısı · yanıt sayısı"
+  ],
+  [
+   4,
+   "Madde (soru metni ve kodu)"
+  ],
+  [
+   5,
+   "Metrik (Top Box)"
+  ],
+  [
+   6,
+   "Değer: birimin Top Box değeri"
+  ],
+  [
+   7,
+   "Şirket Δ: birim − şirket farkı"
+  ],
+  [
+   8,
+   "n: yanıt sayısı"
+  ],
+  [
+   9,
+   "Etkileşim alanı"
+  ],
+  [
+   10,
+   "Sorumluluk merkezi"
+  ],
+  [
+   11,
+   "Aday rol"
+  ],
+  [
+   12,
+   "Karar"
+  ],
+  [
+   13,
+   "İlk madde satırı"
+  ]
+ ]
+}

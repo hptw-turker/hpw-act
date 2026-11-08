@@ -1,0 +1,23 @@
+{
+  "name": "hpw-act",
+  "private": true,
+  "packageManager": "pnpm@9.12.0",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "build": "pnpm -r build",
+    "test": "pnpm -r test",
+    "lint": "pnpm -r lint",
+    "tr-kontrol": "node tools/scripts/tr-kontrol.mjs",
+    "rls-check": "node db/scripts/rls-check.mjs",
+    "seed:atlas": "node tools/seed/generate-atlas.mjs",
+    "db:migrate": "npm --prefix apps/api run migrate",
+    "brand-qa": "node tools/scripts/brand-qa.mjs",
+    "web:dev": "pnpm --filter @hpw-act/web dev",
+    "guides": "python3 tools/guides/build.py",
+    "test:fe": "npm --prefix apps/web test",
+    "test:api": "npm --prefix apps/api test",
+    "test:domain": "npm --prefix packages/domain-core test"
+  }
+}

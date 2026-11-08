@@ -1,0 +1,17 @@
+# HPW Act pilot v2.13.2 — rol bazlı ekran sadeleştirme ve yapay zekâ uygulama planı
+
+**Ürün ilkesi.** Kullanıcı ekrana baktığında "ne oluyor, benden ne bekleniyor, ne yapmalıyım, ne zaman, kimden destek, ilerlemeyi nasıl anlarım" sorularının cevabını görür; metodoloji motoru ve teknik bilgi arkada kalır. İş kuralları, yetkiler, şirket ayrımı, gizlilik, hedef motoru ve OpenAI güvenlik yapısı değişmedi.
+
+**Üst yönetim ana ekranı.** Yalnız üç kart: DURUM ("Şu anda neredeyiz?"), RİSK ("Nerede yönetim dikkatine ihtiyaç var?", en fazla 3 konu; her birinde konu, neden önemli, etkilenen kapsam), KARAR ("Benden hangi karar bekleniyor?"; konu, neden karar gerekiyor, bekleyen karar). Her kartta "Detaya git". Boş durumlarda sayaç yerine cümle. Kontrol kulesi ve kurumsal istek formu ana ekrandan çıkarıldı; işlevleri aynen "Kurumsal ayrıntı" sayfasında (`/t/:tid/kurumsal`, yalnız şirket geneli roller).
+
+**Diğer roller.** Birim/şube müdürü, bölge müdürü, İK iş ortağı, aksiyon sorumlusu ve izleyici için kurulum tablosu ve "nasıl çalışır" yerine işe odaklı sade ana ekran (bekleyen işler, sonuçlar, hedefler, aksiyonlar, takip; cümlelerle). İK yöneticisi ekranı korundu.
+
+**Kullanıcı dili.** "Kohort" → ilgili birimler; "merkezi karar kuyruğu" → bekleyen kararlar; "kurumsal uzlaştırma" → kurumsal beklentiyle karşılaştırma; "projeksiyon" → beklenen etki; hedef önerisi "Önerilen hedef aralığı: %53–%60" ve "Mevcut sonuç ve HPW metodolojisine göre gerçekçi kabul edilen hedef aralığıdır." açıklamasıyla; Dikkat boşken "Şu anda bekleyen işiniz bulunmuyor."; hedef aralığı sütunu yalnız hedef yetkisi olan rollerde (aksiyon sorumlusu ve izleyici görmez). Teknik ad (MIXED, QUICK_WIN vb.) ve sürüm/kuyruk sayaçları müşteri ekranlarında yok.
+
+**Yapay zekâ planı (V3).** İstem `HPW_AI_ACTION_PLAN_V3`, şema `hpw-ai-action-plan/3`; migrasyon gerekmedi (0021 son). Eklenen alanlar: aksiyon başına uygulama düzeyi (Birim / Şirket / Ortak), ilk adım, beklenen çıktı, kontrol noktası; plan başına başarı ölçütleri (süreç / kalite / sonuç). V1 ve V2 planlar okunmaya devam eder. Tek çağrı, önbellek, bayatlık, gizlilik kapısı ve şirket ayrımı aynen.
+
+Kullanıcı görünümü eskiden on analiz bölümüydü; şimdi dokuz uygulama bölümü: 1 kısa durum özeti · 2 hedef (mevcut sonuç, önerilen aralık, yapay zekâ önerisi, seçilen hedef) · 3 ne yapmalıyım (en fazla 3 aksiyon, ilk adım) · 4 aşama aşama uygulama planı (ilk 30 gün / ilk 3 ay / 3–6 ay / 6–12 ay; ay adlarıyla başlangıç–bitiş; yapılacak, sorumlu, destek, beklenen çıktı, kanıt, kontrol noktası) · 5 kim yapacak · 6 ne zaman · 7 nasıl takip edeceğiz · 8 şirketten ne gerekiyor · 9 başarıyı nasıl anlayacağız. "Bu öneri neden veriliyor?" (verideki durum, olası açıklamalar, doğrulanacaklar) ve "Dikkat / veri sınırlamaları" (eksik veri ve varsayımlar) varsayılan kapalı açılır alanlarda.
+
+**Aktarım.** "Aksiyona aktar" ile seçilen aksiyonlar tek işlemde "planlandı" olarak açılır; başlık, sıklık, başlangıç/bitiş tarihi ve öncü gösterge plandan dolar. Şirket düzeyindeki aksiyon sunucuda da yerel aksiyon olarak açılamaz; üç etkin aksiyon kuralı ve aynı aksiyonun ikinci kez açılamaması aynen.
+
+**Değişen dosyalar.** `apps/api/src/ai/prompt.ts`, `apps/api/src/routes/ai.ts`, `apps/web/src/product/pages/AiPlan.tsx`, `RoleHome.tsx` (yeni), `Setup.tsx`, `Chain.tsx`, `App.tsx`, `i18n/en.json`; testler: `apps/api/test/e2e.test.ts`, `apps/api/test/v01-v28.test.ts` (sabit 2026-10-01 tarihli yeniden yapılanma fikstürü bugüne göre ileri tarihe çevrildi), `tools/tests/fe/ui-regresyon.cjs`, `tools/scripts/gorsel-kontrol.py`.

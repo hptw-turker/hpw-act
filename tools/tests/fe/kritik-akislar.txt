@@ -1,0 +1,34 @@
+# v2.11.0 kritik akış listesi (üç motor): kimlik önekleri — docs/tasarim/PLAN-v2.11.0.md "Tarayıcı motorları için kritik akış listesi"
+# 1 giriş + HPW MFA
+MFA-
+F14-
+# 2 şirketler listesi: filtre, sıralama, sayfa, adres çubuğu, geri/ileri
+V2100-URL
+V2100-MERKEZE-DON
+# 3 şirket detayı ve geç yanıt
+V2100-GEC-YANIT
+# 4 durum geçişi onay penceresi (klavye, odak, Escape, çift gönderim)
+V2100-DLG-
+V2101-D-ODAK
+MP-PANEL-DURDUR
+# 5 kurulum onayı ve izlenen dönem
+V2100-KURULUM
+V2100-IKI-SEKME
+V2100-DONEM-YOK
+# 6 devir önizlemesi
+SEC-EKIP
+# 7 bekleyen işler
+V2110-
+V2111-
+V2112-
+V2113-
+V2114-
+V2115-
+V2116-
+V2117-
+# 8 müşteri: genel bakış ve kullanıma açılış teyidi
+V2100-MUSTERI-TEYIT
+V2101-C-
+V2102-R3-
+# 9 dar ekran
+V2101-E-DAR

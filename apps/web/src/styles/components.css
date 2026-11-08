@@ -1,0 +1,130 @@
+/* Bileşenler — keskin köşe, gölgesiz, ikonsuz. Durumlar üç renk içinde. */
+
+/* Buton */
+.btn {
+  display: inline-block; cursor: pointer;
+  font-weight: var(--w-bold); font-size: var(--t-body); line-height: var(--lh-body);
+  padding: var(--s-1) var(--s-2);
+  border: var(--hairline) solid var(--hpw-ink);
+  background: var(--hpw-ink); color: var(--hpw-white);
+  text-decoration: none; transition: background var(--motion), color var(--motion);
+}
+.btn:hover { background: var(--hpw-white); color: var(--hpw-ink); }
+.btn--secondary { background: var(--hpw-white); color: var(--hpw-ink); }
+.btn--secondary:hover { background: var(--hpw-ink); color: var(--hpw-white); }
+.btn--red { background: var(--hpw-red); border-color: var(--hpw-red); color: var(--hpw-white); } /* yalnız bölümün tek kırmızısıysa */
+.btn--red:hover { background: var(--hpw-white); color: var(--hpw-red); }
+.surface-ink .btn { background: var(--hpw-white); color: var(--hpw-ink); border-color: var(--hpw-white); }
+.surface-ink .btn:hover { background: var(--hpw-ink); color: var(--hpw-white); }
+.surface-red .btn, .surface-red .btn--secondary { background: transparent; color: var(--hpw-white); border-color: var(--hpw-white); }
+.surface-red .btn:hover { background: var(--hpw-white); color: var(--hpw-red); }
+/* Disabled: soluklaştırma yok; boş çerçeveli buton + açıklayıcı etiket */
+.btn[disabled], .btn[aria-disabled="true"] { background: transparent; color: currentColor; border-color: currentColor; cursor: not-allowed; }
+.surface-ink .btn[disabled] { border-color: var(--hpw-white); color: var(--hpw-white); }
+
+/* Metin bağlantısı — renk değişimi yok, altı çizgi 1 → 2 px */
+.link { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px; cursor: pointer; background: none; border: 0; padding: 0; font: inherit; }
+.link:hover { text-decoration-thickness: 2px; }
+.link[aria-current="true"] { text-decoration-thickness: 2px; }
+
+/* Navigasyon — Caption/Meta ölçüsü, büyük harf, aktif altı çizili */
+.nav { display: flex; flex-wrap: wrap; gap: var(--s-1) var(--s-2); }
+.nav a { text-decoration: none; padding-block: var(--s-1); border-bottom: var(--focus) solid transparent; }
+.nav a:hover { border-bottom-color: currentColor; }
+.nav a[aria-current="page"] { border-bottom-color: currentColor; }
+
+/* Form alanı — beyaz, 1 px siyah çerçeve, 12 px iç boşluk; etiket alanın üstünde küçük ve siyah, placeholder yok */
+.field { display: block; }
+.field__label { display: block; margin-bottom: var(--s-1); }
+.field__input {
+  display: block; width: 100%;
+  padding: var(--s-1); border: var(--hairline) solid var(--hpw-ink); background: var(--hpw-white); color: var(--hpw-ink);
+  appearance: none; -webkit-appearance: none;
+}
+.field__input:focus { outline: none; border-width: var(--focus); padding: calc(var(--s-1) - 1px); }
+.field--error .field__input { border-width: var(--focus); padding: calc(var(--s-1) - 1px); }
+.field__error { margin-top: var(--s-1); font-weight: var(--w-bold); }
+.field__hint { margin-top: var(--s-1); }
+select.field__input { background-image: none; }
+.select-wrap { position: relative; }
+.select-wrap::after { content: '↓'; position: absolute; right: var(--s-1); top: var(--s-1); pointer-events: none; font-weight: var(--w-bold); }
+
+/* Tablo — 1 px çizgiler, siyah başlık satırı beyaz metin, zebra yok, satır vurgusu yok */
+.table th, .table td { text-align: left; padding: var(--s-1); border-bottom: var(--hairline) solid var(--hpw-ink); vertical-align: top; }
+.table thead th { background: var(--hpw-ink); color: var(--hpw-white); border-bottom-color: var(--hpw-ink); }
+.table td.num, .table th.num { text-align: right; }
+.surface-ink .table th, .surface-ink .table td { border-bottom-color: var(--hpw-white); }
+.surface-ink .table thead th { background: var(--hpw-white); color: var(--hpw-ink); }
+.table-wrap { overflow-x: auto; position: relative; max-width: 100%; } /* v2.10.1 (V210-06): tablo içindeki mutlak konumlu gizli başlık (.sr-only) kaydırma alanında kalır; belge yatay taşmaz */
+
+/* Liste satırı — kart yok, hairline ile ayrılmış blok; hover terslemez, yalnız link altı çizgi */
+.rows > * { padding-block: var(--s-2); border-top: var(--hairline) solid currentColor; }
+.rows > *:last-child { border-bottom: var(--hairline) solid currentColor; }
+.rowline { display: grid; grid-template-columns: minmax(0, 1fr) auto; column-gap: var(--s-2); row-gap: var(--s-1); align-items: baseline; }
+@media (max-width: 767px) { .rowline { grid-template-columns: 1fr; } }
+
+/* Tipografik veri: ölçek çubuğu — siyah dolgu, beyaz zemin; renk yok, ölçü var */
+.bar { display: flex; align-items: center; gap: var(--s-1); }
+.bar__track { flex: 1; height: var(--s-1); border: var(--hairline) solid currentColor; }
+.bar__fill { height: 100%; background: currentColor; }
+.bar--red .bar__fill { background: var(--hpw-red); } /* bölümün tek kırmızısıysa */
+
+/* Kırmızı zeminde form alanı: beyaz çerçeve, beyaz metin, şeffaf dolgu */
+.surface-red .field__input { background: transparent; color: var(--hpw-white); border-color: var(--hpw-white); }
+.surface-red .field__input option { color: var(--hpw-ink); background: var(--hpw-white); }
+.surface-red .select-wrap::after { color: var(--hpw-white); }
+
+/* Dosya seçimi: yerli kontrol gizlenir, etiket ikincil buton gibi çizilir; odak etikete taşınır */
+.file { display: inline-block; }
+.file input { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+.file:focus-within .btn { outline: var(--focus) solid currentColor; outline-offset: 2px; }
+
+/* Bildirim / çatışma kutusu — keskin köşe, siyah–beyaz */
+.notice { border: var(--focus) solid var(--hpw-ink); padding: var(--s-2); }
+.notice--ink { background: var(--hpw-ink); color: var(--hpw-white); border-color: var(--hpw-ink); }
+
+/* Uygulama iskeleti */
+.header { padding-top: var(--s-2); }
+.header__top { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: var(--s-1) var(--s-2); margin-bottom: var(--s-1); }
+.wordmark { font-weight: var(--w-bold); font-size: var(--t-body-l); text-decoration: none; white-space: nowrap; }
+.wordmark--red { color: var(--hpw-red); }
+.wordmark small { font-weight: var(--w-regular); font-size: var(--t-body); }
+.footer { padding-block: var(--s-6); }
+.footer .container { display: flex; flex-wrap: wrap; justify-content: space-between; gap: var(--s-2); align-items: baseline; }
+main { min-height: 60vh; }
+
+/* Tam ekran manifesto (giriş) */
+.manifesto { min-height: 100vh; display: flex; flex-direction: column; justify-content: space-between; padding-block: var(--s-4); }
+.manifesto > .container { width: 100%; }
+/* Dil seçici (TR / EN): aralıklı iki ayrı düğme, köşeli; seçim yalnız renkle */
+.lang-switch { display: inline-flex; gap: 12px; align-items: center; margin-left: 12px; vertical-align: middle; }
+.lang-btn { min-width: 48px; min-height: 36px; padding: 0 12px; border: 1px solid currentColor; border-radius: 0; background: transparent; color: inherit; font: inherit; font-weight: 700; letter-spacing: .04em; cursor: pointer; }
+.lang-btn--on { background: var(--hpw-ink); color: var(--hpw-white); border-color: var(--hpw-ink); }
+.surface-red .lang-btn--on { background: var(--hpw-white); color: var(--hpw-red); border-color: var(--hpw-white); }
+.lang-btn:focus-visible { outline: 2px solid currentColor; outline-offset: 2px; }
+/* v2.9.0 HPW bağlam satırı ve müdahale şeridi: renk yalnız marka belirteçleri; köşeli, gölgesiz */
+.platform-bar { border-top: 1px solid var(--hpw-ink); border-bottom: 1px solid var(--hpw-ink); padding: 12px 0; margin: 12px 0; }
+.intervention-strip { background: var(--hpw-ink); color: var(--hpw-white); padding: 12px; margin-top: 12px; }
+.intervention-strip .link { color: var(--hpw-white); }
+/* v2.9.0 merkez sekmeleri: aralıklı ayrı düğmeler; seçili sekme yalnız renkle */
+.tab-row { display: flex; flex-wrap: wrap; gap: 12px; padding: 12px 0; }
+.tab-btn { min-height: 48px; padding: 0 24px; border: 1px solid var(--hpw-ink); border-radius: 0; background: var(--hpw-white); color: var(--hpw-ink); font: inherit; font-weight: 700; cursor: pointer; }
+.tab-btn--on { background: var(--hpw-ink); color: var(--hpw-white); }
+.tab-btn:focus-visible { outline: 2px solid var(--hpw-red); outline-offset: 2px; }
+/* v2.9.0 MFA: kurulum anahtarı ve kurtarma kodları okunaklı, köşeli */
+.mfa-secret { letter-spacing: .08em; border: 1px solid var(--hpw-ink); padding: 12px; }
+.recovery-codes { columns: 2; column-gap: 24px; padding-left: 24px; }
+/* v2.10.0 erişilebilir onay penceresi: köşeli, gölgesiz; arka plan marka mürekkebi (saydamlık katmanda) */
+.dialog-layer { position: fixed; inset: 0; z-index: 50; display: flex; align-items: center; justify-content: center; padding: 24px; }
+.dialog-backdrop { position: absolute; inset: 0; background: var(--hpw-white); } /* marka kuralı: saydamlık yok; arka plan tam örtülür */
+.dialog { position: relative; background: var(--hpw-white); color: var(--hpw-ink); border: 2px solid var(--hpw-ink); border-radius: 0; padding: 24px; width: min(560px, 100%); max-height: calc(100vh - 48px); overflow: auto; display: flex; flex-direction: column; gap: 12px; }
+.dialog-actions { display: flex; flex-wrap: wrap; gap: 12px; justify-content: flex-end; }
+.dialog :focus-visible { outline: 2px solid var(--hpw-red); outline-offset: 2px; }
+/* v2.10.0 katalog ve detay yardımcıları */
+.filter-row { flex-wrap: wrap; gap: 12px; align-items: flex-end; }
+.row-actions { display: inline-flex; flex-wrap: wrap; gap: 12px; }
+.pager { gap: 12px; align-items: center; }
+.step-state { font-weight: 700; }
+
+/* v2.10.1 (V210-06): dar ekranda sabit genişlikli filtre alanları ekrana sığar */
+.filter-row > div { max-width: 100%; }

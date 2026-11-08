@@ -1,0 +1,219 @@
+{
+ "unit": {
+  "createTarget": [
+   "HR_ADMIN",
+   "HR_PARTNER",
+   "REGION_MANAGER",
+   "UNIT_MANAGER"
+  ],
+  "acceptTarget": [
+   "HR_ADMIN",
+   "HR_PARTNER",
+   "REGION_MANAGER",
+   "UNIT_MANAGER"
+  ],
+  "reviewTarget": [
+   "HR_ADMIN",
+   "HR_PARTNER"
+  ],
+  "transferTarget": [
+   "HR_ADMIN",
+   "HR_PARTNER"
+  ],
+  "createAction": [
+   "HR_ADMIN",
+   "HR_PARTNER",
+   "REGION_MANAGER",
+   "UNIT_MANAGER"
+  ],
+  "addEvidence": [
+   "HR_ADMIN",
+   "HR_PARTNER",
+   "REGION_MANAGER",
+   "UNIT_MANAGER",
+   "ACTION_OWNER"
+  ],
+  "declareComplete": [
+   "HR_ADMIN",
+   "HR_PARTNER",
+   "REGION_MANAGER",
+   "UNIT_MANAGER",
+   "ACTION_OWNER"
+  ],
+  "verify": [
+   "HR_ADMIN",
+   "HR_PARTNER",
+   "REGION_MANAGER"
+  ],
+  "transition": [
+   "HR_ADMIN",
+   "HR_PARTNER",
+   "REGION_MANAGER",
+   "UNIT_MANAGER"
+  ],
+  "cancelAction": [
+   "HR_ADMIN",
+   "HR_PARTNER",
+   "REGION_MANAGER",
+   "UNIT_MANAGER"
+  ],
+  "transferAction": [
+   "HR_ADMIN",
+   "HR_PARTNER",
+   "REGION_MANAGER",
+   "UNIT_MANAGER"
+  ],
+  "followupReview": [
+   "HR_ADMIN",
+   "HR_PARTNER"
+  ],
+  "cohortDecision": [
+   "HR_ADMIN",
+   "HR_PARTNER",
+   "REGION_MANAGER",
+   "UNIT_MANAGER"
+  ],
+  "respondDeployment": [
+   "HR_ADMIN",
+   "HR_PARTNER",
+   "REGION_MANAGER",
+   "UNIT_MANAGER"
+  ],
+  "upgradeDeployment": [
+   "HR_ADMIN",
+   "HR_PARTNER",
+   "REGION_MANAGER",
+   "UNIT_MANAGER"
+  ],
+  "resourceRequest": [
+   "HR_ADMIN",
+   "HR_PARTNER",
+   "REGION_MANAGER",
+   "UNIT_MANAGER"
+  ]
+ },
+ "tenant": {
+  "setup": [
+   "HR_ADMIN",
+   "HR_PARTNER"
+  ],
+  "users": [
+   "HR_ADMIN"
+  ],
+  "responsibilityMap": [
+   "HR_ADMIN"
+  ],
+  "reorg": [
+   "HR_ADMIN"
+  ],
+  "goLiveConfirm": [
+   "HR_ADMIN"
+  ]
+ },
+ "companyWide": {
+  "towerView": [
+   "HR_ADMIN",
+   "EXEC",
+   "HR_PARTNER"
+  ],
+  "planningView": [
+   "HR_ADMIN",
+   "EXEC",
+   "HR_PARTNER"
+  ],
+  "propose": [
+   "HR_ADMIN",
+   "EXEC"
+  ],
+  "freeze": [
+   "HR_ADMIN"
+  ],
+  "reconcile": [
+   "HR_ADMIN"
+  ],
+  "publish": [
+   "HR_ADMIN"
+  ],
+  "deploy": [
+   "HR_ADMIN"
+  ],
+  "centralDecision": [
+   "HR_ADMIN",
+   "EXEC"
+  ]
+ },
+ "screens": {
+  "genel": [
+   "HR_ADMIN",
+   "HR_PARTNER",
+   "EXEC",
+   "REGION_MANAGER",
+   "UNIT_MANAGER",
+   "ACTION_OWNER",
+   "VIEWER"
+  ],
+  "dikkat": [
+   "HR_ADMIN",
+   "HR_PARTNER",
+   "EXEC",
+   "REGION_MANAGER",
+   "UNIT_MANAGER",
+   "ACTION_OWNER"
+  ],
+  "birimler": [
+   "HR_ADMIN",
+   "HR_PARTNER",
+   "EXEC",
+   "REGION_MANAGER",
+   "UNIT_MANAGER",
+   "VIEWER"
+  ],
+  "hedefler": [
+   "HR_ADMIN",
+   "HR_PARTNER",
+   "REGION_MANAGER",
+   "UNIT_MANAGER",
+   "VIEWER"
+  ],
+  "aksiyonlar": [
+   "HR_ADMIN",
+   "HR_PARTNER",
+   "REGION_MANAGER",
+   "UNIT_MANAGER",
+   "ACTION_OWNER"
+  ],
+  "takip": [
+   "HR_ADMIN",
+   "HR_PARTNER",
+   "REGION_MANAGER",
+   "UNIT_MANAGER"
+  ],
+  "organizasyon": [
+   "HR_ADMIN",
+   "HR_PARTNER"
+  ],
+  "soruSeti": [
+   "HR_ADMIN",
+   "HR_PARTNER"
+  ],
+  "donemler": [
+   "HR_ADMIN",
+   "HR_PARTNER"
+  ],
+  "yukle": [
+   "HR_ADMIN",
+   "HR_PARTNER"
+  ],
+  "kullanicilar": [
+   "HR_ADMIN"
+  ],
+  "yolHaritasi": [
+   "HR_ADMIN",
+   "HR_PARTNER",
+   "EXEC",
+   "REGION_MANAGER",
+   "UNIT_MANAGER",
+   "VIEWER"
+  ]
+ }
+}

@@ -1,0 +1,177 @@
+[
+ {
+  "id": "ceo",
+  "name": "Ahmet Karaca",
+  "roleLabel": "Genel Müdür",
+  "unitLabel": "Atlas Holding",
+  "scope": "company",
+  "nav": [
+   "/",
+   "/donem",
+   "/kurumsal",
+   "/hedefler",
+   "/karne"
+  ]
+ },
+ {
+  "id": "gmy",
+  "name": "Selin Aydın",
+  "roleLabel": "Bireysel İşler GMY",
+  "unitLabel": "Bireysel İşler",
+  "scope": "gmy",
+  "nav": [
+   "/",
+   "/kurumsal",
+   "/hedefler",
+   "/yerel-uygulamalar",
+   "/karne"
+  ]
+ },
+ {
+  "id": "hr_admin",
+  "name": "Zeynep Demir",
+  "roleLabel": "İK Yöneticisi",
+  "unitLabel": "İnsan ve Kültür",
+  "scope": "tenant",
+  "nav": [
+   "/",
+   "/donem",
+   "/sonuclar",
+   "/organizasyon",
+   "/kullanicilar",
+   "/ayarlar",
+   "/karne"
+  ]
+ },
+ {
+  "id": "hrbp",
+  "name": "Emre Çelik",
+  "roleLabel": "İK İş Ortağı",
+  "unitLabel": "Ege Bölge Direktörlüğü",
+  "scope": "region",
+  "nav": [
+   "/",
+   "/sonuclar",
+   "/birimler",
+   "/hedefler",
+   "/aksiyonlar",
+   "/yerel-uygulamalar",
+   "/kanit",
+   "/karne"
+  ]
+ },
+ {
+  "id": "region_head",
+  "name": "Deniz Koç",
+  "roleLabel": "Bölge Direktörü",
+  "unitLabel": "Ege Bölge Direktörlüğü",
+  "scope": "region",
+  "nav": [
+   "/",
+   "/birimler",
+   "/hedefler",
+   "/yerel-uygulamalar",
+   "/karne"
+  ]
+ },
+ {
+  "id": "branch_manager",
+  "name": "Ayşe Yılmaz",
+  "roleLabel": "Şube Müdürü",
+  "unitLabel": "Konak Şubesi",
+  "scope": "unit",
+  "nav": [
+   "/",
+   "/birimler",
+   "/hedefler",
+   "/aksiyonlar",
+   "/kanit"
+  ]
+ },
+ {
+  "id": "action_owner",
+  "name": "Can Öztürk",
+  "roleLabel": "Şube Müdür Yardımcısı (aksiyon sahibi)",
+  "unitLabel": "Konak Şubesi",
+  "scope": "unit",
+  "nav": [
+   "/",
+   "/kanit"
+  ]
+ },
+ {
+  "id": "enabler",
+  "name": "Merve Şahin",
+  "roleLabel": "Akademi Müdürü (destekleyici birim)",
+  "unitLabel": "Akademi Müdürlüğü",
+  "scope": "gmy",
+  "nav": [
+   "/",
+   "/hedefler",
+   "/yerel-uygulamalar"
+  ]
+ },
+ {
+  "id": "viewer",
+  "name": "Kerem Arslan",
+  "roleLabel": "İzleyici",
+  "unitLabel": "Kurumsal İletişim",
+  "scope": "company",
+  "nav": [
+   "/",
+   "/karne"
+  ]
+ },
+ {
+  "id": "hpw_admin",
+  "name": "Ozan Kılıç",
+  "roleLabel": "HPTW Sistem Yöneticisi",
+  "unitLabel": "Sistem",
+  "scope": "platform",
+  "nav": [
+   "/",
+   "/musteriler",
+   "/musteri-kur",
+   "/ayarlar",
+   "/denetim"
+  ]
+ },
+ {
+  "id": "hpw_consultant",
+  "name": "İpek Doğan",
+  "roleLabel": "HPTW Danışman",
+  "unitLabel": "4 müşteri",
+  "scope": "tenant",
+  "nav": [
+   "/",
+   "/donem",
+   "/musteriler",
+   "/musteri-kur",
+   "/aksiyonlar",
+   "/karne"
+  ]
+ },
+ {
+  "id": "hpw_methodologist",
+  "name": "Elif Kurt",
+  "roleLabel": "HPTW Metodolog",
+  "unitLabel": "Metodoloji",
+  "scope": "tenant",
+  "nav": [
+   "/",
+   "/metodoloji",
+   "/sonuclar"
+  ]
+ },
+ {
+  "id": "hpw_auditor",
+  "name": "Tolga Çetin",
+  "roleLabel": "HPTW Denetçi",
+  "unitLabel": "Denetim (salt okunur)",
+  "scope": "tenant",
+  "nav": [
+   "/",
+   "/denetim"
+  ]
+ }
+]

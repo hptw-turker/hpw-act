@@ -1,0 +1,13 @@
+/** Dikkat öğesi kapatma anlamı (v2.3.1): listeden çıkarmak yükümlülüğü bitirmez. Dört eylem ayrı: bilgi için okundu, kendi kuyruğu için ertele, yanlış sorumlu için yeniden yönlendir, asıl yükümlülük için yetkili çözüm ya da muafiyet. */
+export type DismissAction = 'acknowledge' | 'snooze' | 'reroute' | 'resolve' | 'exempt';
+export interface AttentionItemState { id: string; obligation: 'info' | 'decision' | 'evidence' | 'exception'; ownerRoleId: string; state: 'open' | 'snoozed' | 'rerouted' | 'resolved' | 'exempted' | 'acknowledged'; }
+export interface DismissRequest { action: DismissAction; reason?: string; until?: string; toRoleId?: string; actorRoleId: string; /** resolve: yükümlülüğü kapatan domain olayı */ resolvedEventRef?: string; /** exempt/reroute yetkili roller */ authorityRoleIds?: string[]; }
+export function dismiss(item: AttentionItemState, req: DismissRequest): { item: AttentionItemState; obligationCleared: boolean; error?: string; until?: string } {
+  if (req.action === 'acknowledge') { if (item.obligation !== 'info') return { item, obligationCleared: false, error: 'acknowledge_only_for_info' }; return { item: { ...item, state: 'acknowledged' }, obligationCleared: true }; }
+  if (req.action === 'snooze') { if (!req.until || !Number.isFinite(Date.parse(req.until)) || Date.parse(req.until) <= Date.now()) return { item, obligationCleared: false, error: 'snooze_requires_future_date' }; return { item: { ...item, state: 'snoozed' }, obligationCleared: false, until: new Date(Date.parse(req.until)).toISOString() }; }
+  if (req.action === 'reroute') { if (!req.toRoleId || !req.reason) return { item, obligationCleared: false, error: 'reroute_requires_role_and_reason' }; if (req.actorRoleId !== item.ownerRoleId && !(req.authorityRoleIds ?? []).includes(req.actorRoleId)) return { item, obligationCleared: false, error: 'reroute_requires_owner_or_authority' }; return { item: { ...item, state: 'rerouted', ownerRoleId: req.toRoleId }, obligationCleared: false }; }
+  if (req.action === 'exempt') { if (!req.reason || !(req.authorityRoleIds ?? []).includes(req.actorRoleId) || req.actorRoleId === item.ownerRoleId) return { item, obligationCleared: false, error: 'exempt_requires_reason_and_authority' }; return { item: { ...item, state: 'exempted' }, obligationCleared: true }; }
+  if (req.actorRoleId !== item.ownerRoleId) return { item, obligationCleared: false, error: 'resolve_requires_owner' };
+  if (!req.resolvedEventRef) return { item, obligationCleared: false, error: 'resolve_requires_domain_event' }; // kartı kapatmak yükümlülüğü kapatmaz (F31)
+  return { item: { ...item, state: 'resolved' }, obligationCleared: true };
+}

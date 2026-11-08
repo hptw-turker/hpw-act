@@ -1,0 +1,2373 @@
+{
+ "surum": "2.15.0",
+ "tarih": "2026-11-08",
+ "not": "Tek kaynak. Yalnız çalıştırılan test \"doğrulandı\". v2.15.0: sunumla birebir yol haritası (ADR-0042, migrasyon 0023); Ant Yapı aktarımı; v01-v28 haftalık slot kontrolü tarihe bağlı olarak başarısız (v2.14.2 kaynağında da), açık.",
+ "V": [
+  {
+   "id": "V01",
+   "durum": "doğrulandı",
+   "kanit": "başlatıcı env+build+kurulum kimliği (dist yolu/cwd ve pid) karşılaştırır; kendi eski sürümünü kontrollü durdurup yenisini açar; tanımadığı sürümde döngü yerine açık durdurma. Gerçek paket: launch-bos-eski-build-gecis.log"
+  },
+  {
+   "id": "V02",
+   "durum": "doğrulandı",
+   "kanit": "/api/ready ayrı (DB, migrasyon defteri, definer); index ve başlatıcı yalnız ready+build ile geçer; DB kapalı → 503 ve okunur neden; tarayıcı: v02-v03-ui-sonuc.json"
+  },
+  {
+   "id": "V03",
+   "durum": "doğrulandı",
+   "kanit": "nesil/istek kimliği, tek yönlendirme zamanlayıcısı, yeniden denemede appUrl/düğme/eski zamanlayıcı iptali, sonda zaman aşımı; tarayıcı: v02-v03-ui-sonuc.json"
+  },
+  {
+   "id": "V04",
+   "durum": "açık",
+   "kanit": "Mac/Safari denenmedi; boşluklu/Türkçe karakterli klasör yolu, kapanıp açılma ve pencere kapatma yalnız Linux/Chromium"
+  },
+  {
+   "id": "V05",
+   "durum": "kısmi",
+   "kanit": "her açılışta migrasyon (SHA-256 defter); CREATE DATABASE hatası ayrıştırılır; sırlar CALISTIRMA altında 0600; kurulum defteri; yarım initdb temizliği ve sır kapısı; yarım kurulumdan devam (env/defter kayıp) BOŞ ve DEMO paketlerinde koşuldu: initdb tekrar yok, demo verisi çift yüklenmedi (launch-*-yarim-kurulum-devam.log). Geri dönüş tatbikatı ve Mac yok"
+  },
+  {
+   "id": "V06",
+   "durum": "doğrulandı",
+   "kanit": "transition/beyan/kanıt/hedef/inceleme kaynak bazlı; A-yönetici+B-izleyici B'de 403, DB etkisi yok (v01-v28 test 1)"
+  },
+  {
+   "id": "V07",
+   "durum": "doğrulandı",
+   "kanit": "commit anında grantsRequired yeniden yetkilendirme; HR_ADMIN doğruladı HRBP onaylayamaz (test 6)"
+  },
+  {
+   "id": "V08",
+   "durum": "kısmi",
+   "kanit": "şirket geneli yazma yalnız HR_ADMIN; inceleme makamı birim yetkisiyle; reports_to tarihli. Hiyerarşi grubu ayrımı ve vekâlet tek motoru tam değil"
+  },
+  {
+   "id": "V09",
+   "durum": "doğrulandı",
+   "kanit": "outbox kimliği+tenant_id+davet; aynı e-posta iki şirkette ayrı; platform yalnız yetkili müşteri; parola bağlantıları test operatörü kutusu (test 2)"
+  },
+  {
+   "id": "V10",
+   "durum": "doğrulandı",
+   "kanit": "anahtar aktör+yöntem+tam URL (önizleme≠kayıt), yetki parmak izi, rezervasyon; rol düşünce 403 (test 3)"
+  },
+  {
+   "id": "V11",
+   "durum": "doğrulandı",
+   "kanit": "dönem yayını survey_cycle kilidi ([200,409]), hedef kapasitesi birim kilidi (3 eşzamanlı→2), eşzamanlı aynı anahtar tek iş (test 3). Aksiyon kapasitesi zaten kilitli; expected_version genel değil"
+  },
+  {
+   "id": "V12",
+   "durum": "doğrulandı",
+   "kanit": "PATCH benchmark upsert, FULL_REPLACE tam yenileme; CLEAR = FULL_REPLACE + boş Benchmarklar (KILAVUZ ve README) (test 4)"
+  },
+  {
+   "id": "V13",
+   "durum": "kısmi",
+   "kanit": "PATCH birleşik küme: kardeş gizlilik/dağılım/n reddi (test 4); indeks mutabakatı birleşik küme değerleriyle (uygulandı, hedefli test yok); resmî toplam taşıma/sürüm kuralı açık"
+  },
+  {
+   "id": "V14",
+   "durum": "doğrulandı",
+   "kanit": "rebase → pending_acceptance, approved_target boşken accepted/active DB kısıtı, açık kabul ucu; yalnız değişen başlangıç hücresinin hedefi incelemeye (test r01-r44 7)"
+  },
+  {
+   "id": "V15",
+   "durum": "doğrulandı",
+   "kanit": "takip onayı canlı aktif takip sonucu, hedef sürümü ve başlangıç kimliğiyle karşılaştırılır; değişmişse 409 (kod, e2e-8 canlı uyum)"
+  },
+  {
+   "id": "V16",
+   "durum": "doğrulandı",
+   "kanit": "eventCount/fulfilledSlotCount/expectedSlotCount API ve ekranda ayrı; ek olay slot artırmaz (test 5)"
+  },
+  {
+   "id": "V17",
+   "durum": "doğrulandı",
+   "kanit": "0005: eski kayıtlar ritimden slota, aynı slotta yalnız en erken karşılar, türetilemeyen incelemeye, tekil indeks; demo verisinde yükseltme koşuldu"
+  },
+  {
+   "id": "V18",
+   "durum": "kısmi",
+   "kanit": "plan slotları takvimden tek kaynak (pencereye giren her slot); kısmi dönem politikası HPW onayı bekler; kişi kapsamı yok"
+  },
+  {
+   "id": "V19",
+   "durum": "dış bağımlılık",
+   "kanit": "HPW resmî ölçüm/indeks onayı"
+  },
+  {
+   "id": "V20",
+   "durum": "açık",
+   "kanit": "çoklu rapor gizliliği API yayın planına bağlanmadı"
+  },
+  {
+   "id": "V21",
+   "durum": "superseded",
+   "kanit": "yerine geçti (superseded): reorg/devir P1-11"
+  },
+  {
+   "id": "V22",
+   "durum": "superseded",
+   "kanit": "yerine geçti (superseded): Sorumluluk Haritası P1-8"
+  },
+  {
+   "id": "V23",
+   "durum": "superseded",
+   "kanit": "yerine geçti (superseded): bkz. P2-12"
+  },
+  {
+   "id": "V24",
+   "durum": "kısmi",
+   "kanit": "kira/DLQ var; uzun toplu gönderim ve gerçek teslimat testi yok"
+  },
+  {
+   "id": "V25",
+   "durum": "kısmi",
+   "kanit": "genel bakış \"kullanılabilir\"≠\"tamam\"; dikkat derin linkleri seçili açar; yükleme önizlemesi bağlamda sıfırlanır, geç yanıt düşer; taşma sarması; ham JSON sadeleştirilmedi; klavye testi yok"
+  },
+  {
+   "id": "V26",
+   "durum": "açık",
+   "kanit": "canlı güvenlik/veri yaşam döngüsü/bağımlılık bakımı"
+  },
+  {
+   "id": "V27",
+   "durum": "kısmi",
+   "kanit": "sayılar tek JSON (KAPANIS.json) ile üretilir; envanter kapsamı tam doğrulanmış değil"
+  },
+  {
+   "id": "V28",
+   "durum": "kısmi",
+   "kanit": "zip -y; Unicode ad kontrolü yapılmadı"
+  }
+ ],
+ "N": [
+  {
+   "id": "N01",
+   "durum": "doğrulandı",
+   "kanit": "launch-bos.log"
+  },
+  {
+   "id": "N02",
+   "durum": "kısmi",
+   "kanit": "paketleme bağımlılık kapısı; paket kökünden derleme yok"
+  },
+  {
+   "id": "N03",
+   "durum": "doğrulandı",
+   "kanit": "404 prototip (launch-bos.log)"
+  },
+  {
+   "id": "N04",
+   "durum": "kısmi",
+   "kanit": "ayrı host/çerez (demo-smoke D8); canlı çerez politikası açık"
+  },
+  {
+   "id": "N05",
+   "durum": "doğrulandı",
+   "kanit": "V07 testi org rolü grant"
+  },
+  {
+   "id": "N06",
+   "durum": "doğrulandı",
+   "kanit": "V06"
+  },
+  {
+   "id": "N07",
+   "durum": "doğrulandı",
+   "kanit": "V06/V08 kapsam dışı inceleme 403"
+  },
+  {
+   "id": "N08",
+   "durum": "kısmi",
+   "kanit": "takvim doğrulaması; CREATE valid_to yazımı açık"
+  },
+  {
+   "id": "N09",
+   "durum": "uygulandı/doğrulanmadı",
+   "kanit": "users.ts upsert; hedefli test yok"
+  },
+  {
+   "id": "N10",
+   "durum": "uygulandı/doğrulanmadı",
+   "kanit": "auth.ts hız sınırı; test yok"
+  },
+  {
+   "id": "N11",
+   "durum": "doğrulandı",
+   "kanit": "V10"
+  },
+  {
+   "id": "N12",
+   "durum": "kısmi",
+   "kanit": "yayın+kapasite kilidi; expected_version genel değil"
+  },
+  {
+   "id": "N13",
+   "durum": "doğrulandı",
+   "kanit": "V12"
+  },
+  {
+   "id": "N14",
+   "durum": "kısmi",
+   "kanit": "V13 kardeş çelişki"
+  },
+  {
+   "id": "N15",
+   "durum": "açık",
+   "kanit": "açık"
+  },
+  {
+   "id": "N16",
+   "durum": "doğrulandı",
+   "kanit": "yalnız etkilenen hedef (V14)"
+  },
+  {
+   "id": "N17",
+   "durum": "doğrulandı",
+   "kanit": "V14"
+  },
+  {
+   "id": "N18",
+   "durum": "uygulandı/doğrulanmadı",
+   "kanit": "results.ts satır kontrolü; test yok"
+  },
+  {
+   "id": "N19",
+   "durum": "açık",
+   "kanit": "açık"
+  },
+  {
+   "id": "N20",
+   "durum": "kısmi",
+   "kanit": "yaprak kuralı; HPW mutabakatı yok"
+  },
+  {
+   "id": "N21",
+   "durum": "kısmi",
+   "kanit": "ufuk/varsayımlar"
+  },
+  {
+   "id": "N22",
+   "durum": "kısmi",
+   "kanit": "özel plan; tip eşlemesi yok"
+  },
+  {
+   "id": "N23",
+   "durum": "doğrulandı",
+   "kanit": "E2E-7, test 5"
+  },
+  {
+   "id": "N24",
+   "durum": "doğrulandı",
+   "kanit": "E2E-7"
+  },
+  {
+   "id": "N25",
+   "durum": "doğrulandı",
+   "kanit": "V15"
+  },
+  {
+   "id": "N26",
+   "durum": "kısmi",
+   "kanit": "audit aynı transaction; upsert değerlendirme"
+  },
+  {
+   "id": "N27",
+   "durum": "kısmi",
+   "kanit": "R-9 kira"
+  },
+  {
+   "id": "N28",
+   "durum": "kısmi",
+   "kanit": "servis hesabı/PUBLIC EXECUTE iptali"
+  },
+  {
+   "id": "N29",
+   "durum": "açık",
+   "kanit": "açık"
+  },
+  {
+   "id": "N30",
+   "durum": "kısmi",
+   "kanit": "derin link (V25)"
+  },
+  {
+   "id": "N31",
+   "durum": "doğrulandı",
+   "kanit": "tur E3–E5"
+  },
+  {
+   "id": "N32",
+   "durum": "kısmi",
+   "kanit": "runtime-manifest, KURULUM_DEFTERI"
+  },
+  {
+   "id": "N33",
+   "durum": "superseded",
+   "kanit": "yerine geçti (superseded): ana aksiyon dağıtımı P2-12"
+  },
+  {
+   "id": "N34",
+   "durum": "kısmi",
+   "kanit": "KAPANIS.json"
+  },
+  {
+   "id": "N35",
+   "durum": "dış bağımlılık",
+   "kanit": "HPW onayı"
+  },
+  {
+   "id": "N36",
+   "durum": "dış bağımlılık",
+   "kanit": "pilot"
+  }
+ ],
+ "R": [
+  {
+   "id": "R01",
+   "durum": "doğrulandı",
+   "kanit": "bkz. R01-R44-kapanis-tablosu.md"
+  },
+  {
+   "id": "R02",
+   "durum": "doğrulandı",
+   "kanit": "bkz. R01-R44-kapanis-tablosu.md"
+  },
+  {
+   "id": "R03",
+   "durum": "doğrulandı",
+   "kanit": "bkz. R01-R44-kapanis-tablosu.md"
+  },
+  {
+   "id": "R04",
+   "durum": "doğrulandı",
+   "kanit": "bkz. R01-R44-kapanis-tablosu.md"
+  },
+  {
+   "id": "R05",
+   "durum": "doğrulandı",
+   "kanit": "bkz. R01-R44-kapanis-tablosu.md"
+  },
+  {
+   "id": "R06",
+   "durum": "doğrulandı",
+   "kanit": "bkz. R01-R44-kapanis-tablosu.md"
+  },
+  {
+   "id": "R07",
+   "durum": "doğrulandı",
+   "kanit": "bkz. R01-R44-kapanis-tablosu.md"
+  },
+  {
+   "id": "R08",
+   "durum": "doğrulandı",
+   "kanit": "bkz. R01-R44-kapanis-tablosu.md"
+  },
+  {
+   "id": "R09",
+   "durum": "doğrulandı",
+   "kanit": "bkz. R01-R44-kapanis-tablosu.md"
+  },
+  {
+   "id": "R10",
+   "durum": "doğrulandı",
+   "kanit": "bkz. R01-R44-kapanis-tablosu.md"
+  },
+  {
+   "id": "R11",
+   "durum": "kısmi",
+   "kanit": "bkz. R01-R44-kapanis-tablosu.md"
+  },
+  {
+   "id": "R12",
+   "durum": "kısmi",
+   "kanit": "bkz. R01-R44-kapanis-tablosu.md"
+  },
+  {
+   "id": "R13",
+   "durum": "doğrulandı",
+   "kanit": "bkz. R01-R44-kapanis-tablosu.md"
+  },
+  {
+   "id": "R14",
+   "durum": "doğrulandı",
+   "kanit": "bkz. R01-R44-kapanis-tablosu.md"
+  },
+  {
+   "id": "R15",
+   "durum": "doğrulandı",
+   "kanit": "bkz. R01-R44-kapanis-tablosu.md"
+  },
+  {
+   "id": "R16",
+   "durum": "açık",
+   "kanit": "bkz. R01-R44-kapanis-tablosu.md"
+  },
+  {
+   "id": "R17",
+   "durum": "doğrulandı",
+   "kanit": "bkz. R01-R44-kapanis-tablosu.md"
+  },
+  {
+   "id": "R18",
+   "durum": "açık",
+   "kanit": "bkz. R01-R44-kapanis-tablosu.md"
+  },
+  {
+   "id": "R19",
+   "durum": "doğrulandı",
+   "kanit": "bkz. R01-R44-kapanis-tablosu.md"
+  },
+  {
+   "id": "R20",
+   "durum": "doğrulandı",
+   "kanit": "bkz. R01-R44-kapanis-tablosu.md"
+  },
+  {
+   "id": "R21",
+   "durum": "doğrulandı",
+   "kanit": "bkz. R01-R44-kapanis-tablosu.md"
+  },
+  {
+   "id": "R22",
+   "durum": "doğrulandı",
+   "kanit": "bkz. R01-R44-kapanis-tablosu.md"
+  },
+  {
+   "id": "R23",
+   "durum": "doğrulandı",
+   "kanit": "bkz. R01-R44-kapanis-tablosu.md"
+  },
+  {
+   "id": "R24",
+   "durum": "doğrulandı",
+   "kanit": "bkz. R01-R44-kapanis-tablosu.md"
+  },
+  {
+   "id": "R25",
+   "durum": "doğrulandı",
+   "kanit": "bkz. R01-R44-kapanis-tablosu.md"
+  },
+  {
+   "id": "R26",
+   "durum": "doğrulandı",
+   "kanit": "bkz. R01-R44-kapanis-tablosu.md"
+  },
+  {
+   "id": "R27",
+   "durum": "doğrulandı",
+   "kanit": "bkz. R01-R44-kapanis-tablosu.md"
+  },
+  {
+   "id": "R28",
+   "durum": "doğrulandı",
+   "kanit": "bkz. R01-R44-kapanis-tablosu.md"
+  },
+  {
+   "id": "R29",
+   "durum": "kısmi",
+   "kanit": "bkz. R01-R44-kapanis-tablosu.md"
+  },
+  {
+   "id": "R30",
+   "durum": "açık",
+   "kanit": "bkz. R01-R44-kapanis-tablosu.md"
+  },
+  {
+   "id": "R31",
+   "durum": "açık",
+   "kanit": "bkz. R01-R44-kapanis-tablosu.md"
+  },
+  {
+   "id": "R32",
+   "durum": "kısmi",
+   "kanit": "bkz. R01-R44-kapanis-tablosu.md"
+  },
+  {
+   "id": "R33",
+   "durum": "doğrulandı",
+   "kanit": "bkz. R01-R44-kapanis-tablosu.md"
+  },
+  {
+   "id": "R34",
+   "durum": "doğrulandı",
+   "kanit": "bkz. R01-R44-kapanis-tablosu.md"
+  },
+  {
+   "id": "R35",
+   "durum": "doğrulandı",
+   "kanit": "bkz. R01-R44-kapanis-tablosu.md"
+  },
+  {
+   "id": "R36",
+   "durum": "kısmi",
+   "kanit": "bkz. R01-R44-kapanis-tablosu.md"
+  },
+  {
+   "id": "R37",
+   "durum": "kısmi",
+   "kanit": "bkz. R01-R44-kapanis-tablosu.md"
+  },
+  {
+   "id": "R38",
+   "durum": "doğrulandı",
+   "kanit": "bkz. R01-R44-kapanis-tablosu.md"
+  },
+  {
+   "id": "R39",
+   "durum": "kısmi",
+   "kanit": "bkz. R01-R44-kapanis-tablosu.md"
+  },
+  {
+   "id": "R40",
+   "durum": "kısmi",
+   "kanit": "bkz. R01-R44-kapanis-tablosu.md"
+  },
+  {
+   "id": "R41",
+   "durum": "doğrulandı",
+   "kanit": "bkz. R01-R44-kapanis-tablosu.md"
+  },
+  {
+   "id": "R42",
+   "durum": "kısmi",
+   "kanit": "bkz. R01-R44-kapanis-tablosu.md"
+  },
+  {
+   "id": "R43",
+   "durum": "doğrulandı",
+   "kanit": "bkz. R01-R44-kapanis-tablosu.md"
+  },
+  {
+   "id": "R44",
+   "durum": "açık",
+   "kanit": "bkz. R01-R44-kapanis-tablosu.md"
+  }
+ ],
+ "ozet_V": {
+  "doğrulandı": 13,
+  "açık": 3,
+  "kısmi": 8,
+  "dış bağımlılık": 1,
+  "superseded": 3
+ },
+ "ozet_N": {
+  "doğrulandı": 13,
+  "kısmi": 14,
+  "uygulandı/doğrulanmadı": 3,
+  "açık": 3,
+  "superseded": 1,
+  "dış bağımlılık": 2
+ },
+ "ozet_R": {
+  "doğrulandı": 30,
+  "kısmi": 9,
+  "açık": 5
+ },
+ "M": [
+  {
+   "id": "M01",
+   "durum": "açık",
+   "kanit": "Mac ilk açılış doğrulanmadı; Apple Developer ID yok; .command Gatekeeper engeli çözülmedi (MAC_VE_HTTPS_TESLIM_PLANI.md)"
+  },
+  {
+   "id": "M02",
+   "durum": "açık",
+   "kanit": "HTTPS ortamları yayınlanmadı; karar bekleniyor (alan adı/hesap/yayın izni). Dockerfile+compose artefaktı pakette, test edilmedi"
+  },
+  {
+   "id": "M03",
+   "durum": "doğrulandı",
+   "kanit": "her yolda readiness + build + kalıcı kurulum kimliği (KURULUM_KIMLIGI, /api/ready install alanı); aynı build çalışırken hazırlık ve kimlik kontrolü (launch-bos-again.log)"
+  },
+  {
+   "id": "M04",
+   "durum": "doğrulandı",
+   "kanit": ".env yalnız kalıcı sırlar; WEB_DIST/MIGRATIONS_DIR/MAIL_DIR/build her açılışta komut satırından; defterde previous_build; verili yükseltme demo dump ile (launch-demo.log). Geri dönüş tatbikatı yok"
+  },
+  {
+   "id": "M05",
+   "durum": "doğrulandı",
+   "kanit": "PG_VERSION yokken dizin korunur ve durulur (launch-bos-M05-pgversion-yok.log: ONEMLI.txt silinmedi); initdb geçici dizin + atomik mv"
+  },
+  {
+   "id": "M06",
+   "durum": "doğrulandı",
+   "kanit": "RESTORE_DEFTERI started/done + demo-manifest.txt tablo sayıları; yarım restore → durdurma (launch-demo-M06-yarim-restore.log); tam yükleme manifestle doğrulandı"
+  },
+  {
+   "id": "M07",
+   "durum": "kısmi",
+   "kanit": "Node 22+/PG 16+ ve veri dizini sürüm uyumu kontrolü; kısa socket dizini ve tırnaklama (Linux). Boşluklu/Türkçe yol ve Mac denenmedi"
+  },
+  {
+   "id": "M08",
+   "durum": "kısmi",
+   "kanit": "PID dosyası pid+başlangıç; durdurmada süreç args dist yolu ile doğrulanır; PID yeniden kullanımı yok sayılır. launchd/servis yaşam döngüsü yok"
+  },
+  {
+   "id": "M09",
+   "durum": "doğrulandı",
+   "kanit": "onay anında birim/kapsam yetkisi (unitsAffected + requireUnitProfile); A kapsamlı HRBP B rol dosyasını onaylayamadı (v01-v28 test 7)"
+  },
+  {
+   "id": "M10",
+   "durum": "doğrulandı",
+   "kanit": "tekrar yanıtından önce kaynağın güncel yetkisi (resource_unit_id + required_profiles) kontrol edilir; rol düşünce 403 (test 3)"
+  },
+  {
+   "id": "M11",
+   "durum": "doğrulandı",
+   "kanit": "tamamlanmış komut kaydı silinmez (test 8: response_status 200 korunur); çökmüş rezervasyon 120 sn kirasıyla kurtarılır; iş+makbuz aynı transactionda değil (kısmi tasarım notu) — Y02 ile atomik sahiplenme eklendi"
+  },
+  {
+   "id": "M12",
+   "durum": "doğrulandı",
+   "kanit": "pending_acceptance/approved_target NULL hedefe NOT_COMMITTED; gözlem ayrı; kabulden sonra değerlendirme (test 7)"
+  },
+  {
+   "id": "M13",
+   "durum": "doğrulandı",
+   "kanit": "kapasiteye dahil durumlar tek liste (accepted/active/under_review/pending_acceptance); kabul ucu birim kilidi + limit (test 7)"
+  },
+  {
+   "id": "M14",
+   "durum": "doğrulandı",
+   "kanit": "etki planı: değişen hücre / kaldırılan başlangıç hücresi / metrik sürümü → under_review + baseline_superseded + tarihçe; pending/under_review dahil (test 7/8)"
+  },
+  {
+   "id": "M15",
+   "durum": "doğrulandı",
+   "kanit": "dikkat kuyruğu karşılanan plan slotunu sayar (test 8)"
+  },
+  {
+   "id": "M16",
+   "durum": "dış bağımlılık",
+   "kanit": "HPW yöntem/indeks/benchmark onayı; kısmi ay ve kişi kapsamı metodoloji kararı"
+  },
+  {
+   "id": "M17",
+   "durum": "kısmi",
+   "kanit": "yarı açık tarih aralığı ve tarihli reports_to; hiyerarşi grubu ayrımı ve tek vekâlet motoru açık"
+  },
+  {
+   "id": "M18",
+   "durum": "açık",
+   "kanit": "çoklu rapor gizliliği yayın yoluna bağlanmadı"
+  },
+  {
+   "id": "M19",
+   "durum": "superseded",
+   "kanit": "yerine geçti (superseded): kurumsal motor API+DB+UI v2.6.7–2.6.9 (P2-12, v2.6.8 denetimi bölümü)"
+  },
+  {
+   "id": "M20",
+   "durum": "açık",
+   "kanit": "gerçek SMTP/bounce ve uzun toplu gönderim testi yok"
+  },
+  {
+   "id": "M21",
+   "durum": "açık",
+   "kanit": "Fastify 4, SBOM, zip bombası, işçi izolasyonu, saklama, kurtarma tatbikatı"
+  },
+  {
+   "id": "M22",
+   "durum": "kısmi",
+   "kanit": "KAPANIS.json tek kaynak; N kanıtları dolduruldu; KABUL_SONUCLARI 2.6.1 arşiv etiketli, 2.6.2 K/H eşlemesi eklendi; ancak commit/hash bağı yalnız final arşiv hash düzeyinde"
+  },
+  {
+   "id": "M23",
+   "durum": "kısmi",
+   "kanit": "derin link, önizleme sıfırlama, taşma; ham JSON sadeleştirme ve klavye testi açık"
+  }
+ ],
+ "ozet_M": {
+  "açık": 5,
+  "doğrulandı": 11,
+  "kısmi": 5,
+  "dış bağımlılık": 1,
+  "superseded": 1
+ },
+ "build": "bf93d6537186",
+ "Y": [
+  {
+   "id": "Y01",
+   "durum": "doğrulandı",
+   "kanit": "komut makbuzu kaynak/kapsam (unit|tenant + gerekli profiller) bütün yazma uçlarında; kapsamsız makbuz fail-closed (receipt_scope_missing); rol kapanınca aynı anahtar 403, makbuz silinmez, iş yeniden yapılmaz (v01-v28 test 9)"
+  },
+  {
+   "id": "Y02",
+   "durum": "doğrulandı",
+   "kanit": "rezervasyon/devralma tek atomik INSERT…ON CONFLICT…WHERE süresi dolmuş RETURNING owner_token; yalnız sahip işleyiciye girer ve makbuzu yazar; eşzamanlı iki istek: [200,409], audit 1 (test 9). İş ve makbuz ayrı transaction: commit sonrası makbuz kaybı yeniden yürütmeye yol açabilir (bilinen sınır)"
+  },
+  {
+   "id": "Y03",
+   "durum": "doğrulandı",
+   "kanit": "Hedefler ekranında pending_acceptance satırı: yeni öneri/sürüm, \"taslağı kabul et\" ve \"gerekçeli reddet\"; iki oturumlu tarayıcı testi 8/8 (y03-y04-iki-oturum-sonuc.json)"
+  },
+  {
+   "id": "Y04",
+   "durum": "doğrulandı",
+   "kanit": "Takip ekranı NOT_COMMITTED ve UNDER_REVIEW kartları; undefined boolean \"altında\" sayılmaz; eski oturumda doğru kart (aynı test)"
+  },
+  {
+   "id": "Y05",
+   "durum": "doğrulandı",
+   "kanit": "comparable_previous_result: önceki dönem yalnız madde metni+ölçek+puanlama kuralı eşdeğerse; değişen özel soruda trend bilinmiyor (test 10)"
+  },
+  {
+   "id": "Y06",
+   "durum": "kısmi",
+   "kanit": "Dockerfile bu turda eklendi, compose pakette; Docker test edilmedi ve plan etiketli; build tek kaynaktan (runtime-manifest)"
+  }
+ ],
+ "ozet_Y": {
+  "doğrulandı": 5,
+  "kısmi": 1
+ },
+ "Z": [
+  {
+   "id": "Z01",
+   "durum": "doğrulandı",
+   "kanit": "0005 kanonik yayımlanmış hâline geri alındı; M10/Y alanları ve eşdeğerlik kararı tablosu 0006'da; runner belgeli CHECKSUM_ALIASES ile ara sürümleri kabul edip defteri kanonik checksum'a çeker (olay kaydıyla). Test: demo DB (A varyantı) → 0006 uygulandı; f8c7 varyantı simülasyonu → alias kabul + 0006; temiz kurulum tur 51/51"
+  },
+  {
+   "id": "Z02",
+   "durum": "doğrulandı",
+   "kanit": "stale devralma yalnız aynı payload_hash ile (hash ezilmez); farklı gövde 409 idempotency_conflict; aynı gövde devralma [200,409] (v01-v28 test 9)"
+  },
+  {
+   "id": "Z03",
+   "durum": "doğrulandı",
+   "kanit": "crash penceresi: komut anahtarı audit correlation_id ile izlenir; devralmada iz varsa 409 receipt_lost ve iş yeniden yapılmaz (test 11). Sınır: iş ve makbuz hâlâ ayrı transaction; transactional outbox yok"
+  },
+  {
+   "id": "Z04",
+   "durum": "doğrulandı",
+   "kanit": "gizli satır DTO: value/n/assessment null, privacy politika etiketi; takip gizli kartında n yok; test 11. Çoklu rapor çıkarım koruması açık"
+  },
+  {
+   "id": "Z05",
+   "durum": "doğrulandı",
+   "kanit": "accept/reject expectedVersion zorunlu; uyuşmazlık 409 version_changed + güncel taslak; UI sürüm gönderir ve listeyi yeniler (r01-r44 test 7, v01-v28 test 7, iki oturum 10/10)"
+  },
+  {
+   "id": "Z06",
+   "durum": "doğrulandı",
+   "kanit": "normTxt sayı içindeki ondalığı korur (1,5 ≠ 15); sürümlü HPW eşdeğerlik kararı (item_equivalence_decision, POST /instruments/equivalence, yalnız şirket geneli HR_ADMIN, metodoloji sürümü ve gerekçe zorunlu) hem öncelik hem takip yolunda metin karşılaştırmasının önüne geçer; karar equivalent → trend bilinir, changed → bilinmiyor (v01-v28 test 10). Kararı yazan ekran yok; metodoloji onayı HPW tarafında"
+  },
+  {
+   "id": "Z07",
+   "durum": "açık",
+   "kanit": "birincil erişim yolu kararı bekleniyor (HTTPS ortamları izin/hesap/masraf; Mac imzalama/notarization). Yayın yapılmadı"
+  },
+  {
+   "id": "Z08",
+   "durum": "kısmi",
+   "kanit": "Dockerfile kaynaktan çok aşamalı derleme ve compose context/dockerfile yolu düzeltildi; Docker bu ortamda yok → temiz makine derleme testi yapılmadı"
+  },
+  {
+   "id": "Z09",
+   "durum": "kısmi",
+   "kanit": "versiyon tekilleştirme: v2.6.3, paket adı build kimliği taşır, health/ready 2.6.3; önceki v2.6.2 arşivleri çıktıdan kaldırıldı"
+  },
+  {
+   "id": "Z10",
+   "durum": "kısmi",
+   "kanit": "LINK_DUGME_ENVANTERI: kod kanıtlı satırlar (rol ekleme grant, taslak kabul/ret) API/tarayıcı testleriyle kapatıldı; ham JSON sadeleştirme ve klavye testi açık"
+  },
+  {
+   "id": "Z11",
+   "durum": "superseded",
+   "kanit": "yerine geçti: kurumsal motor API/DB/UI (v2.6.7 build 4af4f417d7c8 → v2.7.0); bkz. v2.6.8/v2.6.9 denetimi bölümleri"
+  },
+  {
+   "id": "Z12",
+   "durum": "açık",
+   "kanit": "SMTP/bounce, dosya güvenliği, retention/imha, backup-restore tatbikatı, yük testi açık"
+  },
+  {
+   "id": "Z13",
+   "durum": "doğrulandı",
+   "kanit": "DB kesintisinde API süreci düşmüyor (pool error yakalama, BEGIN aşamasında tek yeniden bağlanma); 503 → toparlama; final ZIP üstünde tur 51/51"
+  }
+ ],
+ "ozet_Z": {
+  "doğrulandı": 7,
+  "açık": 2,
+  "kısmi": 3,
+  "superseded": 1
+ },
+ "F99": [
+  {
+   "id": "F99-01",
+   "durum": "doğrulandı",
+   "kanit": "snooze: kaynak birim çözümü + requireUnitProfile + idempotencyResource + aynı transaction audit (correlation=komut anahtarı); aynı key/body iki kez → tek kayıt, aynı yanıt; izleyici 403 (v01-v28 test 12)"
+  },
+  {
+   "id": "F99-02",
+   "durum": "doğrulandı",
+   "kanit": "genel çözüm: withContext komut anahtarı varsa AYNI transaction'da command_journal satırı yazar (bütün tenant yazma uçları); stale devralmada command_journal/audit izi → receipt_lost, iş yeniden yapılmaz. Test: panel birim oluşturma crash-window → ikinci birim yok; gerçek komut günlük yazıyor (test 12); soru seti yayımı ve dönem oluşturma için ayrı crash-window testleri (test 13)"
+  },
+  {
+   "id": "F99-03",
+   "durum": "doğrulandı",
+   "kanit": "import commit makbuzu resource_scope=units + resource_unit_ids; replay bütün birimler için güncel yetki (kaybedilen kapsam → 403) (test 12)"
+  },
+  {
+   "id": "F99-04",
+   "durum": "doğrulandı",
+   "kanit": "sonuç DTO redaksiyonu nihai karara bağlı (suppressed OR n<threshold); hedef listesi ve takip aynı eşik; DB kısıtı result_check n<5/suppressed=false satırını zaten reddediyor; eşik 25'e yükseltilmiş n=20 satırlar redakte (test 12). Export/attention sayı türetmiyor (dikkat slot sayar); çoklu rapor çıkarım koruması açık"
+  },
+  {
+   "id": "F99-05",
+   "durum": "kısmi",
+   "kanit": "Dockerfile tsconfig.base.json kopyalıyor, çok aşamalı; compose ${VAR:?} zorunlu sırlar, init-roles.sh ile LOGIN servis hesabı, migrasyon sonrası grup üyeliği, healthcheck+service_healthy; DOCKER BU ORTAMDA YOK → temiz checkout build/up TEST EDİLMEDİ, hazır değil"
+  },
+  {
+   "id": "F99-06",
+   "durum": "doğrulandı",
+   "kanit": "TESLIMAT notu build/sürüm yer tutucuları paketleme anında runtime build kimliğiyle doldurulur; 4f5d referansı yok; KAPANIS.json build alanı aynı kaynaktan"
+  },
+  {
+   "id": "F99-07",
+   "durum": "doğrulandı",
+   "kanit": "normTxt src/textnorm.ts tek kaynak; fonksiyon testi test/textnorm.test.ts: \"1,5 gün\" ≠ \"15 gün\", \"1,5\" = \"1.5\", anlam değişimi eşit sayılmaz; entegrasyon testi (değişen metin → trend bilinmiyor) test 10"
+  },
+  {
+   "id": "F99-08",
+   "durum": "doğrulandı",
+   "kanit": "metodolog kararı: API + Soru seti sayfasında sürümlü karar formu (madde, iki sürüm, karar, HPW yöntem sürümü, gerekçe); karar öncelik ve takip yollarında geçerli (test 10). Karar listesi/geçmişi ekranı yok"
+  },
+  {
+   "id": "F99-09",
+   "durum": "superseded",
+   "kanit": "yerine geçti (superseded): kurumsal akışlar gerçek API/DB/UI ile P2-12"
+  }
+ ],
+ "ozet_F99": {
+  "doğrulandı": 7,
+  "kısmi": 1,
+  "superseded": 1
+ },
+ "A99": [
+  {
+   "id": "A99-01",
+   "sonuc": "PASS",
+   "kanit": "test 12"
+  },
+  {
+   "id": "A99-02",
+   "sonuc": "PASS",
+   "kanit": "test 12 (izleyici 403; rol kaybı Y01 test 9)"
+  },
+  {
+   "id": "A99-03",
+   "sonuc": "PASS",
+   "kanit": "test 12 command_journal"
+  },
+  {
+   "id": "A99-04",
+   "sonuc": "PASS",
+   "kanit": "test 13: yayım crash-window → ikinci sürüm yok; anahtarlı gerçek yayım tek sürüm + command_journal"
+  },
+  {
+   "id": "A99-05",
+   "sonuc": "PASS",
+   "kanit": "test 13: dönem crash-window → duplicate dönem yok"
+  },
+  {
+   "id": "A99-06",
+   "sonuc": "PASS",
+   "kanit": "test 12 (units kapsamı replay 403)"
+  },
+  {
+   "id": "A99-07",
+   "sonuc": "PASS",
+   "kanit": "DB kısıtı result_check reddeder + gateway (test 12)"
+  },
+  {
+   "id": "A99-08",
+   "sonuc": "PASS",
+   "kanit": "eşik 25, n=20 redakte (test 12)"
+  },
+  {
+   "id": "A99-09",
+   "sonuc": "PARTIAL",
+   "kanit": "targets ve follow-up eşik bazlı; export yolu yok; attention slot sayar"
+  },
+  {
+   "id": "A99-10",
+   "sonuc": "PASS",
+   "kanit": "migrasyon-varyant-testi.log: canonical 0005 → 0006/0007"
+  },
+  {
+   "id": "A99-11",
+   "sonuc": "PASS",
+   "kanit": "migrasyon-varyant-testi.log: alias event + 0006/0007"
+  },
+  {
+   "id": "A99-12",
+   "sonuc": "PASS",
+   "kanit": "migrasyon-varyant-testi.log: f8c7 varyantı (yeniden üretilen dosyanın SHA'sı alias ile birebir) → alias event + 0006/0007, veri korundu"
+  },
+  {
+   "id": "A99-13",
+   "sonuc": "PASS",
+   "kanit": "migrasyon-varyant-testi.log: bilinmeyen hash HATA, defter ilerlemedi"
+  },
+  {
+   "id": "A99-14",
+   "sonuc": "PASS",
+   "kanit": "migrasyon-varyant-testi.log: ikinci koşu değişiklik yok"
+  },
+  {
+   "id": "A99-15",
+   "sonuc": "BLOCKED",
+   "kanit": "Docker yok"
+  },
+  {
+   "id": "A99-16",
+   "sonuc": "BLOCKED",
+   "kanit": "Docker yok"
+  },
+  {
+   "id": "A99-17",
+   "sonuc": "PASS",
+   "kanit": "demo-smoke D8 (önceki tur), launcher ayrı DB/çerez/posta"
+  },
+  {
+   "id": "A99-18",
+   "sonuc": "PASS",
+   "kanit": "tur E1/E2 (final ZIP)"
+  },
+  {
+   "id": "A99-19",
+   "sonuc": "PASS",
+   "kanit": "final ZIP: DB kapalı → /api/ready 503, index hazır demez; DB geri → kendiliğinden geçiş; ilk istek 200 (v02-v03-ui-sonuc.json). Bu turda bulunan hata: pg havuzu boşta bağlantı hatasında süreç düşüyordu → düzeltildi (pool error + BEGIN'de tek yeniden bağlanma)"
+  },
+  {
+   "id": "A99-20",
+   "sonuc": "PASS",
+   "kanit": "textnorm testi + test 10 (metin değişimi → trend bilinmiyor, karar yoksa)"
+  },
+  {
+   "id": "A99-21",
+   "sonuc": "PASS",
+   "kanit": "test 10 (equivalent kararı → trend bilinir)"
+  },
+  {
+   "id": "A99-22",
+   "sonuc": "PASS",
+   "kanit": "test 10 (öncelik) + test 13 (takip: itemEquivalence changed, AUTO_VALID değil)"
+  },
+  {
+   "id": "A99-23",
+   "sonuc": "PARTIAL",
+   "kanit": "bkz. v2.7.2 güncel durum: kurumsal motor API/DB/UI + 400 yaşam döngüsü (HTTP) ve tarayıcıdan 400 dağıtım PASS; tam kurumsal kabul dış bağımlılıklar nedeniyle PARTIAL"
+  },
+  {
+   "id": "A99-24",
+   "sonuc": "PARTIAL",
+   "kanit": "bkz. v2.7.2 güncel durum: kurumsal motor API/DB/UI + 400 yaşam döngüsü (HTTP) ve tarayıcıdan 400 dağıtım PASS; tam kurumsal kabul dış bağımlılıklar nedeniyle PARTIAL"
+  },
+  {
+   "id": "A99-25",
+   "sonuc": "PARTIAL",
+   "kanit": "bkz. v2.7.2 güncel durum: kurumsal motor API/DB/UI + 400 yaşam döngüsü (HTTP) ve tarayıcıdan 400 dağıtım PASS; tam kurumsal kabul dış bağımlılıklar nedeniyle PARTIAL"
+  },
+  {
+   "id": "A99-26",
+   "sonuc": "PARTIAL",
+   "kanit": "bkz. v2.7.2 güncel durum: kurumsal motor API/DB/UI + 400 yaşam döngüsü (HTTP) ve tarayıcıdan 400 dağıtım PASS; tam kurumsal kabul dış bağımlılıklar nedeniyle PARTIAL"
+  },
+  {
+   "id": "A99-27",
+   "sonuc": "PARTIAL",
+   "kanit": "bkz. v2.7.2 güncel durum: kurumsal motor API/DB/UI + 400 yaşam döngüsü (HTTP) ve tarayıcıdan 400 dağıtım PASS; tam kurumsal kabul dış bağımlılıklar nedeniyle PARTIAL"
+  },
+  {
+   "id": "A99-28",
+   "sonuc": "PARTIAL",
+   "kanit": "bkz. v2.7.2 güncel durum: kurumsal motor API/DB/UI + 400 yaşam döngüsü (HTTP) ve tarayıcıdan 400 dağıtım PASS; tam kurumsal kabul dış bağımlılıklar nedeniyle PARTIAL"
+  },
+  {
+   "id": "A99-29",
+   "sonuc": "PARTIAL",
+   "kanit": "bkz. v2.7.2 güncel durum: kurumsal motor API/DB/UI + 400 yaşam döngüsü (HTTP) ve tarayıcıdan 400 dağıtım PASS; tam kurumsal kabul dış bağımlılıklar nedeniyle PARTIAL"
+  },
+  {
+   "id": "A99-30",
+   "sonuc": "PARTIAL",
+   "kanit": "bkz. v2.7.2 güncel durum: kurumsal motor API/DB/UI + 400 yaşam döngüsü (HTTP) ve tarayıcıdan 400 dağıtım PASS; tam kurumsal kabul dış bağımlılıklar nedeniyle PARTIAL"
+  }
+ ],
+ "ozet_A99": {
+  "PASS": 19,
+  "PARTIAL": 9,
+  "BLOCKED": 2
+ },
+ "P0": [
+  {
+   "id": "P0-1",
+   "durum": "doğrulandı",
+   "kanit": "takip gizliliği tek kapı (privacyGate, güncel eşik, bayraktan bağımsız): threshold 25/n=20 → HIDDEN, baseline/followup value-n, target, outcome, attainment, observedChange yok; NOT_COMMITTED observed yok; UNDER_REVIEW sayı yok; DTO hidden/suppressed (v01-v28 test 14); UI gizli kartı. Çoklu rapor gizliliği ayrı açık iş"
+  },
+  {
+   "id": "P0-2",
+   "durum": "kısmi",
+   "kanit": "merkezi commandApi: aynı URL+gövde için kararlı anahtar, çift tıkta tek uçuş, yanıt kaybı/ağ hatasında aynı anahtarla yeniden deneme, iş hatasında niyet kapanır; ürün sayfalarındaki 19 mutating çağrı bağlandı (önizleme/yükleme hariç). Tarayıcı: çift tık → iki istek aynı anahtar, DB +1 (ui-ciftik-sonuc.json). Bağlantı kesilmesi tarayıcı testi koşulmadı; multipart dosya hash semantiği yapılmadı (yükleme doğal tekil)"
+  },
+  {
+   "id": "P0-3",
+   "durum": "doğrulandı",
+   "kanit": "GET /followup salt hesap (persisted=false, outcome_assessment yazmaz); POST /followup/assess kalıcı (yazma yetkisi, makbuz kaynağı, audit aynı transaction, komut anahtarı) (test 14, e2e-8)"
+  },
+  {
+   "id": "P0-4",
+   "durum": "açık",
+   "kanit": "erişim yolu kararı bekleniyor (HTTPS: hosting/TLS/izin; Mac: Developer ID+notarization+gerçek cihaz). Yayın yapılmadı"
+  },
+  {
+   "id": "P1-5",
+   "durum": "kısmi",
+   "kanit": "Docker fail-fast: final imajda psql gerekmez, grup üyeliği migrate adımında GRANT_APP_ROLES_TO ile; || true kaldırıldı; migrate/grant başarısız → API başlamaz. Docker yok → temiz checkout testi YAPILMADI"
+  },
+  {
+   "id": "P1-6",
+   "durum": "açık",
+   "kanit": "interaction_area kolonu/sözlük/panel yapılmadı"
+  },
+  {
+   "id": "P1-7",
+   "durum": "açık",
+   "kanit": "Responsibility Map yapılmadı"
+  },
+  {
+   "id": "P1-8",
+   "durum": "açık",
+   "kanit": "official_aggregate read path yapılmadı"
+  },
+  {
+   "id": "P1-9",
+   "durum": "açık",
+   "kanit": "reorg/delegation/orphan yapılmadı"
+  },
+  {
+   "id": "B-12",
+   "durum": "doğrulandı",
+   "kanit": "TESLIMAT metni build/sürüm yer tutucularından; 0001–0007; tek manifest"
+  },
+  {
+   "id": "B-13",
+   "durum": "doğrulandı",
+   "kanit": "A99-13: migrate gerçek exit kodu 1, betik assert eder (migrasyon-varyant-testi.log)"
+  }
+ ],
+ "ozet_P0": {
+  "doğrulandı": 4,
+  "kısmi": 2,
+  "açık": 5
+ },
+ "P0_v265": [
+  {
+   "id": "P0-1",
+   "durum": "doğrulandı",
+   "kanit": "takip gizliliği: başlangıç ve takip sonucu KENDİ dönem eşiğiyle (privacyGate satır bazlı eşik); 5→25 ve 25→5 senaryoları: HIDDEN, n/value/target/outcome/attainment/observedChange yok; ikisi de yayınlanabilirse sayı (v01-v28 test 15)"
+  },
+  {
+   "id": "P0-2",
+   "durum": "doğrulandı",
+   "kanit": "commandApi: sessionStorage niyet, outcome_unknown korunur, aynı düğmede aynı anahtar; TARAYICI: bütün POST 9 sn engellendi → otomatik denemeler tükendi, ekranda açık uyarı, sonra manuel tıklama aynı anahtarla → DB etkisi bir kez (ui-kurumsal-offline-sonuc.json). Çift tık testi önceki turdan"
+  },
+  {
+   "id": "P0-3",
+   "durum": "doğrulandı",
+   "kanit": "platform şirket oluşturma: aynı kodla ikinci komut 409 tenant_exists + mevcut kayıt kimliği, ikinci şirket yok; davet kabulü: tüketilen token hash aynı transaction'da işaretlenir, ikinci deneme 410 invitation_already_accepted + e-posta, belirlenen parolayla giriş çalışır (test 15)"
+  },
+  {
+   "id": "P0-4",
+   "durum": "doğrulandı",
+   "kanit": "import commit: aynı anahtar aynı yanıt; committed işe anahtarsız ikinci commit recovered:true (yeniden uygulama yok); GET /imports/:jid committed_result; iş etkisi bir kez (test 15, e2e-5)"
+  },
+  {
+   "id": "P0-5",
+   "durum": "doğrulandı",
+   "kanit": "PATCH komut sözleşmesinde (rezervasyon/makbuz/replay); dönem soru seti PATCH aynı anahtarla aynı yanıt, makbuz tenant kapsamlı (test 15)"
+  },
+  {
+   "id": "P1-6..11",
+   "durum": "superseded",
+   "kanit": "yerine geçti: v2.6.7–v2.7.0 (P1P2_v265, v268, v269 bölümleri)"
+  },
+  {
+   "id": "P2-12",
+   "durum": "superseded",
+   "kanit": "yerine geçti: v2.6.7–v2.7.0 (P1P2_v265, v268, v269 bölümleri)"
+  },
+  {
+   "id": "ERISIM-13",
+   "durum": "açık",
+   "kanit": "Mac/HTTPS kararı bekleniyor; yayın yok; Docker temiz makine testi yok"
+  },
+  {
+   "id": "OPS-14",
+   "durum": "açık",
+   "kanit": "SMTP/bounce, upload güvenliği, retention/imha, backup-restore, yük testi ayrı kapılar, yapılmadı"
+  }
+ ],
+ "ozet_P0_v265": {
+  "doğrulandı": 5,
+  "superseded": 2,
+  "açık": 2
+ },
+ "P1P2_v265": [
+  {
+   "id": "P1-6",
+   "durum": "doğrulandı",
+   "kanit": "Soru seti sayfası: boyut satırı altında tekil madde aç/kapat; çekirdek maddeler kilitli ve gerekçeli; 4/3 seçim API testinde; sertifikasyon etkisi yayımda (test 16)"
+  },
+  {
+   "id": "P1-7",
+   "durum": "doğrulandı",
+   "kanit": "interaction_area: HPW sözlüğü (work/manager/colleagues/employer_brand/system/self/outcome); XLSX Maddeler kolonu + sözlük satırı; importer/API doğrulaması (uydurma değer 422); panel seçici; DB kalıcı; sonuç satırında alan (test 16)"
+  },
+  {
+   "id": "P1-8",
+   "durum": "doğrulandı",
+   "kanit": "cm_responsibility_map: madde/etkileşim alanı → sorumluluk merkezi → onaylı tenant rolü → kapsam → tarih → istisna; yalnız HR_ADMIN; hedef adayları haritadan (candidateSource=responsibility_map), sabit liste yalnız başlangıç önerisi (test 16); Organizasyon sayfasında harita paneli (tarayıcı testi)"
+  },
+  {
+   "id": "P1-9",
+   "durum": "doğrulandı",
+   "kanit": "GET /cycles/:cid/units/:uid/aggregates: official (HPW official_aggregate) ≠ derived_estimate (madde ortalaması) ayrı etiket; gizli/eksik üye → tahmin üretilmez; official yoksa null (test 16)"
+  },
+  {
+   "id": "P1-10",
+   "durum": "doğrulandı",
+   "kanit": "tamamlayıcı gizleme: üst birimde alt birimlerden tam biri gizliyse üst değer gösterilmez (çıkarım koruması); sonuç satırında gerekçe (test 16). Export katmanı yok"
+  },
+  {
+   "id": "P1-11",
+   "durum": "doğrulandı",
+   "kanit": "reorg: birim taşıma tarihli (eski ilişki kapanır, geçmiş korunur), hedef devri (rol değişimi + tarihçe), orphan kuyruğu (yöneticisiz birimde açık hedef) (test 16); Organizasyon sayfasında taşıma paneli, uzun offline sonrası aynı anahtarla manuel yeniden deneme → tek taşıma kaydı (tarayıcı testi)"
+  },
+  {
+   "id": "P2-12",
+   "durum": "superseded",
+   "kanit": "yerine geçti: v2.6.8/v2.6.9 denetimi bölümleri (API+DB+UI, 400 birim yük testi)"
+  },
+  {
+   "id": "ERISIM-13",
+   "durum": "açık",
+   "kanit": "Mac/HTTPS kararı bekleniyor; yayın yok; Docker temiz makine testi yok"
+  },
+  {
+   "id": "OPS-14",
+   "durum": "açık",
+   "kanit": "SMTP/bounce, upload güvenliği, retention/imha, backup-restore tatbikatı, yük testi bu ortamda koşulamaz; açık"
+  }
+ ],
+ "ozet_P1P2_v265": {
+  "doğrulandı": 6,
+  "superseded": 1,
+  "açık": 2
+ },
+ "v268": [
+  {
+   "id": "P0-1",
+   "durum": "doğrulandı",
+   "kanit": "aggregates birim kapsamı (assertUnitVisible): başka birim 403, kapsamlı HRBP yalnız kendi ağacı (test 17)"
+  },
+  {
+   "id": "P0-2",
+   "durum": "doğrulandı",
+   "kanit": "Control Tower şirket geneli (kapsamlı HRBP 403), kuyruk görünür birim setiyle filtreli, EXEC görür (test 17)"
+  },
+  {
+   "id": "P0-3",
+   "durum": "doğrulandı",
+   "kanit": "yönetişim matrisi GOVERNANCE (corporate.ts): öneren HR_ADMIN/EXEC; freeze/reconcile/publish/deploy HR_ADMIN; birim kararı yönetici/HRBP; merkezi karar HR_ADMIN/EXEC; EXEC freeze 403, istek önerir, merkezi karar verir (test 17)"
+  },
+  {
+   "id": "P0-4",
+   "durum": "doğrulandı",
+   "kanit": "liste/detay GET (ambitions, ambitions/:id, master-actions, deployments, resource-requests) + UI: Genel bakış planlama (öner/dondur/uzlaştır/detay), Hedefler uzlaştırma kararı, Aksiyonlar dağıtım kabul/red/yükselt/yerel bağ + ana aksiyon listesi, Dikkat karar kabul/ret (tarayıcı testi ui-kurumsal-v269)"
+  },
+  {
+   "id": "P0-5",
+   "durum": "doğrulandı",
+   "kanit": "as-of hiyerarşi fonksiyonu org_parent_asof + tarihli sorgular; gelecek tarihli taşıma bugünü değiştirmez; döngü 422; geçmiş tarih 422 (test 17)"
+  },
+  {
+   "id": "P0-6",
+   "durum": "doğrulandı",
+   "kanit": "merkezi karar altta yatan kaydı sonuçlandırır: karşı teklif kabulü projeksiyonu çeker/durumu günceller, istisna kabulü, kaynak isteği onayı; accept_gap başlığı düzeltildi (test 17)"
+  },
+  {
+   "id": "P0-7",
+   "durum": "doğrulandı",
+   "kanit": "yeni sürüm: kod aynı olmalı, ambition bağı miras; dağıtım başına yükselt/eski sürümde kal/emekli et kararı tarihçeli; yükseltme yeni dağıtım yaratır (test 17)"
+  },
+  {
+   "id": "P0-8",
+   "durum": "dış bağımlılık",
+   "kanit": "birim düzeyinde katkı/fizibilite semantiği (contributing/no_local_target/unsupported), kurumsal fark kohort düzeyinde; headcount ağırlıklı projeksiyon HPW-RECON-DRAFT-2026.1 onay bekliyor (yanıtta approved:false)"
+  },
+  {
+   "id": "P1-10",
+   "durum": "doğrulandı",
+   "kanit": "dağıtım kabul/red gerekçeli; kabulde ana aksiyondan güvenli yerel aksiyon taslağı (kabul edilmiş hedefe bağlı), local_action_id izlenebilir (test 17, UI)"
+  },
+  {
+   "id": "P1-11",
+   "durum": "doğrulandı",
+   "kanit": "Control Tower: istek/projeksiyon/kurumsal fark, kırılım, ana aksiyon bazında dağıtım/uygulama/sürüm bekleyen, veri tazeliği, riskli birimler (geciken aksiyon), karar bekleme yaşı, kaynak/bütçe/bağımlılık blokajları, bölge kırılımı, drill-down (test 17)"
+  },
+  {
+   "id": "P1-14",
+   "durum": "doğrulandı",
+   "kanit": "yapılandırılmış kaynak/bütçe/bağımlılık isteği: sahip, ihtiyaç, tutar, termin, bloke, durum, karar; merkezi kuyruk bağı; karar isteği sonuçlandırır (test 17)"
+  },
+  {
+   "id": "P1-15",
+   "durum": "doğrulandı",
+   "kanit": "metrik kimliği: istek yalnız *_TB metriğinde, metric_code açık; desteklenmeyen/eksik metrik 422 unsupported_metric (test 17)"
+  },
+  {
+   "id": "P1-9",
+   "durum": "superseded",
+   "kanit": "yerine geçti: v2.7.2 TRANSFER/MERGE, PRIVACY-DIFF, OFFICIAL-UI (önceki: birim taşıma + hedef devri var; aksiyon devri, vekâlet, split/merge/absorb/close-open yok)"
+  },
+  {
+   "id": "P1-12",
+   "durum": "superseded",
+   "kanit": "yerine geçti: v2.7.2 TRANSFER/MERGE, PRIVACY-DIFF, OFFICIAL-UI (önceki: küçük grup + tamamlayıcı gizleme as-of hiyerarşi ile; overlapping filtre/çoklu gizli hücre differencing testi ve export )"
+  },
+  {
+   "id": "P1-13",
+   "durum": "superseded",
+   "kanit": "yerine geçti: v2.7.2 TRANSFER/MERGE, PRIVACY-DIFF, OFFICIAL-UI (önceki: official/derived API var; ekranda gösterim yok)"
+  },
+  {
+   "id": "OPS-16",
+   "durum": "superseded",
+   "kanit": "yerine geçti: v2.7.2 V270-P1-03/P1-04 (200/400/500 ve 400 yaşam döngüsü koşuldu) (önceki: 400/200/500 ölçek kabulü ve yük testi koşulmadı)"
+  },
+  {
+   "id": "OPS-17",
+   "durum": "açık",
+   "kanit": "Mac/HTTPS erişimi karar bekliyor"
+  },
+  {
+   "id": "OPS-18",
+   "durum": "açık",
+   "kanit": "Docker temiz derleme yapılmadı (BLOCKED)"
+  },
+  {
+   "id": "OPS-19..20",
+   "durum": "açık",
+   "kanit": "SMTP/bounce, upload güvenliği, retention, backup/restore, erişilebilirlik açık"
+  },
+  {
+   "id": "OPS-21",
+   "durum": "doğrulandı",
+   "kanit": "paketleme: KAPANIS build alanı kopyadan önce yazılır, paketleme sonrası kapanış/manifest/ZIP build eşitliği doğrulanır (aksi hâlde paketleme durur)"
+  }
+ ],
+ "ozet_v268": {
+  "doğrulandı": 12,
+  "dış bağımlılık": 1,
+  "superseded": 4,
+  "açık": 3
+ },
+ "v269": [
+  {
+   "id": "P0-269-01",
+   "durum": "doğrulandı",
+   "kanit": "closed alttaki kaydı değiştirmez (effect null); karar gerektiren türlerde outcome zorunlu (422); UI kabul/ret/kapat ayrı; test: counterproposal/exception/resource kaydına closed → durum değişmedi (test 18)"
+  },
+  {
+   "id": "P0-269-02",
+   "durum": "doğrulandı",
+   "kanit": "kohort kuralı zorunlu (leaf / birim tipi / seçili); ata-torun aynı kohortta 422 cohort_overlap; cohort-preview sayı/liste; UI freeze öncesi kapsam önizlemesi; test: A+A1+A2 sonuçluyken leaf yalnız yapraklar (test 18)"
+  },
+  {
+   "id": "P0-269-03",
+   "durum": "doğrulandı",
+   "kanit": "kohort detayı/projeksiyon/Control Tower read-time güncel eşikle redakte; 5→25 gizli, 25→5 geri (test 18)"
+  },
+  {
+   "id": "P0-269-04",
+   "durum": "doğrulandı",
+   "kanit": "tek projeksiyon motoru projectCohort: kabul edilen istisna payda ve paydan çıkar, gizli satırlar sayılmaz; reconcile/detay/Control Tower aynı motor; test: istisna kabulü sayılan birimi düşürür (test 18). Metodoloji HPW onayı bekliyor (dış bağımlılık, yanıtta approved:false)"
+  },
+  {
+   "id": "P0-269-05",
+   "durum": "doğrulandı",
+   "kanit": "yerel aksiyon planı ana aksiyon ritmi (weekly/biweekly/monthly/quarterly/once) ve ufkundan (horizon_days) planSlots ile; 5 ritim gerçek DB testi (test 18)"
+  },
+  {
+   "id": "P0-269-06",
+   "durum": "doğrulandı",
+   "kanit": "master-actions ve ambitions listeleri görünür birim setiyle (scoped bayrağı); kapsamlı HRBP global sayı göremez (test 18)"
+  },
+  {
+   "id": "P0-269-07",
+   "durum": "doğrulandı",
+   "kanit": "as-of: tenant org listesi, org importer diff, move current parent, orphan/yönetici rolü, görünürlük, kohort — hepsi effective_from/effective_to as-of; gelecek taşıma bugünkü listede eski üstü gösterir (test 18, test 17)"
+  },
+  {
+   "id": "P0-269-08",
+   "durum": "doğrulandı",
+   "kanit": "counterproposalValue 0–100 şemada; -1/101 400; değer zorunlu 422 (test 18)"
+  },
+  {
+   "id": "P1-UI",
+   "durum": "doğrulandı",
+   "kanit": "ana aksiyon oluştur / yeni sürüm / yayımla / dağıt (birim tipi/kod filtresi, kapsam önizlemesi, kaç birim) ve kaynak/bütçe/bağımlılık isteği gerçek UI; tarayıcı testi ui-kurumsal-v270"
+  },
+  {
+   "id": "P1-reopen",
+   "durum": "doğrulandı",
+   "kanit": "dedupe reopen: kind/title/detail/priority/state güncellenir, decision/decided_by/decided_at sıfırlanır (test 18)"
+  },
+  {
+   "id": "P1-400",
+   "durum": "superseded",
+   "kanit": "yerine geçti: v2.7.2 güncel durum bölümü (önceki: 400 yaprak birim + 400 dağıtım (82 ms) + idempotent tekrar + yeni sürüm (400 pending_upgrade) + kuyruk/Control Tower/dağ)"
+  },
+  {
+   "id": "P1-rollup",
+   "durum": "doğrulandı",
+   "kanit": "Control Tower bölge kırılımı recursive as-of alt ağaç (B altındaki 400 şube bölgeye roll-up) (test 18)"
+  },
+  {
+   "id": "P1-official-ui",
+   "durum": "superseded",
+   "kanit": "yerine geçti: v2.7.2 güncel durum bölümü (önceki: resmî toplam ekranda gösterimi yapılmadı (API var))"
+  },
+  {
+   "id": "P1-transfer",
+   "durum": "superseded",
+   "kanit": "yerine geçti: v2.7.2 güncel durum bölümü (önceki: aksiyon devri/vekâlet, split/merge/absorb/close-open yok)"
+  },
+  {
+   "id": "P1-privacy",
+   "durum": "superseded",
+   "kanit": "yerine geçti: v2.7.2 güncel durum bölümü (önceki: overlapping filtre/differencing/export testleri yok)"
+  },
+  {
+   "id": "OPS",
+   "durum": "açık",
+   "kanit": "HTTPS/Mac erişimi (karar+altyapı), Docker temiz derleme, SMTP/bounce, upload güvenliği, retention/imha, backup-restore, erişilebilirlik/yük (dış) yapılmadı"
+  }
+ ],
+ "ozet_v269": {
+  "doğrulandı": 11,
+  "superseded": 4,
+  "açık": 1
+ },
+ "v271": [
+  {
+   "id": "K-01",
+   "durum": "doğrulandı",
+   "kanit": "Birim sonuçları sayfası gizli/çıkarım korumalı satırda çöküyordu (birim müdürü boş sayfa); redakte satırlar boş dizilerle döner; tarayıcıda şube müdürü sayfası açılıyor (kılavuz ekran görüntüleri)"
+  },
+  {
+   "id": "K-02",
+   "durum": "doğrulandı",
+   "kanit": "Birim ve bölge müdürü kendi biriminin bulunduğu kurumsal istekleri listeleyebilir; Hedefler ekranında kurumsal uzlaştırma bölümü görünür (kılavuz ekran görüntüsü 62/63)"
+  },
+  {
+   "id": "K-03",
+   "durum": "doğrulandı",
+   "kanit": "Türkçe arayüz: üst çubukta yetki profili, rol/kuyruk/dağıtım/uzlaştırma durumları, etkileşim alanı ve sorumluluk merkezi seçenekleri, ritim seçenekleri Türkçe etiketle; “Top Box” ve onay penceresindeki İngilizce kodlar kaldırıldı"
+  },
+  {
+   "id": "K-04",
+   "durum": "doğrulandı",
+   "kanit": "A4 kullanma kılavuzları (tüm roller + 8 rol) gerçek ekran görüntüleriyle yeniden üretildi"
+  }
+ ],
+ "ozet_v271": {
+  "doğrulandı": 4
+ },
+ "v270": [
+  {
+   "id": "V270-P0-01",
+   "durum": "doğrulandı",
+   "kanit": "Kuyruk sözleşmesi A: istisna/karar/kaynak türlerinde kararsız kapatma 422 decision_required, sonuçsuz karar 422; kuyruk kararı alttaki kaydı aynı işlemde sonuçlandırır (kaynak isteği onay/ret, karşı teklif/istisna, fark kabulü, dağıtım reddi kabul/geri çevirme); alttaki kayıt karar verilebilir değilse 409 ve kuyruk değişmez; sürüm geçişi kaydı bekleyen varken kapanmaz, son birim kararıyla kendiliğinden kapanır; 0011 migrasyonu eski kararsız kapatılmış kayıtları yeniden açar (API test 19; tarayıcı ui-400-dagitim adım 6)"
+  },
+  {
+   "id": "V270-P0-02",
+   "durum": "doğrulandı",
+   "kanit": "Gizli kohort satırı gizlilik güvenli DTO: sayılar yanında uzlaştırma durumu “hidden”, yerel hedef kimliği, istisna gerekçesi, karar verenler null; detay kırılımı, uzlaştırma yanıtı, Control Tower istek ve üst düzey kohort sayımları gizli satırın durumunu saymaz (API test 19, eşik 5→25). “Değer gizli ama iş akışı durumu görünür” politikası HPW onayı olmadan açılmadı"
+  },
+  {
+   "id": "V270-P1-03",
+   "durum": "kısmi",
+   "kanit": "400 şube tam yaşam döngüsü gerçek HTTP + PostgreSQL (DOLU DEMO kopyası, birimler demo verisinden): 400 şubede hedef API ile, 400 dağıtım, 380 eşzamanlı kabul + yerel aksiyon (p95 167.0 ms), 20 ret, 150 kanıt, 380 eşzamanlı sürüm kararı, 20 kuyruk kararı; 0 hata; sürüm kaydı kapandı (olcek-lifecycle-yerel.json). Tarayıcıdan 400 şubeye dağıtım 7/7 (ui-400-dagitim). KOŞULMADI: 400 yerel yanıtın tarayıcıdan tek tek verilmesi, 400 birimde takip dönemi ölçümü (sonraki dönem sonucu gerekir), çok kullanıcılı eşzamanlı yazma yarışları"
+  },
+  {
+   "id": "V270-P1-04",
+   "durum": "doğrulandı",
+   "kanit": "Dağıtım ve kohort dondurma tek küme tabanlı INSERT (unnest); ata-torun denetimi tek özyinelemeli sorgu. Yerel: 200: 18.9 ms, 400: 30.2 ms, 500: 26.4 ms. 5 ms gidiş-dönüş gecikme benzetimi (TCP vekil, gerçek uzak DB değildir): 200: 217.6 ms, 400: 228.7 ms, 500: 225.6 ms — birim sayısından bağımsız"
+  },
+  {
+   "id": "V270-P1-05",
+   "durum": "doğrulandı",
+   "kanit": "Dağıtım yalnız bugün etkin birimlere: kapanmış ve gelecekte açılacak birim 422 unit_not_active, hiçbir satır yazılmaz; panel yalnız etkin birimleri listeler (API test 19; tarayıcı 400 etkin şube)"
+  },
+  {
+   "id": "V270-P1-06",
+   "durum": "dış bağımlılık",
+   "kanit": "Kohort birim tarihi esası açık parametre: dondurma tarihi ya da anket dönemi bitişi; önizleme ve dondurma aynı fonksiyon ve aynı tarih; seçilen esas istekte saklanır; birim ve hiyerarşi aynı tarihle süzülür (API test 19; tarayıcı adım 7). Hangi esasın kanonik olduğu HPW metodoloji kararıdır; varsayılan “dondurma tarihi” bu karar gelene kadar geçicidir"
+  },
+  {
+   "id": "V270-P1-07",
+   "durum": "doğrulandı",
+   "kanit": "Kapanış tek kaynak: bu bölüm güncel durumdur; çelişen eski satırlar (v2.6.8 OPS-16, v2.6.9 P1-400/P1-official-ui/P1-transfer/P1-privacy, v2.6.8 P1-9/P1-12/P1-13) superseded olarak işaretlendi, A99-23…30 güncellendi"
+  },
+  {
+   "id": "PERF-01",
+   "durum": "doğrulandı",
+   "kanit": "Ölçek bulgusu ve düzeltmesi: 400 şubede hedef önizlemesi 1,6 sn idi (satır başına şirket ortalaması alt sorgusu); istek başına tek hesap + 0012 indeksleri ile ~0,23 sn; birim sonuçları ~0,30 sn. 8 eşzamanlı hedef oluşturmada p95 1,85 sn — kabul edilebilir ama izlenmeli"
+  },
+  {
+   "id": "REG-01",
+   "durum": "doğrulandı",
+   "kanit": "v2.7.1’de gelen gerileme: üst çubukta yetki profilini Türkçe göstermek için değiştirilen değişken menü görünürlüğünde de kullanılıyordu; İK yöneticisinde Organizasyon, Soru seti, Dönemler ve Kullanıcılar menüsü kayboluyordu (ekranlara doğrudan adresle erişim çalışıyordu). DOLU DEMO duman testi (D4) yakaladı; menü yeniden yetki koduna bağlandı; final ZIP’te duman testi ve BOŞ tur yeniden koşuldu. Final build 5e5b18b28d58: DOLU DEMO duman testi 8/8 (menüde Kullanıcılar dahil), BOŞ tur 51/51"
+  },
+  {
+   "id": "FLAKE-01",
+   "durum": "kısmi",
+   "kanit": "BOŞ tarayıcı turu v2.7.2 ara derlemede bir kez adım 8’de (İK iş ortağı “Doğrula” düğmesi etkin olmadı) düştü; nedeni bulunamadı. Final build 5e5b18b28d58 üzerinde temiz açılışla 51/51 geçti. Tekrarlanırsa incelenecek"
+  },
+  {
+   "id": "TR-02",
+   "durum": "doğrulandı",
+   "kanit": "Ekranda kalan ham durum kodları Türkçe etiketle: Dikkat önem düzeyi (kritik/uyarı/bilgi), aksiyon yaşam/doğrulama/sağlık durumları, hedef durumu, dönem durumu; BOŞ tur doğrulama adımı Türkçe etiketi kontrol ediyor"
+  },
+  {
+   "id": "KILAVUZ",
+   "durum": "doğrulandı",
+   "kanit": "A4 kullanma kılavuzları (tüm roller + 8 rol) v2.7.2 ekran görüntüleri ve davranışıyla yeniden üretildi: kuyrukta kararsız kapatma yok, kohort tarih esası, etkin birim dağıtımı, aksiyon devri, endeks paneli"
+  },
+  {
+   "id": "OFFICIAL-UI",
+   "durum": "kısmi",
+   "kanit": "Birim sonuçları ekranında endeks paneli: resmî HPW toplamı (tanım sürümü, durum) ve ayrı etiketli türetilmiş tahmin (“resmî HPW sonucu değildir”); API birim kapsamı testli (test 17). Panel tarayıcıda ayrıca test edilmedi; DOLU DEMO’da resmî toplam yüklü değil"
+  },
+  {
+   "id": "TRANSFER",
+   "durum": "doğrulandı",
+   "kanit": "Aksiyon devri API: yalnız aynı birim ya da üst birimdeki etkin role, kapalı aksiyon devredilemez, tarihçe (test 19); aksiyon ayrıntısında “Sorumluyu devret” düğmesi (tarayıcıda ayrıca test edilmedi). Hedef devri mevcut. Vekâlet: tarihli rol ataması (Rol_Atamaları; demo’da etkin ve süresi biten vekil)"
+  },
+  {
+   "id": "MERGE",
+   "durum": "kısmi",
+   "kanit": "Birim birleştirme (absorb) API: alt birimler tarihli taşınır, birim kapanır, açık hedef/aksiyon sahipsiz kuyruğuna düşer, döngü 422, yalnız şirket geneli İK (test 19); ekran yok. Bölme (split): uygulanmadı — ölçüm soy ağacı/karşılaştırılabilirlik HPW yöntem kararı gerektirir. Kapatma/açma: Excel ile mevcut"
+  },
+  {
+   "id": "PRIVACY-DIFF",
+   "durum": "kısmi",
+   "kanit": "Farklılaştırma kuralı: gizli alt birimlerin toplam yanıtı ya da “üst − görünür alt” kalan grup eşik altındaysa üst değer gizlenir; birden çok gizli alt birim kombinasyonları saf fonksiyon testiyle (test 20) ve tek gizli durum HTTP ile (test 16). Üründe filtre/demografik kesit ve dışa aktarma katmanı yoktur; eklenirse aynı kapıdan geçmelidir. Tarihsel örgüt görünümü üzerinden farklılaştırma testi yok"
+  },
+  {
+   "id": "HPW-METOD",
+   "durum": "dış bağımlılık",
+   "kanit": "Uzlaştırma yöntemi (HPW-RECON-DRAFT-2026.1), kohort tarih esası ve “gizli değer + görünür iş akışı” politikası HPW metodoloji onayı bekliyor"
+  },
+  {
+   "id": "ERISIM",
+   "durum": "açık",
+   "kanit": "HTTPS DOLU/BOŞ ortamları ya da imzalı/notarize Mac dağıtımı: yayın izni, alan adı/hosting ya da Apple Developer ID gerekli; yapılmadı"
+  },
+  {
+   "id": "OPS",
+   "durum": "açık",
+   "kanit": "Docker temiz derleme/çalıştırma, gerçek SMTP/bounce ve uzun toplu gönderim, upload güvenliği (zip bombası, zararlı yazılım), retention/imha, backup→restore tatbikatı, erişilebilirlik/klavye, gerçek uzak/hosted PostgreSQL yük testi: bu ortamda koşulmadı"
+  },
+  {
+   "id": "KURUMSAL-KABUL",
+   "durum": "kısmi",
+   "kanit": "Tam kurumsal/canlı kabul: yukarıdaki dış bağımlılıklar ve açık operasyon kapıları kapanmadan verilemez"
+  }
+ ],
+ "ozet_v270": {
+  "doğrulandı": 10,
+  "kısmi": 6,
+  "dış bağımlılık": 2,
+  "açık": 2
+ },
+ "v273": [
+  {
+   "id": "F01",
+   "durum": "doğrulandı",
+   "kanit": "bkz. docs/DENETIM-YANITI-v2.7.3.md; test-ciktilari/v273"
+  },
+  {
+   "id": "F02",
+   "durum": "doğrulandı",
+   "kanit": "bkz. docs/DENETIM-YANITI-v2.7.3.md; test-ciktilari/v273"
+  },
+  {
+   "id": "F03",
+   "durum": "doğrulandı",
+   "kanit": "bkz. docs/DENETIM-YANITI-v2.7.3.md; test-ciktilari/v273"
+  },
+  {
+   "id": "F04",
+   "durum": "doğrulandı",
+   "kanit": "bkz. docs/DENETIM-YANITI-v2.7.3.md; test-ciktilari/v273"
+  },
+  {
+   "id": "F05",
+   "durum": "doğrulandı",
+   "kanit": "bkz. docs/DENETIM-YANITI-v2.7.3.md; test-ciktilari/v273"
+  },
+  {
+   "id": "F06",
+   "durum": "doğrulandı",
+   "kanit": "bkz. docs/DENETIM-YANITI-v2.7.3.md; test-ciktilari/v273"
+  },
+  {
+   "id": "F07",
+   "durum": "doğrulandı",
+   "kanit": "bkz. docs/DENETIM-YANITI-v2.7.3.md; test-ciktilari/v273"
+  },
+  {
+   "id": "F08",
+   "durum": "doğrulandı",
+   "kanit": "bkz. docs/DENETIM-YANITI-v2.7.3.md; test-ciktilari/v273"
+  },
+  {
+   "id": "F09",
+   "durum": "doğrulandı",
+   "kanit": "bkz. docs/DENETIM-YANITI-v2.7.3.md; test-ciktilari/v273"
+  },
+  {
+   "id": "F10",
+   "durum": "doğrulandı",
+   "kanit": "bkz. docs/DENETIM-YANITI-v2.7.3.md; test-ciktilari/v273"
+  },
+  {
+   "id": "F11",
+   "durum": "doğrulandı",
+   "kanit": "bkz. docs/DENETIM-YANITI-v2.7.3.md; test-ciktilari/v273"
+  },
+  {
+   "id": "F12",
+   "durum": "doğrulandı",
+   "kanit": "bkz. docs/DENETIM-YANITI-v2.7.3.md; test-ciktilari/v273"
+  },
+  {
+   "id": "F13",
+   "durum": "doğrulandı",
+   "kanit": "bkz. docs/DENETIM-YANITI-v2.7.3.md; test-ciktilari/v273"
+  },
+  {
+   "id": "F14",
+   "durum": "doğrulandı",
+   "kanit": "bkz. docs/DENETIM-YANITI-v2.7.3.md; test-ciktilari/v273"
+  },
+  {
+   "id": "F15",
+   "durum": "doğrulandı",
+   "kanit": "bkz. docs/DENETIM-YANITI-v2.7.3.md; test-ciktilari/v273"
+  },
+  {
+   "id": "F16",
+   "durum": "doğrulandı",
+   "kanit": "bkz. docs/DENETIM-YANITI-v2.7.3.md; test-ciktilari/v273"
+  },
+  {
+   "id": "TARAYICI-DIGER",
+   "durum": "açık",
+   "kanit": "Mac/Safari ve Firefox TEST EDİLMEDİ (ortamda yok)"
+  }
+ ],
+ "ozet_v273": {
+  "doğrulandı": 16,
+  "açık": 1
+ },
+ "v274": [
+  {
+   "id": "N01",
+   "durum": "doğrulandı",
+   "kanit": "docs/DENETIM-YANITI-v2.7.4.md; test-ciktilari/v274"
+  },
+  {
+   "id": "N02",
+   "durum": "doğrulandı",
+   "kanit": "docs/DENETIM-YANITI-v2.7.4.md; test-ciktilari/v274"
+  },
+  {
+   "id": "N03",
+   "durum": "doğrulandı",
+   "kanit": "docs/DENETIM-YANITI-v2.7.4.md; test-ciktilari/v274"
+  },
+  {
+   "id": "N04",
+   "durum": "doğrulandı",
+   "kanit": "docs/DENETIM-YANITI-v2.7.4.md; test-ciktilari/v274"
+  },
+  {
+   "id": "TARAYICI-DIGER",
+   "durum": "açık",
+   "kanit": "Mac/Safari ve Firefox TEST EDİLMEDİ"
+  },
+  {
+   "id": "CANLI-HAZIRLIK",
+   "durum": "açık",
+   "kanit": "HTTPS/Mac dağıtımı, Docker, SMTP, upload güvenliği, retention, yedekten dönüş, yük: canlıya çıkış kapıları (backend hazırlığından ayrı)"
+  }
+ ],
+ "ozet_v274": {
+  "doğrulandı": 4,
+  "açık": 2
+ },
+ "v275": [
+  {
+   "id": "R01",
+   "durum": "doğrulandı",
+   "kanit": "docs/DENETIM-YANITI-v2.7.5.md; test-ciktilari/v275"
+  },
+  {
+   "id": "R02",
+   "durum": "doğrulandı",
+   "kanit": "docs/DENETIM-YANITI-v2.7.5.md; test-ciktilari/v275"
+  },
+  {
+   "id": "R03",
+   "durum": "doğrulandı",
+   "kanit": "docs/DENETIM-YANITI-v2.7.5.md; test-ciktilari/v275"
+  },
+  {
+   "id": "R04",
+   "durum": "doğrulandı",
+   "kanit": "docs/DENETIM-YANITI-v2.7.5.md; test-ciktilari/v275"
+  },
+  {
+   "id": "TARAYICI-DIGER",
+   "durum": "açık",
+   "kanit": "Mac/Safari ve Firefox TEST EDİLMEDİ"
+  },
+  {
+   "id": "CANLI-HAZIRLIK",
+   "durum": "açık",
+   "kanit": "HTTPS/Mac dağıtımı, Docker, SMTP, upload güvenliği, retention, yedekten dönüş, yük: canlıya çıkış kapıları (backend hazırlığından ayrı)"
+  },
+  {
+   "id": "ENUM-KAPSAM",
+   "durum": "kısmi",
+   "kanit": "66 tek anlamlı enum alanının tamamı elle iş kuralına karşı doğrulanmadı; yalnız denetçinin 3 karşı örneği ve 545 gerçek yanıt örneklemesi doğrulandı"
+  }
+ ],
+ "ozet_v275": {
+  "doğrulandı": 4,
+  "açık": 2,
+  "kısmi": 1
+ },
+ "v276": [
+  {
+   "id": "R04",
+   "durum": "doğrulandı",
+   "kanit": "docs/DENETIM-YANITI-v2.7.6.md; domain-map.ts 94 kural; contract-remaining 4/4; kapsam denetimi 0 sorun; API 42/42, 554 yanıt 0 sapma"
+  },
+  {
+   "id": "TARAYICI-DIGER",
+   "durum": "açık",
+   "kanit": "Mac/Safari ve Firefox TEST EDİLMEDİ"
+  },
+  {
+   "id": "CANLI-HAZIRLIK",
+   "durum": "açık",
+   "kanit": "HTTPS/Mac, Docker, SMTP, upload güvenliği, retention, yedekten dönüş, yük (canlıya çıkış kapıları)"
+  }
+ ],
+ "v280": [
+  {
+   "id": "MP-TEMEL",
+   "durum": "doğrulandı",
+   "kanit": "docs/SURUM-NOTU-v2.8.0.md; test-ciktilari/v280"
+  },
+  {
+   "id": "MP-OLCEK",
+   "durum": "açık",
+   "kanit": "20 şirket + 5 eşzamanlı HPW oturumu ölçülmedi; portföy sıralı okuma"
+  },
+  {
+   "id": "MP-YETKI-DARALTMA",
+   "durum": "açık",
+   "kanit": "danışman/metodolog/denetçi rolleri ve platform yazma kısıtı iş sahibi kararı bekliyor"
+  },
+  {
+   "id": "TARAYICI-DIGER",
+   "durum": "açık",
+   "kanit": "Mac/Safari ve Firefox TEST EDİLMEDİ"
+  }
+ ],
+ "ozet_v280": {
+  "doğrulandı": 1,
+  "açık": 3
+ },
+ "v290": [
+  {
+   "id": "I18N-TR-EN",
+   "durum": "doğrulandı",
+   "kanit": "i18n-coverage + 8 EN tarayıcı testi"
+  },
+  {
+   "id": "MP05-ROL-ATAMA",
+   "durum": "doğrulandı",
+   "kanit": "API test 44; SEC-EKIP"
+  },
+  {
+   "id": "MP06-ERISIM-IPTALI",
+   "durum": "doğrulandı",
+   "kanit": "API test 44 (oturum 401)"
+  },
+  {
+   "id": "MP12-PLATFORM-GECMIS",
+   "durum": "doğrulandı",
+   "kanit": "API test 44; SEC-GECMIS"
+  },
+  {
+   "id": "MP15-YAZMA-KORUMASI",
+   "durum": "doğrulandı",
+   "kanit": "API test 44 (veritabanı doğrudan yazma reddi)"
+  },
+  {
+   "id": "K7-MUDAHALE",
+   "durum": "doğrulandı",
+   "kanit": "API test 44; SEC-MUDAHALE"
+  },
+  {
+   "id": "K9-MFA",
+   "durum": "doğrulandı",
+   "kanit": "API test 45; MFA-KURULUM; MFA-YENIDEN; BOŞ tur 1a"
+  },
+  {
+   "id": "KILAVUZ-2.9",
+   "durum": "açık",
+   "kanit": "yeni ekranlar ve MFA kılavuzda yok"
+  },
+  {
+   "id": "DILIM-2-3",
+   "durum": "açık",
+   "kanit": "2.10.0 ve 2.11.0 yapılmadı"
+  },
+  {
+   "id": "TARAYICI-DIGER",
+   "durum": "açık",
+   "kanit": "Mac/Safari ve Firefox TEST EDİLMEDİ"
+  }
+ ],
+ "ozet_v290": {
+  "doğrulandı": 7,
+  "açık": 3
+ },
+ "v291": [
+  {
+   "id": "V290-01",
+   "durum": "doğrulandı",
+   "kanit": "independent-ui V290-UI-04; V291-ASG-*"
+  },
+  {
+   "id": "V290-02",
+   "durum": "doğrulandı",
+   "kanit": "independent-ui V290-UI-03; V291-GECMIS-*"
+  },
+  {
+   "id": "V290-03",
+   "durum": "doğrulandı",
+   "kanit": "independent-ui V290-UI-01/02; V291-DTO-*; dto-contract 26 uç"
+  },
+  {
+   "id": "V290-04",
+   "durum": "doğrulandı",
+   "kanit": "v291.test.ts test 1 (gerçek PostgreSQL)"
+  },
+  {
+   "id": "V290-05",
+   "durum": "doğrulandı",
+   "kanit": "config-mfa.test.ts 16; production-config.mjs; yükseltme"
+  },
+  {
+   "id": "V290-06",
+   "durum": "doğrulandı",
+   "kanit": "v291.test.ts test 5 (gerçek PostgreSQL); independent-api.mjs"
+  },
+  {
+   "id": "ROL-DEGISMEZLERI",
+   "durum": "doğrulandı",
+   "kanit": "v291.test.ts test 2-4"
+  },
+  {
+   "id": "YUKSELTME-290-291",
+   "durum": "doğrulandı",
+   "kanit": "test-ciktilari/v291/yukseltme"
+  },
+  {
+   "id": "DILIM-2-3",
+   "durum": "açık",
+   "kanit": "2.10.0/2.11.0 kapsamı; bu sürümde yok"
+  },
+  {
+   "id": "TARAYICI-DIGER",
+   "durum": "açık",
+   "kanit": "Mac/Safari, Firefox TEST EDİLMEDİ"
+  }
+ ],
+ "ozet_v291": {
+  "doğrulandı": 8,
+  "açık": 2
+ },
+ "v2100": [
+  {
+   "id": "MP03-KURULUM",
+   "durum": "doğrulandı",
+   "kanit": "v2100.test.ts; V2100-KURULUM"
+  },
+  {
+   "id": "MP03-ACILIS-ZINCIRI",
+   "durum": "doğrulandı",
+   "kanit": "v2100.test.ts Kurulum 4 ve 10; V2100-MUSTERI-TEYIT"
+  },
+  {
+   "id": "MP04-BAGLAM",
+   "durum": "doğrulandı",
+   "kanit": "regresyon C; V2100-GEC-YANIT/DLG-BAGLAM/IKI-SEKME"
+  },
+  {
+   "id": "MP07-DONEM",
+   "durum": "doğrulandı",
+   "kanit": "v2100 Dönem kapsamı; V2100-DONEM-YOK"
+  },
+  {
+   "id": "MP09-DEVIR",
+   "durum": "doğrulandı",
+   "kanit": "regresyon A; SEC-EKIP"
+  },
+  {
+   "id": "MP11-YASAM-DONGUSU",
+   "durum": "doğrulandı",
+   "kanit": "v2100 Arşiv + Durdurma/arşiv geçişi"
+  },
+  {
+   "id": "MP12-IZ-ANAHTARI",
+   "durum": "doğrulandı",
+   "kanit": "regresyon B"
+  },
+  {
+   "id": "MP14-URL",
+   "durum": "doğrulandı",
+   "kanit": "V2100-URL; V2100-MERKEZE-DON"
+  },
+  {
+   "id": "MP16-ONAY-PENCERESI",
+   "durum": "doğrulandı",
+   "kanit": "V2100-DLG-KLAVYE"
+  },
+  {
+   "id": "MP17-SOZLESME",
+   "durum": "doğrulandı",
+   "kanit": "871 yanıt 0 sapma; 134 kural"
+  },
+  {
+   "id": "YUKSELTME-291-2100",
+   "durum": "doğrulandı",
+   "kanit": "test-ciktilari/v2100/yukseltme-v291"
+  },
+  {
+   "id": "TARAYICI-DIGER",
+   "durum": "açık",
+   "kanit": "Mac/Safari, Firefox, WebKit, ekran okuyucu TEST EDİLMEDİ"
+  },
+  {
+   "id": "DILIM-3",
+   "durum": "açık",
+   "kanit": "2.11.0 kapsamı"
+  },
+  {
+   "id": "BOS-TUR-ILK-KOSU",
+   "durum": "açık",
+   "kanit": "ilk koşuda 7h zaman aşımı; ikinci koşu 52/52; kök neden bulunamadı"
+  }
+ ],
+ "ozet_v2100": {
+  "doğrulandı": 11,
+  "açık": 3
+ },
+ "v2101": [
+  {
+   "id": "V210-01",
+   "durum": "doğrulandı",
+   "kanit": "denetçi V210-A/A2; V2101-A-*"
+  },
+  {
+   "id": "V210-02",
+   "durum": "doğrulandı",
+   "kanit": "denetçi V210-F (kontrollü DB); v2101.test.ts (gerçek PostgreSQL, iki bağlantılı yarışlar)"
+  },
+  {
+   "id": "V210-03",
+   "durum": "doğrulandı",
+   "kanit": "denetçi V210-B; V2101-B-*"
+  },
+  {
+   "id": "V210-04",
+   "durum": "doğrulandı",
+   "kanit": "denetçi V210-C (503, bozuk); V2101-C-*"
+  },
+  {
+   "id": "V210-05",
+   "durum": "doğrulandı",
+   "kanit": "denetçi V210-D; V2101-D-ODAK"
+  },
+  {
+   "id": "V210-06",
+   "durum": "doğrulandı",
+   "kanit": "denetçi V210-E; V2101-E-DAR (320/640 px)"
+  },
+  {
+   "id": "YUKSELTME-291-2101",
+   "durum": "doğrulandı",
+   "kanit": "test-ciktilari/v2101/yukseltme-v291"
+  },
+  {
+   "id": "BOS-7H",
+   "durum": "açık",
+   "kanit": "ilk v2.10.0 koşusunda zaman aşımı; tanı kaydı eklendi; sonraki 3 temiz koşu 52/52; kök neden bulunamadı"
+  },
+  {
+   "id": "TARAYICI-DIGER",
+   "durum": "açık",
+   "kanit": "Mac/Safari, Firefox, WebKit, ekran okuyucu, gerçek %200 yakınlaştırma TEST EDİLMEDİ"
+  },
+  {
+   "id": "DILIM-3",
+   "durum": "açık",
+   "kanit": "2.11 kapsamı; canlıya çıkış kapıları"
+  }
+ ],
+ "ozet_v2101": {
+  "doğrulandı": 7,
+  "açık": 3
+ },
+ "v2102": [
+  {
+   "id": "V2101-01",
+   "durum": "doğrulandı",
+   "kanit": "denetçi V2101-R1/R2; V2102-R1-ESKI-409/503, V2102-R2-409, V2102-R2-BASARI-MESAJ"
+  },
+  {
+   "id": "V2101-02",
+   "durum": "doğrulandı",
+   "kanit": "denetçi V2101-R3; V2102-R3-*; v2101.test.ts makbuz zinciri (gerçek PostgreSQL)"
+  },
+  {
+   "id": "KANIT-DUZELTME-v2101-C",
+   "durum": "doğrulandı",
+   "kanit": "sonuç denetimi koşu kimliğine bağlandı (DENETIM-YANITI-v2.10.2 §3)"
+  },
+  {
+   "id": "YUKSELTME-291-2102",
+   "durum": "doğrulandı",
+   "kanit": "test-ciktilari/v2102/yukseltme-v291"
+  },
+  {
+   "id": "BOS-7H",
+   "durum": "açık",
+   "kanit": "kök neden bulunamadı; tanı kaydı turda"
+  },
+  {
+   "id": "TARAYICI-DIGER",
+   "durum": "açık",
+   "kanit": "Mac/Safari, Firefox, WebKit, ekran okuyucu, gerçek %200 TEST EDİLMEDİ"
+  },
+  {
+   "id": "DILIM-3",
+   "durum": "açık",
+   "kanit": "v2.11, 20 şirket yük testi, canlıya çıkış kapıları"
+  }
+ ],
+ "ozet_v2102": {
+  "doğrulandı": 4,
+  "açık": 3
+ },
+ "bagimsiz_kabul_v2102": {
+  "tarih": "2026-09-28",
+  "paket": "HPW_Act_TESLIMAT_v2.10.2_3040f1ae93df.zip",
+  "sha256": "cabf461fbe2eb499b3a58e4d25990cca5d61cd87f8f83133b90538b5e19f038f",
+  "karar": "V2101-01 ve V2101-02 bağımsız testlerle kapandı; şirket işletimi düzeltmeleri için OK; sonraki onaylı dilime geçilebilir",
+  "kapsam_disi_ve_acik": [
+   "BOŞ 7h kök nedeni",
+   "Safari/Firefox/WebKit",
+   "ekran okuyucu ve gerçek %200 yakınlaştırma",
+   "gerçek PostgreSQL bağımsız kabulü",
+   "20 şirket yük ve ölçek kabulü",
+   "v2.11 işlevleri ve canlıya çıkış kapıları"
+  ],
+  "rapor": "docs/denetim/v2.10.2/HPW-v2.10.2-Bagimsiz-Denetim.md"
+ },
+ "v2110": [
+  {
+   "id": "MP08-KURALLAR",
+   "durum": "doğrulandı",
+   "kanit": "v2110.test.ts (gerçek PostgreSQL)"
+  },
+  {
+   "id": "MP08-ISLEMLER",
+   "durum": "doğrulandı",
+   "kanit": "v2110.test.ts; V2110-* UI"
+  },
+  {
+   "id": "MP10-ILK-GORUNUM-DAR",
+   "durum": "doğrulandı",
+   "kanit": "v2110 kısmi hata testi; V2110-ILK-GORUNUM (yük testi değildir)"
+  },
+  {
+   "id": "V211-DAVET",
+   "durum": "doğrulandı",
+   "kanit": "davet-teslimat.test.ts; önce: baseline-v2102"
+  },
+  {
+   "id": "MP17-SOZLESME",
+   "durum": "doğrulandı",
+   "kanit": "1110 yanıt 0 sapma; 151 kural"
+  },
+  {
+   "id": "YUKSELTME-2102-2110",
+   "durum": "doğrulandı",
+   "kanit": "test-ciktilari/v2110/yukseltme-v2102"
+  },
+  {
+   "id": "WEBKIT-V2100-URL",
+   "durum": "açık",
+   "kanit": "çökme; neden belirlenemedi (webkit-tani)"
+  },
+  {
+   "id": "YUK-TESTI",
+   "durum": "açık",
+   "kanit": "tanım yazıldı; ölçülmedi"
+  },
+  {
+   "id": "BOS-7H",
+   "durum": "açık",
+   "kanit": "kök neden bulunamadı"
+  },
+  {
+   "id": "TARAYICI-ERISILEBILIRLIK",
+   "durum": "açık",
+   "kanit": "Safari/cihaz, ekran okuyucu, gerçek %200 test edilmedi"
+  },
+  {
+   "id": "SONRAKI-ASAMALAR",
+   "durum": "açık",
+   "kanit": "Genel bakış, Sistem ve teslimatlar, canlıya çıkış"
+  }
+ ],
+ "ozet_v2110": {
+  "doğrulandı": 6,
+  "açık": 5
+ },
+ "v2111": [
+  {
+   "id": "V211-01",
+   "durum": "doğrulandı",
+   "kanit": "v2111.test.ts yarış 3/3 (gerçek PostgreSQL); önce: v2.11.0 3/3 FAIL"
+  },
+  {
+   "id": "V211-02",
+   "durum": "doğrulandı",
+   "kanit": "V2111-02 ×3; önce FAIL"
+  },
+  {
+   "id": "V211-03",
+   "durum": "doğrulandı",
+   "kanit": "V2111-03; önce FAIL"
+  },
+  {
+   "id": "V211-04",
+   "durum": "doğrulandı",
+   "kanit": "V2111-04; önce FAIL"
+  },
+  {
+   "id": "V211-05",
+   "durum": "doğrulandı",
+   "kanit": "V2111-05; önce FAIL"
+  },
+  {
+   "id": "V211-06",
+   "durum": "doğrulandı",
+   "kanit": "V2111-06 ×5 + DB sınır testi; önce 4/5 FAIL"
+  },
+  {
+   "id": "DENETCI-BETIKLERI-V2110",
+   "durum": "açık",
+   "kanit": "kanıt ZIP iletilmedi; özgün betikler çalıştırılamadı"
+  },
+  {
+   "id": "WEBKIT-V2100-URL",
+   "durum": "açık",
+   "kanit": "neden belirlenemedi"
+  },
+  {
+   "id": "TEK-SEFERLIK-DEEP-LINK-FIREFOX",
+   "durum": "açık",
+   "kanit": "yeniden üretilemedi"
+  },
+  {
+   "id": "DILIM-3-VE-CANLI",
+   "durum": "açık",
+   "kanit": "yük, BOŞ 7h, Safari, ekran okuyucu, %200, Genel bakış, Sistem ve teslimatlar, canlıya çıkış"
+  }
+ ],
+ "ozet_v2111": {
+  "doğrulandı": 6,
+  "açık": 4
+ },
+ "v2112": [
+  {
+   "id": "V2111-R1",
+   "durum": "doğrulandı",
+   "kanit": "edge-ui RETRY-MAXIMUM (önce FAIL, sonra PASS); V2112-R1 ×6"
+  },
+  {
+   "id": "V2111-R2",
+   "durum": "doğrulandı",
+   "kanit": "edge-ui DTO ×3 (önce FAIL, sonra PASS); V2112-R2 ×6"
+  },
+  {
+   "id": "V211-01-SIRA-KANITI",
+   "durum": "doğrulandı",
+   "kanit": "v2111.test.ts pg_locks sinyalleri (gerçek PostgreSQL)"
+  },
+  {
+   "id": "BOS-7H",
+   "durum": "kök neden bulundu (test verisi); düzeltme sonrası 1 koşu 52/52",
+   "kanit": "bos-7h-tani/OKU.md"
+  },
+  {
+   "id": "WEBKIT-V2100-URL",
+   "durum": "açık",
+   "kanit": "neden belirlenemedi"
+  },
+  {
+   "id": "DILIM-3-VE-CANLI",
+   "durum": "açık",
+   "kanit": "yük, Safari, ekran okuyucu, %200, Genel bakış, Sistem ve teslimatlar, canlıya çıkış"
+  }
+ ],
+ "ozet_v2112": {
+  "doğrulandı": 3,
+  "kök": 1,
+  "açık": 2
+ },
+ "v2113": [
+  {
+   "id": "V2111-R1-A",
+   "durum": "üretici kanıtı: düzeltildi",
+   "kanit": "pending-ui MIDNIGHT önce FAIL, sonra PASS; V2113 gece yarısı ×2"
+  },
+  {
+   "id": "V2111-R1-B",
+   "durum": "üretici kanıtı: düzeltildi",
+   "kanit": "pending-ui REOPEN önce FAIL, sonra PASS; V2113 Vazgeç/Escape ×4, alan ×2"
+  },
+  {
+   "id": "BOS-7H",
+   "durum": "üretici kanıtı: üç temiz turda 54/54",
+   "kanit": "bos-turlari/OKU.md"
+  },
+  {
+   "id": "WEBKIT-V2100-URL",
+   "durum": "açık",
+   "kanit": "neden belirlenemedi"
+  },
+  {
+   "id": "DILIM-3-VE-CANLI",
+   "durum": "açık",
+   "kanit": "yük, Safari, ekran okuyucu, %200, Genel bakış, Sistem ve teslimatlar, canlıya çıkış"
+  }
+ ],
+ "v2114": [
+  {
+   "id": "V2113-A01",
+   "durum": "üretici kanıtı: düzeltildi",
+   "kanit": "reconcile-ui önce 1/4, uyarlamalı sonra 4/4; V2114 ×7; v2114.test.ts [DB]"
+  },
+  {
+   "id": "V2113-A02",
+   "durum": "üretici kanıtı: düzeltildi",
+   "kanit": "reconcile-ui EXPIRED-UNREADABLE önce FAIL, sonra PASS; V2114 süre dolması"
+  },
+  {
+   "id": "WEBKIT-V2100-URL",
+   "durum": "açık",
+   "kanit": "neden belirlenemedi"
+  },
+  {
+   "id": "DILIM-3-VE-CANLI",
+   "durum": "açık",
+   "kanit": "yük, Safari, ekran okuyucu, %200, Genel bakış, Sistem ve teslimatlar, canlıya çıkış"
+  }
+ ],
+ "v2115": [
+  {
+   "id": "V2114-A01",
+   "durum": "üretici kanıtı: düzeltildi",
+   "kanit": "outcome-order-ui önce 2/3, sonra 3/3; V2115 4/4; V2116 3/3; v2115.test.ts [DB] 3/3"
+  },
+  {
+   "id": "SHA-FARKI-V2114",
+   "durum": "sınıflandırıldı; köken belirlenemedi",
+   "kanit": "v2115/sha-karsilastirma"
+  },
+  {
+   "id": "WEBKIT-V2100-URL",
+   "durum": "açık",
+   "kanit": "neden belirlenemedi"
+  },
+  {
+   "id": "DILIM-3-VE-CANLI",
+   "durum": "açık",
+   "kanit": "yük, Genel bakış, Sistem ve teslimatlar, Safari, erişilebilirlik, canlıya çıkış"
+  }
+ ],
+ "v2116": [
+  {
+   "id": "V2115-A01",
+   "durum": "üretici kanıtı: düzeltildi",
+   "kanit": "multi-pending-ui önce 1/3, sonra 3/3; V2117 6/6"
+  },
+  {
+   "id": "OTURUM-DISI-KOSU-2026-09-29T1303",
+   "durum": "karantinaya alındı; kaynağı belirlenemedi",
+   "kanit": "v2116/cakisma-tanisi"
+  },
+  {
+   "id": "WEBKIT-V2100-URL",
+   "durum": "açık",
+   "kanit": "neden belirlenemedi"
+  },
+  {
+   "id": "DILIM-3-VE-CANLI",
+   "durum": "açık",
+   "kanit": "yük, Genel bakış, Sistem ve teslimatlar, Safari, erişilebilirlik, canlıya çıkış"
+  }
+ ],
+ "v2130": [
+  {
+   "id": "AI-HEDEF-AKSIYON-PLANI",
+   "durum": "üretici kanıtı: tamamlandı (yerel sahte OpenAI ile)",
+   "kanit": "v2130/api-parca1.log, api-parca2.log, api-sozlesme.log, fe-paket (V2130 16/16), gorsel-ai-acik, gorsel-anahtarsiz, paket-pilot-kabul"
+  },
+  {
+   "id": "GERCEK-OPENAI-CAGRISI",
+   "durum": "yapılmadı",
+   "kanit": "gerçek anahtar yok"
+  },
+  {
+   "id": "AI-HEDEF-DEGERI-TASLAGA-TASIMA",
+   "durum": "açık",
+   "kanit": "oluşturulmuş hedefin değerini değiştiren uç yok; öneri bilgi olarak gösterilir"
+  },
+  {
+   "id": "DAR-EKRAN-TABLO-TASMASI",
+   "durum": "düzeltildi",
+   "kanit": "gorsel-anahtarsiz 375/390"
+  },
+  {
+   "id": "BUYUK-SIRKET-HEDEF-PERFORMANSI",
+   "durum": "açık",
+   "kanit": "yük altında ölçülmedi"
+  }
+ ],
+ "v2131": [
+  {
+   "id": "AI-HEDEF-ONCESI",
+   "durum": "üretici kanıtı: tamamlandı (yerel sahte OpenAI)",
+   "kanit": "v2131/api-e2e-ai.log, paket-ai-akisi, fe-paket V2131"
+  },
+  {
+   "id": "AI-AKSIYON-TARIH-SIKLIK",
+   "durum": "tamamlandı",
+   "kanit": "v2131/paket-ai-akisi (2026-09-30 → 2026-12-29, biweekly)"
+  },
+  {
+   "id": "AI-PLAN-AYRINTISI-AKSIYONLAR",
+   "durum": "tamamlandı",
+   "kanit": "V2131-AKSIYON-AI-PLANI, e2e test 18"
+  },
+  {
+   "id": "AI-BAYAT-AKTARIM-KORUMASI",
+   "durum": "tamamlandı",
+   "kanit": "e2e test 18 (409 plan_stale), V2131-AI-BAYAT-AKTARIM-YOK"
+  },
+  {
+   "id": "KURUMSAL-ISTEK-BAGLAMI",
+   "durum": "düzeltildi (v2.13.0 hatası)",
+   "kanit": "context.ts ambitions yanıt biçimi"
+  },
+  {
+   "id": "GERCEK-OPENAI-CAGRISI",
+   "durum": "yapılmadı",
+   "kanit": "gerçek anahtar yok"
+  },
+  {
+   "id": "BUYUK-SIRKET-HEDEF-PERFORMANSI",
+   "durum": "açık",
+   "kanit": "ölçülmedi"
+  },
+  {
+   "id": "KILAVUZ-AI-BOLUMU",
+   "durum": "açık",
+   "kanit": "bu düzeltmeye dahil değil"
+  }
+ ],
+ "v2132": [
+  {
+   "id": "UST-YONETIM-DURUM-RISK-KARAR",
+   "durum": "tamamlandı",
+   "kanit": "v2132/gorsel-anahtarsiz/yonetim-*.png, V2132-EXEC-*"
+  },
+  {
+   "id": "ROL-ANA-EKRANLARI",
+   "durum": "tamamlandı",
+   "kanit": "V2132-SUBE-ANA-EKRAN, gorsel"
+  },
+  {
+   "id": "KULLANICI-DILI",
+   "durum": "tamamlandı",
+   "kanit": "V2132-DIKKAT-BOS, V2132-IZLEYICI-ARALIK-YOK, F04-EXEC-CORP"
+  },
+  {
+   "id": "AI-UYGULAMA-PLANI-V3",
+   "durum": "tamamlandı",
+   "kanit": "api e2e 20/20, V2130/V2131/V2132 UI, paket-ai-akisi, gorsel-ai-acik"
+  },
+  {
+   "id": "SIRKET-DUZEYI-AKSIYON-ENGELI",
+   "durum": "tamamlandı",
+   "kanit": "ai.ts, V2132-SIRKET-DUZEYI-AKSIYON"
+  },
+  {
+   "id": "TEST-TARIH-FIKSTURU",
+   "durum": "düzeltildi",
+   "kanit": "v01-v28.test.ts ILERI_TARIH"
+  },
+  {
+   "id": "GERCEK-OPENAI-CAGRISI",
+   "durum": "v2.13.2 için yapılmadı (V3 şema gerçek sağlayıcıyla sınanmadı)",
+   "kanit": "sahte sağlayıcı"
+  }
+ ]
+}
