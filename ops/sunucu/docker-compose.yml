@@ -26,6 +26,7 @@ services:
       MAIL_FROM: "${MAIL_FROM:-}"
       HPW_LEGACY_MODULES: "false"
       HPW_MFA_REQUIRED: "false"
+      HPW_BUILD_ID: "${HPW_BUILD_ID:-3.0.0}"
       TRUST_PROXY: "1"
     command: ["sh", "-c", "GRANT_APP_ROLES_TO=hpw_api_production node dist/src/migrate.js && exec node dist/src/server.js"]
     expose: [ "8787" ]

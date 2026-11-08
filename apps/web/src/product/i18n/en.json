@@ -1892,7 +1892,6 @@
  "Kullanıcı dosyası": "Users file",
  "Kullanıcılar ve davet": "Users and invitations",
  "Kullanıcılar, Happy Place to Work tarafından yüklenen kullanıcı dosyasından gelir. Davetle gelen kişi parolasını kendisi belirler.": "Users come from the users file uploaded by Happy Place to Work. An invited person sets their own password.",
- "Kurulum anahtarı (sunucudaki ILK_KURULUM_ANAHTARI.txt dosyasındaki satır)": "Setup key (the line in ILK_KURULUM_ANAHTARI.txt on the server)",
  "Kuruluma dön": "Back to setup",
  "Kurulumu aç": "Open setup",
  "Kurum": "Company",
@@ -1997,5 +1996,6 @@
  "Yenile": "Refresh",
  "Bu kurulumda gerçek e-posta gönderilmez; davetler burada görünür. Bağlantılar tek kullanımlıktır.": "This installation sends no real e-mail; invitations appear here. Links can be used once.",
  "Daveti aç": "Open invitation",
- "Bağlantıyı aç": "Open link"
+ "Bağlantıyı aç": "Open link",
+ "Kurulum anahtarı (yerel kurulumda CALISTIRMA/ILK_KURULUM_ANAHTARI.txt dosyasında; sunucuda .env dosyasındaki SETUP_KEY satırında)": "Setup key (on a local install in CALISTIRMA/ILK_KURULUM_ANAHTARI.txt; on a server in the SETUP_KEY line of the .env file)"
 }

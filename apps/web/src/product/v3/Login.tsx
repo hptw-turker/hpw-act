@@ -57,7 +57,7 @@ function Bootstrap({ setupKeyRequired, onDone }: { setupKeyRequired: boolean; on
       <p className="v-meta">{tt('Bu kurulumda henüz HPW yöneticisi yok. İlk yöneticiyi siz belirleyin; bu işlem tek seferliktir.')}</p>
       {inp('email', tt('E-posta (kullanıcı adı)'), 'email', 'username')}{inp('displayName', tt('Ad Soyad'))}
       {inp('password', tt('Parola (en az 10 karakter, harf ve rakam)'), 'password', 'new-password')}{inp('password2', tt('Parola (tekrar)'), 'password', 'new-password')}
-      {setupKeyRequired ? inp('setupKey', tt('Kurulum anahtarı (sunucudaki ILK_KURULUM_ANAHTARI.txt dosyasındaki satır)')) : null}
+      {setupKeyRequired ? inp('setupKey', tt('Kurulum anahtarı (yerel kurulumda CALISTIRMA/ILK_KURULUM_ANAHTARI.txt dosyasında; sunucuda .env dosyasındaki SETUP_KEY satırında)')) : null}
       {err ? <p className="v-alert" role="alert">{err}</p> : null}
       <button type="submit" className="v-btn" disabled={busy || !f.email || f.password.length < 10 || (setupKeyRequired && !f.setupKey)}>{tt('İlk yöneticiyi kur')}</button>
     </form>

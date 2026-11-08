@@ -40,7 +40,7 @@ r() { openssl rand -base64 32 | tr '+/' '-_' | tr -d '='; }
 sed -i "s|^PG_PASSWORD=.*|PG_PASSWORD=$(r)|; s|^API_DB_PASSWORD=.*|API_DB_PASSWORD=$(r)|; s|^SETUP_KEY=.*|SETUP_KEY=$(r)|; s|^HPW_MFA_KEY=.*|HPW_MFA_KEY=$(r)|" .env
 ```
 
-Sonra `.env` içinde `DOMAIN`, `SMTP_URL` ve `MAIL_FROM` satırlarını Happy Place to Work'ün verdiği değerlerle doldurun. `.env` dosyası ekrana, loga, e-postaya ya da depoya konmaz; sunucuda kalır ve yedeklenir.
+Sonra `.env` içinde `HPW_BUILD_ID` satırına kurulan sürümün kimliğini (depo commit kısaltması ya da paket build kimliği) yazın; `DOMAIN`, `SMTP_URL` ve `MAIL_FROM` satırlarını Happy Place to Work'ün verdiği değerlerle doldurun. `.env` dosyası ekrana, loga, e-postaya ya da depoya konmaz; sunucuda kalır ve yedeklenir.
 
 Denetim: `grep -c '=$' .env` sonucu 0 (boş değer kalmadı).
 
@@ -61,7 +61,7 @@ curl -s https://ALAN_ADI/api/ready
 curl -s https://ALAN_ADI/api/public/app
 ```
 
-Beklenen: ilki `"ready":true` ve `"version":"3.0.0"` içerir; ikincisi `{"mode":"v3"}` döner. Sertifika ilk istekte birkaç saniye içinde alınır; alınamazsa DNS A kaydını ve 80/443 portlarını denetleyin.
+Beklenen: ilki `"ready":true`, `"version":"3.0.0"` ve `.env` içindeki `"build"` değerini içerir; ikincisi `{"mode":"v3"}` döner. Sertifika ilk istekte birkaç saniye içinde alınır; alınamazsa DNS A kaydını ve 80/443 portlarını denetleyin.
 
 ## 6. İlk HPW yöneticisi
 
