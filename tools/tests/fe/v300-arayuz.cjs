@@ -63,6 +63,22 @@ const noHScroll = p => p.evaluate(() => document.documentElement.scrollWidth <= 
   { const { ctx, p, posts } = await setup(b, { logged: false }); await p.goto('https://v3.test/app.html#/g/ORNEK'); await p.getByText('Örnek Grup').first().waitFor();
     await p.getByLabel('E-posta').fill('mudur@ornek.test'); await p.getByLabel('Parola', { exact: true }).fill('Parola12345'); await p.getByRole('button', { name: 'Giriş yap' }).click(); await p.waitForTimeout(500);
     const lg = posts.find(x => x.q === '/api/auth/login'); ok('V3UI-15-SIRKET-GIRISI', lg && lg.b.tenantCode === 'ORNEK' && !('code' in lg.b) && (await p.locator('input[inputmode=numeric]').count()) === 0, lg); await ctx.close(); }
+  { const { ctx, p, errors } = await setup(b); await p.goto('https://v3.test/app.html#/t/t1'); await p.getByRole('heading', { name: 'Bugün yapılacaklar' }).waitFor();
+    ok('V3UI-16-PLANLARIM-YOK', (await p.locator('aside.v-side').count()) === 0 && !(await p.locator('main').innerText()).includes('Planlarım') && (await p.getByRole('link', { name: 'Planlar', exact: true }).count()) === 1, {});
+    const card = p.locator('article.v-step').first(); const order = await card.locator('.v-btns > a, .v-btns > button').allInnerTexts();
+    ok('V3UI-17-EYLEM-SIRASI', JSON.stringify(order) === JSON.stringify(['Planı incele', 'Yapıldı olarak işaretle', 'Not ekle']) && (await card.locator('p.v-meta a').count()) === 0, { order });
+    const cs = await card.getByRole('button', { name: 'Yapıldı olarak işaretle' }).evaluate(e => { const c = getComputedStyle(e); return [c.backgroundColor, c.color]; });
+    const lk = await card.getByRole('link', { name: 'Planı incele' }).evaluate(e => [getComputedStyle(e).backgroundColor, e.getAttribute('href')]);
+    ok('V3UI-18-RENKLER', cs[0] === 'rgb(207, 5, 30)' && cs[1] === 'rgb(255, 255, 255)' && lk[0] === 'rgb(242, 193, 78)', { cs, lk });
+    await card.getByRole('link', { name: 'Planı incele' }).click(); await p.locator('.v-plancard').first().waitFor();
+    ok('V3UI-19-PLANA-GIDER', /#\/t\/t1\/planlar\/rm1\?plan=1$/.test(p.url()), { url: p.url() });
+    await p.goto('https://v3.test/app.html#/t/t1/planlar'); await p.locator('.v-plancard').first().waitFor();
+    const pb = await p.locator('article.v-step').first().locator('button', { hasText: 'Yapıldı olarak işaretle' }).evaluate(e => getComputedStyle(e).backgroundColor);
+    const pl = await p.locator('article.v-step').getByRole('link', { name: 'Planı incele' }).count(); ok('V3UI-20-PLANLAR-GENEL-DUGME-AYNI', pb === 'rgb(35, 26, 21)' && pl === 0, { pb, pl });
+    ok('V3UI-21-HATA-YOK', errors.length === 0, { errors }); await ctx.close(); }
+  for (const lang of ['tr', 'en']) { const { ctx, p } = await setup(b, { phone: true, lang }); await p.setViewportSize({ width: 320, height: 700 }); await p.goto('https://v3.test/app.html#/t/t1'); await p.locator('article.v-step').first().waitFor();
+    const r = await p.locator('article.v-step').first().evaluate(a => { const box = a.getBoundingClientRect(); const bs = [...a.querySelectorAll('.v-btns > a, .v-btns > button')].map(e => e.getBoundingClientRect()); return { inside: bs.every(x => x.left >= box.left - 0.5 && x.right <= box.right + 0.5), seq: bs.every((x, i) => i === 0 || x.top > bs[i - 1].top + 1 || (Math.abs(x.top - bs[i - 1].top) < 1 && x.left > bs[i - 1].left)), labels: [...a.querySelectorAll('.v-btns > a, .v-btns > button')].map(e => e.textContent) }; });
+    ok(`V3UI-22-TELEFON-DUGMELER-${lang.toUpperCase()}`, r.inside && r.seq && await noHScroll(p) && (lang === 'en' ? r.labels[0] === 'Review the plan' && r.labels[1] === 'Mark as done' : true), r); await ctx.close(); }
   await b.close(); fs.writeFileSync(path.join(OUT, 'v300-arayuz.json'), JSON.stringify(results, null, 1));
   const fail = results.filter(r => !r.pass); console.log('V300-ARAYUZ', `${results.length - fail.length}/${results.length}`); process.exit(fail.length ? 1 : 0);
 })().catch(e => { console.error(e); process.exit(1); });

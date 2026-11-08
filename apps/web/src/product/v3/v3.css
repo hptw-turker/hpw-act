@@ -117,13 +117,12 @@
 .v-today-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 24px 48px; padding-bottom: 24px; border-bottom: 1px solid var(--hpw-ink); margin-bottom: 48px; }
 .v-today-head .v-sub { margin-top: 12px; }
 .v-today-sum { display: flex; flex-direction: column; gap: 12px; max-width: 100%; }
-.v-today { display: grid; grid-template-columns: minmax(0, 1fr) 384px; gap: 48px; align-items: start; }
+.v-today { display: grid; grid-template-columns: minmax(0, 1fr); gap: 48px; align-items: start; }
 .v-today-main { display: flex; flex-direction: column; gap: 48px; min-width: 0; }
 .v-group { display: flex; flex-direction: column; gap: 12px; }
 .v-group .v-h2 .v-sub { font-weight: 400; }
-.v-side { display: flex; flex-direction: column; gap: 24px; position: sticky; top: 24px; }
-.v-side-list { border-top: 1px solid var(--hpw-ink); }
-.v-side-it { padding: 24px 0; border-bottom: 1px solid var(--hpw-mid); display: flex; flex-direction: column; gap: 12px; }
+/* Bugün'e özel: "Yapıldı olarak işaretle" HPW kırmızısı; genel .v-btn değişmez */
+.v-today .v-btn-mark:not(:disabled) { background: var(--hpw-red); border-color: var(--hpw-red); color: var(--hpw-white); }
 
 /* iki bölme */
 .v-two { display: grid; grid-template-columns: 408px minmax(0, 1fr); gap: 48px; align-items: start; max-width: 1296px; margin: 0 auto; }
@@ -163,10 +162,6 @@
 .v-file { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
 .v-file input[type="file"] { max-width: 100%; }
 
-@media (max-width: 1080px) {
-  .v-today { grid-template-columns: minmax(0, 1fr); }
-  .v-side { position: static; }
-}
 @media (max-width: 900px) {
   .v-two { grid-template-columns: minmax(0, 1fr); gap: 24px; }
   .v-left { position: static; max-height: none; overflow: visible; }

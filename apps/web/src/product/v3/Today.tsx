@@ -24,10 +24,9 @@ export function Today({ tid, profile }: { tid: string; profile: string | null })
   const late = d.steps.filter(s => grp(s) === 'LATE'); const open = d.steps.filter(s => grp(s) === 'OPEN'); const done = d.steps.filter(s => grp(s) === 'DONE');
   const byDue = new Map<string, MyStep[]>(); for (const s of open) byDue.set(s.dueDate, [...(byDue.get(s.dueDate) ?? []), s]);
   const next = open[0]?.dueDate ?? null;
-  const ctx = (s: MyStep) => <p className="v-meta v-wrap">{units.length > 1 ? <><b>{s.unitLabel}</b> · </> : null}{tt('Eylem planı')} {s.plan.no} · {s.plan.title} · {s.plan.itemCode} {pct(s.plan.currentPct)} → {s.plan.targetKind === 'HEDEF' ? pct(s.plan.targetPct) : tt('İzlenir')} · <Link to={`/t/${tid}/planlar/${s.roadmapId}?plan=${s.plan.no}`}>{tt('Planı incele')}</Link></p>;
-  const card = (s: MyStep) => <StepCard key={s.id} tid={tid} step={s} today={t} mine context={ctx(s)} onChanged={changed(s)} />;
+  const ctx = (s: MyStep) => <p className="v-meta v-wrap">{units.length > 1 ? <><b>{s.unitLabel}</b> · </> : null}{tt('Eylem planı')} {s.plan.no} · {s.plan.title} · {s.plan.itemCode} {pct(s.plan.currentPct)} → {s.plan.targetKind === 'HEDEF' ? pct(s.plan.targetPct) : tt('İzlenir')}</p>;
+  const card = (s: MyStep) => <StepCard key={s.id} tid={tid} step={s} today={t} mine context={ctx(s)} planTo={`/t/${tid}/planlar/${s.roadmapId}?plan=${s.plan.no}`} onChanged={changed(s)} />;
   const roleName = d.steps[0]?.roleLabel;
-  const plans = [...new Map(d.steps.map(s => [`${s.roadmapId}:${s.plan.no}`, s])).values()];
   return <main className="v-main" id="main"><div className="v-page">
     <div className="v-today-head">
       <div><h1 className="v-h1">{tt('Bugün yapılacaklar')}</h1><p className="v-sub">{roleName ? tt('{0} adımları, termine göre sıralı', roleName) : PROFILE_LABEL(profile)}</p></div>
@@ -49,18 +48,6 @@ export function Today({ tid, profile }: { tid: string; profile: string | null })
           <div className="v-btns"><button type="button" className="v-btn2" aria-expanded={showDone} onClick={() => setShowDone(x => !x)}>{showDone ? tt('Yapılanları gizle') : tt('Yapılanları göster')}</button></div>
           {showDone ? done.map(card) : null}</section> : null}
       </div>
-      <aside className="v-side" aria-label={tt('Planlarım')}>
-        <h2 className="v-h2">{tt('Planlarım')}</h2>
-        <div className="v-side-list">{plans.slice(0, 12).map(s => { const mine = d.steps.filter(x => x.roadmapId === s.roadmapId && x.plan.no === s.plan.no); return <div key={`${s.roadmapId}:${s.plan.no}`} className="v-side-it">
-          <span className="v-lbl">{units.length > 1 ? `${s.unitLabel} · ` : ''}{tt('Eylem planı')} {s.plan.no}</span>
-          <p className="v-h3 v-wrap">{s.plan.title}</p>
-          <p className="v-meta v-wrap">{s.plan.itemCode} · {s.plan.itemText}</p>
-          <p>{tt('Mevcut')} <b>{pct(s.plan.currentPct)}</b> · {tt('Hedef')} <b>{s.plan.targetKind === 'HEDEF' ? pct(s.plan.targetPct) : tt('İzlenir')}</b></p>
-          <Squares steps={mine} />
-          <div className="v-btns"><Link className="v-btn2" to={`/t/${tid}/planlar/${s.roadmapId}?plan=${s.plan.no}`}>{tt('Planı incele')}</Link></div>
-        </div>; })}</div>
-        {plans.length > 12 ? <Link to={`/t/${tid}/planlar`}>{tt('Bütün planlar')}</Link> : null}
-      </aside>
     </div>}
   </div></main>;
 }

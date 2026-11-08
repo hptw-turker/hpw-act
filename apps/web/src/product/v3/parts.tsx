@@ -1,5 +1,6 @@
 /** v3.0 ortak parçalar: veri tipleri, tarih, kareler, durum kelimesi, madde kutusu, adım kartı, yardım paneli. */
 import { useState, type ReactNode } from 'react';
+import { Link } from 'react-router-dom';
 import { tt, LANG } from '../i18n';
 import { commandApi, describeError } from '../api';
 
@@ -59,8 +60,8 @@ export function ItemBox({ plan, comparisonLabel }: { plan: Plan; comparisonLabel
   </div>;
 }
 
-/** Adım kartı: metin, çıktı, durum; işaretleme ve not kartın altında */
-export function StepCard({ tid, step, today, mine, context, onChanged }: { tid: string; step: Step; today: string; mine?: boolean; context?: ReactNode; onChanged: () => void }) {
+/** Adım kartı: metin, çıktı, durum; işaretleme ve not kartın altında. planTo verilirse (Bugün) eylem satırının başında "Planı incele" düğmesi çıkar. */
+export function StepCard({ tid, step, today, mine, context, planTo, onChanged }: { tid: string; step: Step; today: string; mine?: boolean; context?: ReactNode; planTo?: string; onChanged: () => void }) {
   const [noteOpen, setNoteOpen] = useState(false); const [note, setNote] = useState(''); const [busy, setBusy] = useState(false); const [err, setErr] = useState<string | null>(null); const [msg, setMsg] = useState('');
   const mark = async (done: boolean) => {
     setBusy(true); setErr(null);
@@ -76,11 +77,12 @@ export function StepCard({ tid, step, today, mine, context, onChanged }: { tid: 
     {context}
     {step.status === 'DONE' && !step.ref ? <p className="v-rec">{tt('Yapıldı')}{step.updatedBy ? <> · <b>{step.updatedBy}</b></> : null} · {fmtDate(step.statusAt)}{step.note ? <><br />{tt('Not')}: {step.note}</> : null}</p> : null}
     {step.status === 'DONE' && step.ref && step.statusAt ? <p className="v-rec">{tt('Kurum adımı yapıldı')} · {fmtDate(step.statusAt)}</p> : null}
-    {step.canMark ? <div className="v-ctl">
-      {noteOpen && step.status !== 'DONE' ? <div className="v-field"><label htmlFor={`n-${step.id}`}>{tt('Kısa not (isteğe bağlı)')}</label><textarea className="v-ta" id={`n-${step.id}`} maxLength={1000} placeholder={tt('Örneğin: Toplantıya 26 çalışan katıldı.')} value={note} onChange={e => setNote(e.target.value)} /></div> : null}
+    {step.canMark || planTo ? <div className="v-ctl">
+      {step.canMark && noteOpen && step.status !== 'DONE' ? <div className="v-field"><label htmlFor={`n-${step.id}`}>{tt('Kısa not (isteğe bağlı)')}</label><textarea className="v-ta" id={`n-${step.id}`} maxLength={1000} placeholder={tt('Örneğin: Toplantıya 26 çalışan katıldı.')} value={note} onChange={e => setNote(e.target.value)} /></div> : null}
       <div className="v-btns">
-        {step.status === 'DONE' ? <button type="button" className="v-btn2" disabled={busy} onClick={() => void mark(false)}>{tt('Yapılmadı olarak geri al')}</button>
-          : <><button type="button" className="v-btn" disabled={busy} onClick={() => void mark(true)}>{tt('Yapıldı olarak işaretle')}</button><button type="button" className="v-btn2" onClick={() => setNoteOpen(o => !o)} aria-expanded={noteOpen}>{noteOpen ? tt('Notu kapat') : tt('Not ekle')}</button></>}
+        {planTo ? <Link className="v-btn2" to={planTo}>{tt('Planı incele')}</Link> : null}
+        {!step.canMark ? null : step.status === 'DONE' ? <button type="button" className="v-btn2" disabled={busy} onClick={() => void mark(false)}>{tt('Yapılmadı olarak geri al')}</button>
+          : <><button type="button" className="v-btn v-btn-mark" disabled={busy} onClick={() => void mark(true)}>{tt('Yapıldı olarak işaretle')}</button><button type="button" className="v-btn2" onClick={() => setNoteOpen(o => !o)} aria-expanded={noteOpen}>{noteOpen ? tt('Notu kapat') : tt('Not ekle')}</button></>}
       </div>
       {err ? <p className="v-alert" role="alert">{err}</p> : null}
     </div> : null}
