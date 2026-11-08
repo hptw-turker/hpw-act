@@ -69,12 +69,13 @@ const noHScroll = p => p.evaluate(() => document.documentElement.scrollWidth <= 
     ok('V3UI-17-EYLEM-SIRASI', JSON.stringify(order) === JSON.stringify(['Planı incele', 'Yapıldı olarak işaretle', 'Not ekle']) && (await card.locator('p.v-meta a').count()) === 0, { order });
     const cs = await card.getByRole('button', { name: 'Yapıldı olarak işaretle' }).evaluate(e => { const c = getComputedStyle(e); return [c.backgroundColor, c.color]; });
     const lk = await card.getByRole('link', { name: 'Planı incele' }).evaluate(e => [getComputedStyle(e).backgroundColor, e.getAttribute('href')]);
-    ok('V3UI-18-RENKLER', cs[0] === 'rgb(207, 5, 30)' && cs[1] === 'rgb(255, 255, 255)' && lk[0] === 'rgb(242, 193, 78)', { cs, lk });
+    const nt = await card.getByRole('button', { name: 'Not ekle' }).evaluate(e => { const c = getComputedStyle(e); return [c.backgroundColor, c.color]; });
+    ok('V3UI-18-RENKLER', cs[0] === 'rgb(207, 5, 30)' && cs[1] === 'rgb(255, 255, 255)' && lk[0] === 'rgb(242, 193, 78)' && nt[0] === 'rgb(35, 26, 21)' && nt[1] === 'rgb(255, 255, 255)', { cs, lk, nt });
     await card.getByRole('link', { name: 'Planı incele' }).click(); await p.locator('.v-plancard').first().waitFor();
     ok('V3UI-19-PLANA-GIDER', /#\/t\/t1\/planlar\/rm1\?plan=1$/.test(p.url()), { url: p.url() });
     await p.goto('https://v3.test/app.html#/t/t1/planlar'); await p.locator('.v-plancard').first().waitFor();
     const pb = await p.locator('article.v-step').first().locator('button', { hasText: 'Yapıldı olarak işaretle' }).evaluate(e => getComputedStyle(e).backgroundColor);
-    const pl = await p.locator('article.v-step').getByRole('link', { name: 'Planı incele' }).count(); ok('V3UI-20-PLANLAR-GENEL-DUGME-AYNI', pb === 'rgb(35, 26, 21)' && pl === 0, { pb, pl });
+    const pl = await p.locator('article.v-step').getByRole('link', { name: 'Planı incele' }).count(); const pn = await p.locator('article.v-step').first().locator('button', { hasText: 'Not ekle' }).evaluate(e => getComputedStyle(e).backgroundColor); ok('V3UI-20-PLANLAR-GENEL-DUGME-AYNI', pb === 'rgb(35, 26, 21)' && pn === 'rgb(242, 193, 78)' && pl === 0, { pb, pn, pl });
     ok('V3UI-21-HATA-YOK', errors.length === 0, { errors }); await ctx.close(); }
   for (const lang of ['tr', 'en']) { const { ctx, p } = await setup(b, { phone: true, lang }); await p.setViewportSize({ width: 320, height: 700 }); await p.goto('https://v3.test/app.html#/t/t1'); await p.locator('article.v-step').first().waitFor();
     const r = await p.locator('article.v-step').first().evaluate(a => { const box = a.getBoundingClientRect(); const bs = [...a.querySelectorAll('.v-btns > a, .v-btns > button')].map(e => e.getBoundingClientRect()); return { inside: bs.every(x => x.left >= box.left - 0.5 && x.right <= box.right + 0.5), seq: bs.every((x, i) => i === 0 || x.top > bs[i - 1].top + 1 || (Math.abs(x.top - bs[i - 1].top) < 1 && x.left > bs[i - 1].left)), labels: [...a.querySelectorAll('.v-btns > a, .v-btns > button')].map(e => e.textContent) }; });

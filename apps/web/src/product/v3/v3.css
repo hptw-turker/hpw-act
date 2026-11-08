@@ -121,8 +121,9 @@
 .v-today-main { display: flex; flex-direction: column; gap: 48px; min-width: 0; }
 .v-group { display: flex; flex-direction: column; gap: 12px; }
 .v-group .v-h2 .v-sub { font-weight: 400; }
-/* Bugün'e özel: "Yapıldı olarak işaretle" HPW kırmızısı; genel .v-btn değişmez */
+/* Bugün'e özel: "Yapıldı olarak işaretle" HPW kırmızısı, "Not ekle" HPW koyu; genel .v-btn/.v-btn2 değişmez */
 .v-today .v-btn-mark:not(:disabled) { background: var(--hpw-red); border-color: var(--hpw-red); color: var(--hpw-white); }
+.v-today .v-btn-note { background: var(--hpw-ink); border-color: var(--hpw-ink); color: var(--hpw-white); }
 
 /* iki bölme */
 .v-two { display: grid; grid-template-columns: 408px minmax(0, 1fr); gap: 48px; align-items: start; max-width: 1296px; margin: 0 auto; }

@@ -82,7 +82,7 @@ export function StepCard({ tid, step, today, mine, context, planTo, onChanged }:
       <div className="v-btns">
         {planTo ? <Link className="v-btn2" to={planTo}>{tt('Planı incele')}</Link> : null}
         {!step.canMark ? null : step.status === 'DONE' ? <button type="button" className="v-btn2" disabled={busy} onClick={() => void mark(false)}>{tt('Yapılmadı olarak geri al')}</button>
-          : <><button type="button" className="v-btn v-btn-mark" disabled={busy} onClick={() => void mark(true)}>{tt('Yapıldı olarak işaretle')}</button><button type="button" className="v-btn2" onClick={() => setNoteOpen(o => !o)} aria-expanded={noteOpen}>{noteOpen ? tt('Notu kapat') : tt('Not ekle')}</button></>}
+          : <><button type="button" className="v-btn v-btn-mark" disabled={busy} onClick={() => void mark(true)}>{tt('Yapıldı olarak işaretle')}</button><button type="button" className="v-btn2 v-btn-note" onClick={() => setNoteOpen(o => !o)} aria-expanded={noteOpen}>{noteOpen ? tt('Notu kapat') : tt('Not ekle')}</button></>}
       </div>
       {err ? <p className="v-alert" role="alert">{err}</p> : null}
     </div> : null}
