@@ -56,7 +56,7 @@ Tasarım prototipi: `HPW_Act_adim_karti_tasarim.html` (A tek kayıt kutusu · B 
 
 ## v3.1.0 revizesinde ne oldu (09.11.2026)
 
-Durum: **hazırlandı ve doğrulandı; canlıya alınmadı** (canlı sürüm eb30925). Kapsam R-05–R-11; R-01–R-04 kararları açılmadı.
+Durum: **canlıda (09.11.2026 09:21 TSİ, commit 2c8bf7a, acterix.com.tr)**. Önceki canlı sürüm eb30925; geri dönüş imajı `acterix-api:eb30925`. Kapsam R-05–R-11; R-01–R-04 kararları açılmadı.
 Adım kartı yerleşimi: **A · tek kayıt kutusu** (son gelişme → engel → kayıtlar → kayıt ekle → ana eylemler). Prototipteki rol/yerleşim seçicileri, diğer alternatifler ve örnek veriler ürüne alınmadı.
 Ana eylem sırası: "Planı incele" (sarı) → "Yapıldı olarak işaretle" (kırmızı; Bugün sayfası) / "Yapılmadı olarak geri al". Yerleşim A'da ayrı "Not ekle" düğmesi yoktur; not, kayıt kutusunun "Not" seçeneğiyle yazılır, kaydet düğmeleri koyu zeminlidir. "Planlarım" sağ sütunu geri gelmedi.
 
