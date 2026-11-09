@@ -17,6 +17,7 @@ runA('DTO ⊆ sözleşme ve test yanıtları sözleşmeye uygun', [...tsx, resol
 runA('API istemcisi (denetçi)', [...tsx, resolve(root, 'tools/tests/fe/api-client-tests.mts')], resolve(root, 'apps/api'));
 runA('API istemcisi (v2.7.3 ek)', [...tsx, resolve(root, 'tools/tests/fe/api-client-extra.mts')], resolve(root, 'apps/api'));
 runA('tarayıcı: v3.0 sade arayüz kabulü (Bugün, işaretleme, planlar, atıf, telefon, EN, şirket girişi)', [resolve(root, 'tools/tests/fe/v300-arayuz.cjs')], root);
+runA('tarayıcı: v3.1 adım kayıtları kabulü (yerleşim A, not/gelişme/engel/dosya, geri alma, kırmızı mevcut, ölçek çizgisi, telefon TR/EN)', [resolve(root, 'tools/tests/fe/v310-arayuz.cjs')], root);
 runA('tarayıcı: denetçi senaryoları (DEEP-LINK hazır olma beklemeli kopya; özgünü ui-audit.cjs, fark ui-audit.hazir-bekleme.diff)', [resolve(root, 'tools/tests/fe/ui-audit.hazir-bekleme.cjs')], root);
 (inR ? run : () => {})('tarayıcı: v2.7.3 regresyonları' + (process.env.REG_SPLIT ? ` (parça ${process.env.REG_SPLIT})` : ''), [resolve(root, 'tools/tests/fe/ui-regresyon.cjs')], root);
 runB('tarayıcı: bağımsız yeniden denetim (N01–N03)', [resolve(root, 'tools/tests/fe/bagimsiz/run-independent.cjs')], root);

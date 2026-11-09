@@ -5,7 +5,7 @@ import { Link, useNavigate, useParams, useSearchParams } from 'react-router-dom'
 import { tt } from '../i18n';
 import { api, describeError } from '../api';
 import { ownRole } from './Shell';
-import { Counts, ItemBox, Squares, StepCard, fmtDate, phaseLabel, pct, type RoadmapDetail, type RoadmapSummary, type Step } from './parts';
+import { Counts, ItemBox, Squares, StepCard, fmtDate, isLow, phaseLabel, pct, type RoadmapDetail, type RoadmapSummary, type Step } from './parts';
 
 export function Plans({ tid, profile }: { tid: string; profile: string | null }) {
   const { rid } = useParams(); const nav = useNavigate();
@@ -64,9 +64,9 @@ function RoadmapView({ tid, rid, profile, onChanged }: { tid: string; rid: strin
     {d.plans.map(p => <PlanCard key={p.id} tid={tid} plan={p} detail={d} own={own} onChanged={changed} />)}
     {d.items.length ? <section className="v-sec" aria-label={tt('İzleme göstergeleri')}>
       <h2 className="v-h2">{tt('İzleme göstergeleri')}</h2>
-      <p className="v-meta">{tt('Bir sonraki ölçümde bu maddelerin değeri raporla karşılaştırılır.')}</p>
-      <div className="v-tablewrap"><table className="v-items"><thead><tr><th>{tt('Madde')}</th><th>{tt('Bağlantı')}</th><th>{tt('Mevcut')}</th><th>{d.comparisonLabel ?? tt('Karşılaştırma')}</th><th>{tt('Sektör')}</th><th>{tt('Hedef')}</th></tr></thead>
-        <tbody>{d.items.map(i => <tr key={i.ord}><td className="v-wrap"><b>{i.itemCode}</b> · {i.itemText}</td><td>{i.link ?? '—'}</td><td>{pct(i.currentPct)}</td><td>{pct(i.comparisonPct)}</td><td>{pct(i.sectorPct)}</td><td>{i.target ?? '—'}</td></tr>)}</tbody></table></div>
+      <p className="v-wrap">{tt('Bir sonraki ölçümde bu maddelerin değeri raporla karşılaştırılır. Kırmızı: mevcut değer {0} altında.', d.comparisonLabel ?? tt('karşılaştırma değerinin'))}</p>
+      <ScaleLegend cmp={d.comparisonLabel ?? tt('Karşılaştırma')} />
+      <div className="v-srows">{d.items.map(i => <ScaleRow key={i.ord} item={i} cmp={d.comparisonLabel ?? tt('Karşılaştırma')} />)}</div>
     </section> : null}
   </>;
 }
@@ -92,4 +92,38 @@ function PlanCard({ tid, plan, detail, own, onChanged }: { tid: string; plan: Ro
       {phases(plan.steps.filter(s => s.role === r), false)}</div>) : null}
     <p className="v-meta"><Link to={`/t/${tid}/planlar/${detail.id}?plan=${plan.no}`}>{tt('Bu planın bağlantısı')}</Link></p>
   </section>;
+}
+
+/** R-11 · İzleme göstergeleri — Alternatif 3 · ölçek çizgisi. Değerler rapordan (rm2_item) gelir; eksik değer çizilmez ve "—" yazılır.
+ * Hedef: rapordaki metinden yalnız açık bir yüzde okunursa işaret çizilir; "İzlenir" ifadesi korunur, sayısal işaret çizilmez.
+ * Yakın ya da eşit değerlerde işaretler üst üste binmesin diye hedef çizginin üstünde, sektör altında, karşılaştırma ortasından geçer. */
+type Item = RoadmapDetail['items'][number];
+export function parseTarget(label: string | null): { kind: 'num'; v: number } | { kind: 'tracked' } | { kind: 'text'; t: string } | { kind: 'none' } {
+  const t = (label ?? '').trim(); if (!t) return { kind: 'none' };
+  if (['izlenir', 'İzlenir', 'IZLENIR', 'İZLENİR', 'Tracked', 'tracked'].includes(t)) return { kind: 'tracked' };
+  const m = /^%?\s*(\d{1,3}(?:[.,]\d+)?)\s*%?$/.exec(t); if (m) { const v = Number(m[1]!.replace(',', '.')); if (v >= 0 && v <= 100) return { kind: 'num', v }; }
+  return { kind: 'text', t };
+}
+const clamp = (v: number) => Math.max(0, Math.min(100, v));
+function ScaleLegend({ cmp }: { cmp: string }) {
+  return <div className="v-legend" aria-hidden="true"><span><span className="v-key k-cur" />{tt('Mevcut')}</span><span><span className="v-key k-low" />{tt('Mevcut')} · {tt('genelin altında')}</span><span><span className="v-key k-cmp" />{cmp}</span><span><span className="v-key k-sec" />{tt('Sektör')}</span><span><span className="v-key k-tgt" />{tt('Hedef')}</span></div>;
+}
+function ScaleRow({ item: i, cmp }: { item: Item; cmp: string }) {
+  const low = isLow(i.currentPct, i.comparisonPct); const tg = parseTarget(i.target);
+  const tgText = tg.kind === 'num' ? pct(tg.v) : tg.kind === 'tracked' ? tt('İzlenir') : tg.kind === 'text' ? tg.t : '—';
+  const aria = `${tt('Mevcut')} ${pct(i.currentPct)}, ${cmp} ${pct(i.comparisonPct)}, ${tt('Sektör')} ${pct(i.sectorPct)}, ${tt('Hedef')} ${tgText}`;
+  return <div className="v-srow">
+    <div><span className="v-lbl v-wrap">{i.itemCode}{i.link ? ` · ${i.link}` : ''}</span><p className="v-it v-wrap">{i.itemText}</p></div>
+    <div className="v-scol">
+      <div className="v-scale" role="img" aria-label={aria}>
+        <span className="v-track" />
+        {i.currentPct !== null ? <span className={`v-fill${low ? ' low' : ''}`} style={{ width: `${clamp(i.currentPct)}%` }} /> : null}
+        {i.sectorPct !== null ? <span className="v-tick sec" style={{ left: `${clamp(i.sectorPct)}%` }} /> : null}
+        {i.comparisonPct !== null ? <span className="v-tick cmp" style={{ left: `${clamp(i.comparisonPct)}%` }} /> : null}
+        {tg.kind === 'num' ? <span className="v-tick tgt" style={{ left: `${clamp(tg.v)}%` }} /> : null}
+      </div>
+      <div className="v-axis" aria-hidden="true"><span>0</span><span>50</span><span>100</span></div>
+      <div className="v-nums"><span>{tt('Mevcut')} <b className={low ? 'v-low' : undefined}>{pct(i.currentPct)}</b></span><span>{cmp} <b>{pct(i.comparisonPct)}</b></span><span>{tt('Sektör')} <b>{pct(i.sectorPct)}</b></span><span>{tt('Hedef')} <b>{tgText}</b></span></div>
+    </div>
+  </div>;
 }

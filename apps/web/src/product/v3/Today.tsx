@@ -4,8 +4,10 @@ import { Link } from 'react-router-dom';
 import { tt } from '../i18n';
 import { api, describeError } from '../api';
 import { PROFILE_LABEL } from './Shell';
-import { Squares, StepCard, fmtDate, daysBetween, phaseLabel, pct, type MyStep } from './parts';
+import { BlockerBox, Squares, StepCard, fmtDate, fmtDateTime, daysBetween, phaseLabel, pct, type MyStep } from './parts';
 
+/** R-07: İK'ya, yetkili olduğu işletmelerden gelen açık engeller */
+interface HrBlocker { id: string; stepId: string; roadmapId: string; planNo: number; unitLabel: string; layer: string; roleLabel: string; stepText: string; text: string; by: string | null; at: string }
 interface MeSteps { today: string; counts: { total: number; done: number; late: number; open: number }; steps: MyStep[] }
 
 export function Today({ tid, profile }: { tid: string; profile: string | null }) {
@@ -13,7 +15,9 @@ export function Today({ tid, profile }: { tid: string; profile: string | null })
   const [by, setBy] = useState<'date' | 'unit'>('date');
   /** Bu oturumda işaretlenen adım, yeniden yüklemeye kadar bulunduğu grupta kalır (kart altından kaymaz) */
   const sticky = useRef(new Map<string, string>());
-  const load = useCallback(async () => { try { setD(await api<MeSteps>('GET', `/api/t/${tid}/rm2/me`)); setErr(null); } catch (e) { setErr(describeError(e)); } }, [tid]);
+  const [hrb, setHrb] = useState<{ enabled: boolean; items: HrBlocker[] } | null>(null);
+  const load = useCallback(async () => { try { setD(await api<MeSteps>('GET', `/api/t/${tid}/rm2/me`)); setErr(null); } catch (e) { setErr(describeError(e)); }
+    try { setHrb(await api<{ enabled: boolean; items: HrBlocker[] }>('GET', `/api/t/${tid}/rm2/blockers`)); } catch { setHrb(null); /* engel listesi okunamazsa Bugün listesi yine gösterilir */ } }, [tid]);
   useEffect(() => { void load(); }, [load]);
   const units = useMemo(() => [...new Map((d?.steps ?? []).map(s => [s.roadmapId, { id: s.roadmapId, label: s.unitLabel, layer: s.layer }])).values()], [d]);
   if (err) return <main className="v-main" id="main"><div className="v-page"><p className="v-alert" role="alert">{err}</p><button type="button" className="v-link" onClick={() => void load()}>{tt('Yeniden dene')}</button></div></main>;
@@ -32,6 +36,14 @@ export function Today({ tid, profile }: { tid: string; profile: string | null })
       <div><h1 className="v-h1">{tt('Bugün yapılacaklar')}</h1><p className="v-sub">{roleName ? tt('{0} adımları, termine göre sıralı', roleName) : PROFILE_LABEL(profile)}</p></div>
       {d.steps.length ? <div className="v-today-sum"><Squares steps={d.steps} max={40} />{next ? <span className="v-meta">{tt('Sıradaki termin')}: <b>{fmtDate(next)}</b> · {tt('{0} gün kaldı', daysBetween(t, next))}</span> : null}</div> : null}
     </div>
+    {hrb?.enabled ? <section className="v-group v-hrb" aria-label={tt('İşletmelerden gelen engeller')}>
+      <h2 className="v-h2">{tt('İşletmelerden gelen engeller')} <span className="v-sub">· {hrb.items.length}</span></h2>
+      <p className="v-sub">{tt('İşletme yöneticilerinin bildirdiği, çözümü sizden beklenen durumlar')}</p>
+      <div className="v-blist">{hrb.items.length ? hrb.items.map(b => <BlockerBox key={b.id} list tid={tid} stepId={b.stepId} blocker={{ id: b.id, text: b.text, by: b.by, at: b.at }} canUnblock onChanged={() => void load()}
+        head={<span className="v-lbl">{b.unitLabel} · {tt('Eylem planı')} {b.planNo} · {b.by ?? '—'} · {fmtDateTime(b.at)}</span>}
+        after={<p className="v-meta v-wrap">{b.roleLabel} · {b.stepText}</p>}
+        actions={<Link className="v-btn2" to={`/t/${tid}/planlar/${b.roadmapId}?plan=${b.planNo}`}>{tt('Planı incele')}</Link>} />) : <p className="v-meta v-blist-empty">{tt('Açık engel yok.')}</p>}</div>
+    </section> : null}
     {!d.steps.length ? <div className="v-empty"><p>{tt('Size atanmış bir yol haritası adımı yok.')}</p><p><Link to={`/t/${tid}/planlar`}>{tt('Planları incele')}</Link></p></div> :
     <div className="v-today">
       <div className="v-today-main">

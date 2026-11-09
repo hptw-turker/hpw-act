@@ -4,7 +4,7 @@ const { chromium, devices } = require(process.env.PLAYWRIGHT_MODULE || process.e
 const DIST = path.resolve(process.env.WEB_DIST || 'apps/web/dist'); const OUT = path.resolve(process.env.OUT || 'docs/test-ciktilari/fe'); fs.mkdirSync(OUT, { recursive: true });
 const T = '2026-12-20';
 const plan = (no, kind) => ({ id: `p${no}`, no, title: `Plan başlığı ${no}`, itemCode: `wp0${no}`, itemText: `Madde metni ${no}.`, respondents: 29, currentPos: 9, currentPct: 31, comparisonPct: 58, targetKind: kind, targetPos: kind === 'HEDEF' ? 11 : null, targetPct: kind === 'HEDEF' ? 37.9 : null, responsibility: 'İşletme yönetimi', impact: null });
-const step = (id, o) => ({ id, role: 'YONETIM', roleLabel: 'Örnek Otel Yönetimi', phaseDays: 30, ord: 1, text: `Adım ${id}.`, output: `Çıktı ${id}.`, contribution: null, dueDate: '2026-12-16', status: 'LATE', note: null, statusAt: null, updatedBy: null, version: 1, canMark: true, ref: null, ...o });
+const step = (id, o) => ({ id, role: 'YONETIM', roleLabel: 'Örnek Otel Yönetimi', phaseDays: 30, ord: 1, text: `Adım ${id}.`, output: `Çıktı ${id}.`, contribution: null, dueDate: '2026-12-16', status: 'LATE', note: null, statusAt: null, updatedBy: null, version: 1, canMark: true, ref: null, records: [], blockers: [], lastProgress: null, canRecord: (o && 'canMark' in o) ? o.canMark : true, canUnblock: false, ...o });
 function data() {
   const s1 = step('s1', {}), s2 = step('s2', { phaseDays: 90, dueDate: '2027-02-14', status: 'OPEN' }), s3 = step('s3', { status: 'DONE', statusAt: '2026-12-01', updatedBy: 'Müdür Bir', note: 'Toplantı yapıldı' });
   const ref = step('r1', { role: 'IK', roleLabel: 'Örnek İK', text: 'Kurum planı 1 · İK · İlk 30 gün · Analiz', canMark: false, status: 'DONE', statusAt: '2026-11-30', ref: { label: 'Kurum planı 1 · İK · İlk 30 gün · Analiz', text: 'Analizi başlatmak.', output: 'Form ulaştı.' } });
@@ -30,7 +30,11 @@ async function setup(browser, { profile = 'UNIT_MANAGER', roadmaps = 1, phone = 
     if (q === '/api/t/t1/rm2/me') return send(D.me);
     if (q === '/api/t/t1/rm2') return send(D.list(roadmaps));
     if (/^\/api\/t\/t1\/rm2\/rm[01]$/.test(q)) return send(D.detail);
-    if (q.startsWith('/api/t/t1/rm2-steps/') && req.method() === 'POST') { const b = JSON.parse(req.postData() || '{}'); posts.push({ q, b, key: req.headers()['idempotency-key'] }); const st = D.me.steps.find(s => q.endsWith('/' + s.id)); if (st) { st.status = b.done ? 'DONE' : 'OPEN'; st.version++; } return send({ id: 's1', status: b.done ? 'DONE' : 'OPEN', note: b.note ?? null, version: 2, statusAt: T }); }
+    if (/^\/api\/t\/t1\/rm2-steps\/[^/]+$/.test(q) && req.method() === 'POST') { const b = JSON.parse(req.postData() || '{}'); posts.push({ q, b, key: req.headers()['idempotency-key'] }); const st = D.me.steps.find(s => q.endsWith('/' + s.id)); if (st) { st.status = b.done ? 'DONE' : 'OPEN'; st.version++; } return send({ id: 's1', status: b.done ? 'DONE' : 'OPEN', note: b.note ?? null, version: 2, statusAt: T }); }
+    if (/^\/api\/t\/t1\/rm2-steps\/[^/]+\/records$/.test(q) && req.method() === 'POST') { const raw = req.postDataBuffer()?.toString('latin1') ?? ''; const f = {}; for (const m of raw.matchAll(/name="(kind|text)"\r\n\r\n([\s\S]*?)\r\n--/g)) f[m[1]] = Buffer.from(m[2], 'latin1').toString('utf8'); const files = [...raw.matchAll(/filename="([^"]*)"/g)].map(m => Buffer.from(m[1], 'latin1').toString('utf8')); posts.push({ q, f, files, key: req.headers()['idempotency-key'] });
+      const sid = q.split('/')[5]; const st = D.me.steps.find(s => s.id === sid); const rec = { id: `r${posts.length}`, kind: f.text ? f.kind : 'FILE', text: f.text || null, by: 'Müdür Bir', at: '2026-12-20T09:30:00Z', blockerId: null, files: files.map((n, i) => ({ id: `f${posts.length}-${i}`, name: n, mime: /\.png$/.test(n) ? 'image/png' : 'application/pdf', size: 2048, image: /\.png$/.test(n) })) };
+      if (st) { st.records = [rec, ...(st.records ?? [])]; if (rec.kind === 'BLOCKER') st.blockers = [...(st.blockers ?? []), { id: rec.id, text: rec.text, by: rec.by, at: rec.at }]; if (rec.kind === 'PROGRESS') st.lastProgress = { text: rec.text, by: rec.by, at: rec.at }; }
+      return send({ stepId: sid, record: rec, status: 'NOT_DONE' }); }
     if (q === '/api/auth/login') { const b = JSON.parse(req.postData() || '{}'); posts.push({ q, b }); return send({ ok: true, realm: 'customer', memberships: [{ tenant_id: 't1', name: 'Örnek Grup', code: 'ORNEK' }] }); }
     return send({ error: 'not_found' }, 404); });
   return { ctx, p, errors, posts };
@@ -40,9 +44,11 @@ const noHScroll = p => p.evaluate(() => document.documentElement.scrollWidth <= 
   const b = await chromium.launch();
   { const { ctx, p, errors, posts } = await setup(b); await p.goto('https://v3.test/app.html#/t/t1'); await p.getByRole('heading', { name: 'Bugün yapılacaklar' }).waitFor();
     const groups = await p.locator('.v-group h2').allInnerTexts(); ok('V3UI-01-BUGUN-GRUPLAR', groups[0].startsWith('Geciken adımlar') && groups.some(g => g.includes('14.02.2027 tarihine kadar')) && groups.some(g => g.startsWith('Yapılanlar')), { groups });
-    const late = p.locator('article.v-step').first(); await late.getByRole('button', { name: 'Not ekle' }).click(); await late.locator('textarea').fill('Liste iletildi'); await late.getByRole('button', { name: 'Yapıldı olarak işaretle' }).click();
-    await late.getByRole('button', { name: 'Yapılmadı olarak geri al' }).waitFor(); const post = posts.find(x => x.q.endsWith('/s1'));
-    ok('V3UI-02-ISARETLE-ZARF', post && post.b.done === true && post.b.note === 'Liste iletildi' && post.b.expectedVersion === 1 && !!post.key, post);
+    /* v3.1.0 (R-05): not ayrı kaydedilir (adımı işaretlemeden); işaretleme zarfı notsuz */
+    const late = p.locator('article.v-step').first(); await late.getByRole('button', { name: 'Not', exact: true }).click(); await late.locator('textarea').first().fill('Liste iletildi'); await late.getByRole('button', { name: 'Notu kaydet' }).click(); await late.getByText('Not kaydedildi').waitFor();
+    await late.getByRole('button', { name: 'Yapıldı olarak işaretle' }).click();
+    await late.getByRole('button', { name: 'Yapılmadı olarak geri al' }).waitFor(); const post = posts.find(x => x.q.endsWith('/s1')); const rp = posts.find(x => x.q.endsWith('/s1/records'));
+    ok('V3UI-02-ISARETLE-ZARF', post && post.b.done === true && !('note' in post.b) && post.b.expectedVersion === 1 && !!post.key && rp && rp.f.kind === 'NOTE' && rp.f.text === 'Liste iletildi' && !!rp.key, { post, rp });
     ok('V3UI-03-KART-YERINDE', (await p.locator('.v-group').first().locator('h2').innerText()).startsWith('Geciken adımlar') && (await p.locator('article.v-step').first().innerText()).includes('Adım s1.'), {});
     ok('V3UI-04-HATA-YOK', errors.length === 0, { errors }); await ctx.close(); }
   { const { ctx, p, errors } = await setup(b); await p.goto('https://v3.test/app.html#/t/t1/planlar'); await p.locator('.v-plancard').first().waitFor();
@@ -65,20 +71,21 @@ const noHScroll = p => p.evaluate(() => document.documentElement.scrollWidth <= 
     const lg = posts.find(x => x.q === '/api/auth/login'); ok('V3UI-15-SIRKET-GIRISI', lg && lg.b.tenantCode === 'ORNEK' && !('code' in lg.b) && (await p.locator('input[inputmode=numeric]').count()) === 0, lg); await ctx.close(); }
   { const { ctx, p, errors } = await setup(b); await p.goto('https://v3.test/app.html#/t/t1'); await p.getByRole('heading', { name: 'Bugün yapılacaklar' }).waitFor();
     ok('V3UI-16-PLANLARIM-YOK', (await p.locator('aside.v-side').count()) === 0 && !(await p.locator('main').innerText()).includes('Planlarım') && (await p.getByRole('link', { name: 'Planlar', exact: true }).count()) === 1, {});
-    const card = p.locator('article.v-step').first(); const order = await card.locator('.v-btns > a, .v-btns > button').allInnerTexts();
-    ok('V3UI-17-EYLEM-SIRASI', JSON.stringify(order) === JSON.stringify(['Planı incele', 'Yapıldı olarak işaretle', 'Not ekle']) && (await card.locator('p.v-meta a').count()) === 0, { order });
+    const card = p.locator('article.v-step').first(); const order = await card.locator('.v-ctl').last().locator('.v-btns > a, .v-btns > button').allInnerTexts();
+    ok('V3UI-17-EYLEM-SIRASI', JSON.stringify(order) === JSON.stringify(['Planı incele', 'Yapıldı olarak işaretle']) && (await card.locator('p.v-meta a').count()) === 0, { order });
     const cs = await card.getByRole('button', { name: 'Yapıldı olarak işaretle' }).evaluate(e => { const c = getComputedStyle(e); return [c.backgroundColor, c.color]; });
     const lk = await card.getByRole('link', { name: 'Planı incele' }).evaluate(e => [getComputedStyle(e).backgroundColor, e.getAttribute('href')]);
-    const nt = await card.getByRole('button', { name: 'Not ekle' }).evaluate(e => { const c = getComputedStyle(e); return [c.backgroundColor, c.color]; });
+    /* yerleşim A: "Not ekle" yerine tek kayıt kutusu; kaydet düğmesi koyu zemin, beyaz yazı */
+    const nt = await card.getByRole('button', { name: 'Gelişmeyi kaydet' }).evaluate(e => { const c = getComputedStyle(e); return [c.backgroundColor, c.color]; });
     ok('V3UI-18-RENKLER', cs[0] === 'rgb(207, 5, 30)' && cs[1] === 'rgb(255, 255, 255)' && lk[0] === 'rgb(242, 193, 78)' && nt[0] === 'rgb(35, 26, 21)' && nt[1] === 'rgb(255, 255, 255)', { cs, lk, nt });
     await card.getByRole('link', { name: 'Planı incele' }).click(); await p.locator('.v-plancard').first().waitFor();
     ok('V3UI-19-PLANA-GIDER', /#\/t\/t1\/planlar\/rm1\?plan=1$/.test(p.url()), { url: p.url() });
     await p.goto('https://v3.test/app.html#/t/t1/planlar'); await p.locator('.v-plancard').first().waitFor();
     const pb = await p.locator('article.v-step').first().locator('button', { hasText: 'Yapıldı olarak işaretle' }).evaluate(e => getComputedStyle(e).backgroundColor);
-    const pl = await p.locator('article.v-step').getByRole('link', { name: 'Planı incele' }).count(); const pn = await p.locator('article.v-step').first().locator('button', { hasText: 'Not ekle' }).evaluate(e => getComputedStyle(e).backgroundColor); ok('V3UI-20-PLANLAR-GENEL-DUGME-AYNI', pb === 'rgb(35, 26, 21)' && pn === 'rgb(242, 193, 78)' && pl === 0, { pb, pn, pl });
+    const pl = await p.locator('article.v-step').getByRole('link', { name: 'Planı incele' }).count(); ok('V3UI-20-PLANLAR-GENEL-DUGME-AYNI', pb === 'rgb(35, 26, 21)' && pl === 0, { pb, pl });
     ok('V3UI-21-HATA-YOK', errors.length === 0, { errors }); await ctx.close(); }
   for (const lang of ['tr', 'en']) { const { ctx, p } = await setup(b, { phone: true, lang }); await p.setViewportSize({ width: 320, height: 700 }); await p.goto('https://v3.test/app.html#/t/t1'); await p.locator('article.v-step').first().waitFor();
-    const r = await p.locator('article.v-step').first().evaluate(a => { const box = a.getBoundingClientRect(); const bs = [...a.querySelectorAll('.v-btns > a, .v-btns > button')].map(e => e.getBoundingClientRect()); return { inside: bs.every(x => x.left >= box.left - 0.5 && x.right <= box.right + 0.5), seq: bs.every((x, i) => i === 0 || x.top > bs[i - 1].top + 1 || (Math.abs(x.top - bs[i - 1].top) < 1 && x.left > bs[i - 1].left)), labels: [...a.querySelectorAll('.v-btns > a, .v-btns > button')].map(e => e.textContent) }; });
+    const r = await p.locator('article.v-step').first().evaluate(a => { const box = a.getBoundingClientRect(); const all = [...a.querySelectorAll('.v-btns > a, .v-btns > button, textarea')].map(e => e.getBoundingClientRect()); const main = [...a.querySelectorAll('.v-ctl:last-child .v-btns > a, .v-ctl:last-child .v-btns > button')]; const bs = main.map(e => e.getBoundingClientRect()); return { inside: all.every(x => x.left >= box.left - 0.5 && x.right <= box.right + 0.5), seq: bs.every((x, i) => i === 0 || x.top > bs[i - 1].top + 1 || (Math.abs(x.top - bs[i - 1].top) < 1 && x.left > bs[i - 1].left)), labels: main.map(e => e.textContent) }; });
     ok(`V3UI-22-TELEFON-DUGMELER-${lang.toUpperCase()}`, r.inside && r.seq && await noHScroll(p) && (lang === 'en' ? r.labels[0] === 'Review the plan' && r.labels[1] === 'Mark as done' : true), r); await ctx.close(); }
   await b.close(); fs.writeFileSync(path.join(OUT, 'v300-arayuz.json'), JSON.stringify(results, null, 1));
   const fail = results.filter(r => !r.pass); console.log('V300-ARAYUZ', `${results.length - fail.length}/${results.length}`); process.exit(fail.length ? 1 : 0);

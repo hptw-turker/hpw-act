@@ -61,6 +61,7 @@
 .v-st-DONE { background: var(--hpw-white); color: var(--hpw-ink); }
 .v-st-OPEN { background: var(--hpw-white); color: var(--hpw-mute); border-color: var(--hpw-mid); font-weight: 400; }
 .v-st-LATE { background: var(--hpw-ink); color: var(--hpw-white); }
+.v-st-BLOCK { background: var(--hpw-ink); color: var(--hpw-white); border-color: var(--hpw-ink); }
 .v-st-INFO { background: var(--hpw-soft); color: var(--hpw-ink); border-color: var(--hpw-soft); font-weight: 400; }
 
 /* form */
@@ -97,6 +98,9 @@
 .v-bar-f { display: block; height: 12px; background: var(--hpw-ink); }
 .v-bar-f.rf { background: var(--hpw-mid); }
 .v-bar-f.tg { background: var(--hpw-yellow); }
+/* R-10: mevcut değer karşılaştırma değerinin altında */
+.v-bar-f.low { background: var(--hpw-red); }
+.v3 .v-low { color: var(--hpw-red); }
 
 /* madde kutusu (plan kartının üstü) */
 .v-ib { border: 1px solid var(--hpw-ink); padding: 24px; display: flex; flex-direction: column; gap: 24px; }
@@ -121,6 +125,49 @@
 .v-today-main { display: flex; flex-direction: column; gap: 48px; min-width: 0; }
 .v-group { display: flex; flex-direction: column; gap: 12px; }
 .v-group .v-h2 .v-sub { font-weight: 400; }
+/* v3.1.0 adım kartı (yerleşim A): son gelişme, engel, kayıtlar, kayıt ekle, dosyalar, işlem sonucu */
+.v-last { background: var(--hpw-soft); padding: 12px; display: flex; flex-direction: column; }
+.v-last .v-lbl { color: var(--hpw-ink); }
+.v-block { position: relative; border: 1px solid var(--hpw-ink); padding: 12px 12px 12px 24px; display: flex; flex-direction: column; gap: 12px; }
+.v-block::before, .v-bi::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 6px; background: var(--hpw-red); } /* sol kenarda kırmızı çizgi */
+.v-recs { display: flex; flex-direction: column; border-top: 1px solid var(--hpw-soft); }
+.v-recr { display: grid; grid-template-columns: 120px minmax(0, 1fr); gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--hpw-soft); }
+.v-rt { font-size: 12px; font-weight: 700; }
+.v-rb { min-width: 0; }
+.v-compose { display: flex; flex-direction: column; gap: 12px; }
+.v-files { display: flex; flex-direction: column; gap: 12px; }
+.v-file { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; border: 1px solid var(--hpw-mid); padding: 12px; min-width: 0; }
+.v-file img { width: 96px; height: 72px; object-fit: cover; border: 1px solid var(--hpw-mid); display: block; }
+.v-file.rec { border: 0; padding: 12px 0 0; }
+.v-file.rec img { width: 192px; height: 144px; max-width: 100%; }
+.v-fn { font-weight: 700; color: var(--hpw-ink); min-width: 0; }
+.v-fb { padding: 12px; border: 1px solid var(--hpw-ink); background: var(--hpw-soft); font-weight: 700; overflow-wrap: anywhere; }
+.v-fb.err { background: var(--hpw-white); }
+/* R-07: İK ekranı — işletmelerden gelen açık engeller (İK'nın kendi adımlarından ayrı) */
+.v-hrb { margin-bottom: 48px; }
+.v-blist { border-top: 1px solid var(--hpw-ink); }
+.v-bi { position: relative; padding: 24px 0 24px 24px; border-bottom: 1px solid var(--hpw-mid); display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+.v-blist-empty { padding: 24px 0; }
+/* R-11: izleme göstergeleri — ölçek çizgisi (0–100); hedef çizginin üstünde, sektör altında, karşılaştırma çizgiyi keser (eşit değerler birbirini örtmez) */
+.v-legend { display: flex; flex-wrap: wrap; gap: 12px 24px; font-size: 12px; align-items: center; }
+.v-legend .v-key { display: inline-block; width: 24px; height: 12px; vertical-align: middle; margin-right: 12px; }
+.v-legend .k-cur { background: var(--hpw-ink); } .v-legend .k-low { background: var(--hpw-red); } .v-legend .k-cmp { background: var(--hpw-gray); }
+.v-legend .k-sec { background: var(--hpw-white); border: 2px solid var(--hpw-ink); } .v-legend .k-tgt { background: var(--hpw-yellow); }
+.v-srows { display: flex; flex-direction: column; border-top: 1px solid var(--hpw-ink); }
+.v-srow { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: 24px; padding: 24px 0; border-bottom: 1px solid var(--hpw-mid); align-items: center; }
+.v-it { font-weight: 700; }
+.v-scol { display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+.v-scale { position: relative; height: 48px; }
+.v-track { position: absolute; left: 0; right: 0; top: 24px; height: 12px; background: var(--hpw-soft); }
+.v-fill { position: absolute; left: 0; top: 24px; height: 12px; background: var(--hpw-ink); }
+.v-fill.low { background: var(--hpw-red); }
+.v-tick { position: absolute; transform: translateX(-50%); }
+.v-tick.tgt { top: 0; height: 24px; width: 8px; background: var(--hpw-yellow); }
+.v-tick.cmp { top: 12px; height: 36px; width: 4px; background: var(--hpw-gray); }
+.v-tick.sec { bottom: 0; height: 12px; width: 8px; background: var(--hpw-white); border: 2px solid var(--hpw-ink); }
+.v-axis { display: flex; justify-content: space-between; font-size: 12px; color: var(--hpw-mute); }
+.v-nums { display: flex; flex-wrap: wrap; gap: 12px 24px; font-size: 12px; }
+.v-nums b { font-size: 14px; }
 /* Bugün'e özel: "Yapıldı olarak işaretle" HPW kırmızısı, "Not ekle" HPW koyu; genel .v-btn/.v-btn2 değişmez */
 .v-today .v-btn-mark:not(:disabled) { background: var(--hpw-red); border-color: var(--hpw-red); color: var(--hpw-white); }
 .v-today .v-btn-note { background: var(--hpw-ink); border-color: var(--hpw-ink); color: var(--hpw-white); }
@@ -164,6 +211,7 @@
 .v-file input[type="file"] { max-width: 100%; }
 
 @media (max-width: 900px) {
+  .v-srow { grid-template-columns: minmax(0, 1fr); gap: 12px; }
   .v-two { grid-template-columns: minmax(0, 1fr); gap: 24px; }
   .v-left { position: static; max-height: none; overflow: visible; }
   .v-two[data-mode="list"] .v-right { display: none; }
@@ -195,4 +243,6 @@
   .v-ib-v b { font-size: 20px; line-height: 28px; }
   .v-step-t { font-size: 14px; line-height: 20px; }
   .v-co-row { grid-template-columns: minmax(0, 1fr); gap: 12px; }
+  .v-recr { grid-template-columns: minmax(0, 1fr); gap: 0; }
+  .v-bi { padding: 12px 0 12px 24px; }
 }

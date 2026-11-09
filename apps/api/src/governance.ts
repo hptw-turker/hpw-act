@@ -28,6 +28,8 @@ export const ROUTE_CLASS: Record<string, RouteClass> = {
   'POST /api/t/:tid/attention/:key/snooze': 'business',
   'POST /api/t/:tid/roadmap-steps/:sid/status': 'business', 'POST /api/t/:tid/roadmap-milestones/:mid/status': 'business', // v2.15.0 yol haritası takibi
   'POST /api/t/:tid/rm2-steps/:sid': 'business', // v3.0.0 sade yol haritası
+  'POST /api/t/:tid/rm2-steps/:sid/records': 'business', // v3.1.0 adım kayıtları (not, gelişme, engel, dosya)
+  'POST /api/t/:tid/rm2-steps/:sid/blockers/:bid/resolve': 'business', // v3.1.0 engeli kaldır
   'POST /api/t/:tid/corporate/ambitions': 'business', 'POST /api/t/:tid/corporate/ambitions/:aid/freeze': 'business', 'POST /api/t/:tid/corporate/ambitions/:aid/reconcile': 'business', 'POST /api/t/:tid/corporate/ambitions/:aid/units/:uid/decision': 'business',
   'POST /api/t/:tid/corporate/master-actions': 'business', 'POST /api/t/:tid/corporate/master-actions/:mid/deploy': 'business', 'POST /api/t/:tid/corporate/deployments/:did/respond': 'business', 'POST /api/t/:tid/corporate/deployments/:did/upgrade': 'business', 'POST /api/t/:tid/corporate/deployments/:did/link': 'business',
   'POST /api/t/:tid/corporate/queue/:qid/decide': 'business', 'POST /api/t/:tid/corporate/resource-requests': 'business',
