@@ -120,7 +120,7 @@ test('V3-04 Bugün ve yetki: müdür kendi yönetim adımlarını, İK İK adım
   const u1 = (await api('GET', `/api/t/${ctx.A}/rm2`, undefined, 'm1V3A')).body.roadmaps[0];
   const d = (await api('GET', `/api/t/${ctx.A}/rm2/${u1.id}`, undefined, 'm1V3A')).body; const ref = d.plans[0].steps.find((s: J) => s.ref); assert.equal(ref.status, 'DONE');
   const kok = (await api('GET', `/api/t/${ctx.A}/rm2`, undefined, 'hrV3A')).body.roadmaps.find((r: J) => r.layer === 'KURUM'); const kd = (await api('GET', `/api/t/${ctx.A}/rm2/${kok.id}`, undefined, 'hrV3A')).body;
-  assert.equal(kd.plans[0].impact, 'wp41 ile izlenir.'); assert.equal(kd.items.length, 1); assert.equal(kd.plans[0].steps.find((s: J) => s.status === 'DONE').updatedBy, 'İK'); assert.equal(kd.plans[0].steps.find((s: J) => s.status === 'DONE').note, 'Form gönderildi');
+  assert.equal(kd.plans[0].impact, 'wp41 ile izlenir.'); assert.equal(kd.items.length, 1); assert.equal(kd.plans[0].steps.find((s: J) => s.status === 'DONE').updatedBy, 'İK'); { const dn = kd.plans[0].steps.find((s: J) => s.status === 'DONE'); /* v3.1.0 (R-05): not adım satırına değil kayıt geçmişine eklenir */ assert.ok(dn.records.some((r: J) => r.kind === 'NOTE' && r.text === 'Form gönderildi' && r.by === 'İK'), JSON.stringify(dn.records)); assert.ok(dn.records.some((r: J) => r.kind === 'DONE')); }
   // yasaklar
   assert.equal((await api('POST', `/api/t/${ctx.A}/rm2-steps/${ref.id}`, { done: true, expectedVersion: ref.version }, 'hrV3A', { 'Idempotency-Key': `r-${Date.now()}` })).status, 422);
   const emp = (await api('GET', `/api/t/${ctx.A}/rm2/${list1.roadmaps[0].id}`, undefined, 'hrV3A')).body.plans[0].steps.find((s: J) => s.role === 'IK' && !s.ref);

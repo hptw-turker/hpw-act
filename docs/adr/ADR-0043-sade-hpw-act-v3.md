@@ -23,3 +23,9 @@ v2.x saha uygulamasında başarısız oldu: kullanıcılar ekranlarda kayboldu, 
 - Proje talimatındaki 2–5, 9, 11, 14 numaralı ilkeler (hedef ağı, istisna, kanıt, dikkat kuyruğu, ambition) bu sürümde **uykudadır**; kapalı modüllerin içinde geçerlidir.
 - Yeni içe alım türü `roadmap2` (form `yh-2`), eski `roadmap` (yh-1) kapalı.
 - Rapor hazırlama kuralları: `docs/rapor-formu/RAPOR-KURALLARI.md`.
+
+## Ek · v3.1.0 (09.11.2026, Türker Baş — revize R-05…R-11)
+- **Adım kayıtları.** Adıma not, gelişme, engel ve dosya eklenebilir; kayıtlar yalnız eklenir (silinmez, üzerine yazılmaz) ve kişi + zaman taşır. Kayıt eklemek adımın ikili durumunu (Yapıldı / Yapılmadı) ve rapordaki termini değiştirmez; madde 4'teki "kısa not" artık adım satırında değil bu geçmiştedir. Yapıldı ve geri alma da geçmişe yazılır.
+- **Engel** durumdan ayrı bir işarettir; gecikme hesabını değiştirmez. Kaldırma yetkisi madde 5'ten ayrıdır: o işletmeyi kapsayan işletme müdürü, bölge müdürü, İK ya da üst yönetim; çözüm notu zorunludur. Onay, inceleme ya da zorunlu iş akışı eklenmedi.
+- **Dosya** çıktının kendisidir (tutanak, fotoğraf, katılım listesi); kanıt modülü değildir, doğrulama ve onay yoktur. Kapalı kanıt/onay modülleri (madde 6) kapalı kalır. Dosyalar şirkete bağlı, kalıcı birimde, yetki denetimli uçtan indirilir; görme yetkisi olan indirebilir.
+- **Ekran.** Adım kartı yerleşimi A (tek kayıt kutusu); izleme göstergeleri ölçek çizgisi; mevcut değer karşılaştırmanın altındaysa kırmızı. Ayrıntı: `docs/REVIZE-NOTLARI.md`.

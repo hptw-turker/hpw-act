@@ -188,7 +188,7 @@ export const roadmap2Importer: Importer = {
     const cycleId = cyc!.id; const stepIds: Record<string, string> = {}; const out: { unit: string; roadmapId: string; plans: number; steps: number; carried: number }[] = [];
     for (const r of pl.roadmaps) {
       const prev = (await tx.query("SELECT id FROM rm2_roadmap WHERE tenant_id = $1 AND cycle_id = $2 AND unit_id = $3 AND status = 'active' FOR UPDATE", [ctx.tenantId, cycleId, r.unitId])).rows[0] as { id: string } | undefined;
-      const prevSteps = prev ? (await tx.query('SELECT p.plan_no, s.role_code, s.phase_days, s.text, s.status, s.note, s.updated_by, s.status_at FROM rm2_step s JOIN rm2_plan p ON p.tenant_id = s.tenant_id AND p.id = s.plan_id WHERE s.tenant_id = $1 AND s.roadmap_id = $2', [ctx.tenantId, prev.id])).rows : [];
+      const prevSteps = prev ? (await tx.query('SELECT s.id, p.plan_no, s.role_code, s.phase_days, s.text, s.status, s.note, s.updated_by, s.status_at FROM rm2_step s JOIN rm2_plan p ON p.tenant_id = s.tenant_id AND p.id = s.plan_id WHERE s.tenant_id = $1 AND s.roadmap_id = $2', [ctx.tenantId, prev.id])).rows : [];
       if (prev) await tx.query("UPDATE rm2_roadmap SET status = 'superseded', updated_at = now(), version = version + 1 WHERE tenant_id = $1 AND id = $2", [ctx.tenantId, prev.id]);
       const h = r.head;
       const rid = (await tx.query('INSERT INTO rm2_roadmap (tenant_id, cycle_id, unit_id, layer, report_title, unit_label, respondents, comparison_label, headline, summary, start_date, measure_period, created_by) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13) RETURNING id', [ctx.tenantId, cycleId, r.unitId, r.layer, pl.report.title, h.birim_adi, h.yanit_sayisi, h.karsilastirma_adi, h.ana_sonuc_baslik, h.ana_sonuc_metin, start, pl.report.measurePeriod, ctx.userId])).rows[0].id as string;
@@ -200,8 +200,8 @@ export const roadmap2Importer: Importer = {
         for (const s of r.steps.filter(x => x.plan_no === p.plan_no).sort((a, b) => Number(a.asama_gun) - Number(b.asama_gun) || Number(a.sira) - Number(b.sira))) {
           const refKey = s._ref as string | null; const refId = refKey ? stepIds[refKey] ?? null : null;
           const old = !refId && s.rol !== 'CALISAN' ? prevSteps.find(o => o.plan_no === p.plan_no && o.role_code === s.rol && o.phase_days === s.asama_gun && o.text === s.adim) : undefined;
-          const id = (await tx.query('INSERT INTO rm2_step (tenant_id, roadmap_id, plan_id, unit_id, role_code, role_label, phase_days, ord, text, output, contribution, ref_label, ref_step_id, due_date, status, note, updated_by, status_at) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18) RETURNING id',
-            [ctx.tenantId, rid, pid, r.unitId, s.rol, s.rol_adi, s.asama_gun, s.sira, s.adim, s.cikti, s.plana_katkisi, s.kurum_atfi, refId, addDays(start, Number(s.asama_gun)), old?.status ?? 'NOT_DONE', old?.note ?? null, old?.updated_by ?? null, old?.status_at ?? null])).rows[0].id as string;
+          const id = (await tx.query('INSERT INTO rm2_step (tenant_id, roadmap_id, plan_id, unit_id, role_code, role_label, phase_days, ord, text, output, contribution, ref_label, ref_step_id, due_date, status, note, updated_by, status_at, carried_from) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19) RETURNING id',
+            [ctx.tenantId, rid, pid, r.unitId, s.rol, s.rol_adi, s.asama_gun, s.sira, s.adim, s.cikti, s.plana_katkisi, s.kurum_atfi, refId, addDays(start, Number(s.asama_gun)), old?.status ?? 'NOT_DONE', old?.note ?? null, old?.updated_by ?? null, old?.status_at ?? null, old?.id ?? null /* v3.1.0: kayıt geçmişi zinciri */])).rows[0].id as string;
           if (r.layer === 'KURUM') stepIds[`${r.unitCode}|${s.plan_no}|${s.rol}|${s.asama_gun}|${s.sira}`] = id;
           steps++; if (old?.status === 'DONE') carried++;
         }

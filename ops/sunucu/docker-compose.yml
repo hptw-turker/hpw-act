@@ -28,6 +28,8 @@ services:
       HPW_MFA_REQUIRED: "false"
       HPW_BUILD_ID: "${HPW_BUILD_ID:-3.0.0}"
       TRUST_PROXY: "1"
+      HPW_FILE_DIR: /data/files          # v3.1.0: adım kayıtlarına eklenen dosyalar (kalıcı birim, yedeklenir: yedekle.sh)
+    volumes: [ "files:/data/files" ]
     command: ["sh", "-c", "GRANT_APP_ROLES_TO=hpw_api_production node dist/src/migrate.js && exec node dist/src/server.js"]
     expose: [ "8787" ]
   caddy:
@@ -37,4 +39,4 @@ services:
     environment: { DOMAIN: "${DOMAIN:?}" }
     ports: [ "80:80", "443:443" ]
     volumes: [ "./Caddyfile:/etc/caddy/Caddyfile:ro", "caddy_data:/data", "caddy_config:/config" ]
-volumes: { pgdata: {}, caddy_data: {}, caddy_config: {} }
+volumes: { pgdata: {}, files: {}, caddy_data: {}, caddy_config: {} }

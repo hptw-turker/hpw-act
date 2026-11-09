@@ -7666,7 +7666,10 @@
        ]
       },
       "nextDue": {
-       "type": "string",
+       "type": [
+        "string",
+        "null"
+       ],
        "format": "date"
       }
      },
@@ -7725,7 +7728,10 @@
     "type": "string"
    },
    "headline": {
-    "type": "string"
+    "type": [
+     "string",
+     "null"
+    ]
    },
    "summary": {
     "type": [
@@ -7808,7 +7814,10 @@
        "type": "number"
       },
       "responsibility": {
-       "type": "string"
+       "type": [
+        "string",
+        "null"
+       ]
       },
       "impact": {
        "type": [
@@ -7858,8 +7867,8 @@
          },
          "note": {
           "type": [
-           "null",
-           "string"
+           "string",
+           "null"
           ]
          },
          "statusAt": {
@@ -7902,17 +7911,158 @@
            "output",
            "text"
           ]
+         },
+         "records": {
+          "type": "array",
+          "items": {
+           "type": "object",
+           "properties": {
+            "id": {
+             "type": "string",
+             "format": "uuid"
+            },
+            "kind": {
+             "type": "string"
+            },
+            "text": {
+             "type": [
+              "string",
+              "null"
+             ]
+            },
+            "by": {
+             "type": "string"
+            },
+            "at": {
+             "type": "string",
+             "format": "date-time"
+            },
+            "blockerId": {
+             "type": [
+              "null",
+              "string"
+             ],
+             "format": "uuid"
+            },
+            "files": {
+             "type": "array",
+             "items": {
+              "type": "object",
+              "properties": {
+               "id": {
+                "type": "string",
+                "format": "uuid"
+               },
+               "name": {
+                "type": "string"
+               },
+               "mime": {
+                "type": "string"
+               },
+               "size": {
+                "type": "integer"
+               },
+               "image": {
+                "type": "boolean"
+               }
+              },
+              "required": [
+               "id",
+               "image",
+               "mime",
+               "name",
+               "size"
+              ]
+             }
+            }
+           },
+           "required": [
+            "at",
+            "blockerId",
+            "by",
+            "files",
+            "id",
+            "kind",
+            "text"
+           ]
+          }
+         },
+         "blockers": {
+          "type": "array",
+          "items": {
+           "type": "object",
+           "required": [
+            "id",
+            "text",
+            "by",
+            "at"
+           ],
+           "properties": {
+            "id": {
+             "type": "string",
+             "format": "uuid"
+            },
+            "text": {
+             "type": "string"
+            },
+            "by": {
+             "type": [
+              "string",
+              "null"
+             ]
+            },
+            "at": {
+             "type": "string",
+             "format": "date-time"
+            }
+           },
+           "x-source": "rm2-records.ts loadRecords: açık engel = BLOCKER kaydı, bağlı UNBLOCK yok"
+          }
+         },
+         "lastProgress": {
+          "type": [
+           "null",
+           "object"
+          ],
+          "properties": {
+           "text": {
+            "type": "string"
+           },
+           "by": {
+            "type": "string"
+           },
+           "at": {
+            "type": "string",
+            "format": "date-time"
+           }
+          },
+          "required": [
+           "at",
+           "by",
+           "text"
+          ]
+         },
+         "canRecord": {
+          "type": "boolean"
+         },
+         "canUnblock": {
+          "type": "boolean"
          }
         },
         "required": [
+         "blockers",
          "canMark",
+         "canRecord",
+         "canUnblock",
          "contribution",
          "dueDate",
          "id",
+         "lastProgress",
          "note",
          "ord",
          "output",
          "phaseDays",
+         "records",
          "ref",
          "role",
          "roleLabel",
@@ -8007,6 +8157,80 @@
    "unitLabel"
   ]
  },
+ "GET /api/t/:tid/rm2/blockers": {
+  "type": "object",
+  "properties": {
+   "enabled": {
+    "type": "boolean"
+   },
+   "items": {
+    "type": "array",
+    "items": {
+     "type": "object",
+     "properties": {
+      "id": {
+       "type": "string",
+       "format": "uuid"
+      },
+      "stepId": {
+       "type": "string",
+       "format": "uuid"
+      },
+      "roadmapId": {
+       "type": "string",
+       "format": "uuid"
+      },
+      "planNo": {
+       "type": "integer"
+      },
+      "unitLabel": {
+       "type": "string"
+      },
+      "layer": {
+       "type": "string",
+       "enum": [
+        "ISLETME",
+        "KURUM"
+       ]
+      },
+      "roleLabel": {
+       "type": "string"
+      },
+      "stepText": {
+       "type": "string"
+      },
+      "text": {
+       "type": "string"
+      },
+      "by": {
+       "type": "string"
+      },
+      "at": {
+       "type": "string",
+       "format": "date-time"
+      }
+     },
+     "required": [
+      "at",
+      "by",
+      "id",
+      "layer",
+      "planNo",
+      "roadmapId",
+      "roleLabel",
+      "stepId",
+      "stepText",
+      "text",
+      "unitLabel"
+     ]
+    }
+   }
+  },
+  "required": [
+   "enabled",
+   "items"
+  ]
+ },
  "GET /api/t/:tid/rm2/me": {
   "type": "object",
   "properties": {
@@ -8079,8 +8303,8 @@
       },
       "note": {
        "type": [
-        "null",
-        "string"
+        "string",
+        "null"
        ]
       },
       "statusAt": {
@@ -8122,6 +8346,138 @@
         }
        },
        "x-source": "rm2.ts: Bugün listesi atıf satırı içermez (s.ref_step_id IS NULL); alan adım DTO ile ortak olduğu için her zaman null"
+      },
+      "records": {
+       "type": "array",
+       "items": {
+        "type": "object",
+        "properties": {
+         "id": {
+          "type": "string",
+          "format": "uuid"
+         },
+         "kind": {
+          "type": "string"
+         },
+         "text": {
+          "type": [
+           "string",
+           "null"
+          ]
+         },
+         "by": {
+          "type": "string"
+         },
+         "at": {
+          "type": "string",
+          "format": "date-time"
+         },
+         "blockerId": {
+          "type": [
+           "null",
+           "string"
+          ],
+          "format": "uuid"
+         },
+         "files": {
+          "type": "array",
+          "items": {
+           "type": "object",
+           "properties": {
+            "id": {
+             "type": "string",
+             "format": "uuid"
+            },
+            "name": {
+             "type": "string"
+            },
+            "mime": {
+             "type": "string"
+            },
+            "size": {
+             "type": "integer"
+            },
+            "image": {
+             "type": "boolean"
+            }
+           },
+           "required": [
+            "id",
+            "image",
+            "mime",
+            "name",
+            "size"
+           ]
+          }
+         }
+        },
+        "required": [
+         "at",
+         "blockerId",
+         "by",
+         "files",
+         "id",
+         "kind",
+         "text"
+        ]
+       }
+      },
+      "blockers": {
+       "type": "array",
+       "items": {
+        "type": "object",
+        "properties": {
+         "id": {
+          "type": "string",
+          "format": "uuid"
+         },
+         "text": {
+          "type": "string"
+         },
+         "by": {
+          "type": "string"
+         },
+         "at": {
+          "type": "string",
+          "format": "date-time"
+         }
+        },
+        "required": [
+         "at",
+         "by",
+         "id",
+         "text"
+        ]
+       }
+      },
+      "lastProgress": {
+       "type": [
+        "null",
+        "object"
+       ],
+       "properties": {
+        "text": {
+         "type": "string"
+        },
+        "by": {
+         "type": "string"
+        },
+        "at": {
+         "type": "string",
+         "format": "date-time"
+        }
+       },
+       "required": [
+        "at",
+        "by",
+        "text"
+       ]
+      },
+      "canRecord": {
+       "type": "boolean"
+      },
+      "canUnblock": {
+       "type": "boolean"
       },
       "roadmapId": {
        "type": "string",
@@ -8228,16 +8584,21 @@
       }
      },
      "required": [
+      "blockers",
       "canMark",
+      "canRecord",
+      "canUnblock",
       "contribution",
       "dueDate",
       "id",
+      "lastProgress",
       "layer",
       "note",
       "ord",
       "output",
       "phaseDays",
       "plan",
+      "records",
       "ref",
       "roadmapId",
       "role",
@@ -13506,6 +13867,180 @@
    "version"
   ]
  },
+ "POST /api/t/:tid/rm2-steps/:sid/blockers/:bid/resolve": {
+  "type": "object",
+  "properties": {
+   "stepId": {
+    "type": "string",
+    "format": "uuid"
+   },
+   "record": {
+    "type": "object",
+    "properties": {
+     "id": {
+      "type": "string",
+      "format": "uuid"
+     },
+     "kind": {
+      "type": "string"
+     },
+     "text": {
+      "type": "string"
+     },
+     "by": {
+      "type": "string"
+     },
+     "at": {
+      "type": "string",
+      "format": "date-time"
+     },
+     "blockerId": {
+      "type": "string",
+      "format": "uuid"
+     },
+     "files": {
+      "type": "array",
+      "items": {
+       "type": "object",
+       "required": [
+        "id",
+        "name",
+        "mime",
+        "size",
+        "image"
+       ],
+       "properties": {
+        "id": {
+         "type": "string",
+         "format": "uuid"
+        },
+        "name": {
+         "type": "string"
+        },
+        "mime": {
+         "type": "string"
+        },
+        "size": {
+         "type": "integer"
+        },
+        "image": {
+         "type": "boolean"
+        }
+       },
+       "x-source": "rm2-records.ts RecordDto.files: engel kaldırma kaydı dosya taşımaz (her zaman boş dizi); eleman biçimi kayıt dosyasıyla ortak"
+      }
+     }
+    },
+    "required": [
+     "at",
+     "blockerId",
+     "by",
+     "files",
+     "id",
+     "kind",
+     "text"
+    ]
+   },
+   "status": {
+    "type": "string"
+   }
+  },
+  "required": [
+   "record",
+   "status",
+   "stepId"
+  ]
+ },
+ "POST /api/t/:tid/rm2-steps/:sid/records": {
+  "type": "object",
+  "properties": {
+   "stepId": {
+    "type": "string",
+    "format": "uuid"
+   },
+   "record": {
+    "type": "object",
+    "properties": {
+     "id": {
+      "type": "string",
+      "format": "uuid"
+     },
+     "kind": {
+      "type": "string"
+     },
+     "text": {
+      "type": [
+       "string",
+       "null"
+      ]
+     },
+     "by": {
+      "type": "string"
+     },
+     "at": {
+      "type": "string",
+      "format": "date-time"
+     },
+     "blockerId": {
+      "type": [
+       "string",
+       "null"
+      ],
+      "format": "uuid",
+      "x-source": "rm2-records.ts: yalnız UNBLOCK kaydı engel kimliği taşır; not/gelişme/engel/dosya kaydında null"
+     },
+     "files": {
+      "type": "array",
+      "items": {
+       "type": "object",
+       "properties": {
+        "id": {
+         "type": "string",
+         "format": "uuid"
+        },
+        "name": {
+         "type": "string"
+        },
+        "mime": {
+         "type": "string"
+        },
+        "size": {
+         "type": "integer"
+        },
+        "image": {
+         "type": "boolean"
+        }
+       },
+       "required": [
+        "id",
+        "image",
+        "mime",
+        "name",
+        "size"
+       ]
+      }
+     }
+    },
+    "required": [
+     "at",
+     "blockerId",
+     "by",
+     "files",
+     "id",
+     "kind",
+     "text"
+    ]
+   },
+   "status": {
+    "type": "string"
+   }
+  },
+  "required": [
+   "record",
+   "status",
+   "stepId"
+  ]
+ },
  "POST /api/t/:tid/roadmap-milestones/:mid/status": {
   "type": "object",
   "properties": {
@@ -14682,5 +15217,8 @@
  },
  "GET /api/t/:tid/imports/:jid/errors.xlsx": {
   "binary": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+ },
+ "GET /api/t/:tid/rm2-files/:fid": {
+  "binary": "application/octet-stream"
  }
 }

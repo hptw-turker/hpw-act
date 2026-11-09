@@ -18298,6 +18298,424 @@
         }
       }
     },
+    "/api/t/{tid}/rm2-files/{fid}": {
+      "get": {
+        "tags": [
+          "Kiracı"
+        ],
+        "operationId": "get_api_t_tid_rm2_files_fid",
+        "parameters": [
+          {
+            "name": "tid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "fid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Dosya (indirme; ?inline=1 ile JPEG/PNG/WEBP/GIF satır içi image/*)",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          },
+          "503": {
+            "$ref": "#/components/responses/Unavailable"
+          }
+        }
+      }
+    },
+    "/api/t/{tid}/rm2-steps/{sid}/blockers/{bid}/resolve": {
+      "post": {
+        "tags": [
+          "Kiracı"
+        ],
+        "operationId": "post_api_t_tid_rm2_steps_sid_blockers_bid_resolve",
+        "parameters": [
+          {
+            "name": "tid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "bid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "$ref": "#/components/parameters/IdempotencyKey"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Başarılı (şema gerçek API yanıtlarından; src/contract/responses.json)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "stepId": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "record": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string",
+                          "format": "uuid"
+                        },
+                        "kind": {
+                          "type": "string"
+                        },
+                        "text": {
+                          "type": "string"
+                        },
+                        "by": {
+                          "type": "string"
+                        },
+                        "at": {
+                          "type": "string",
+                          "format": "date-time"
+                        },
+                        "blockerId": {
+                          "type": "string",
+                          "format": "uuid"
+                        },
+                        "files": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "required": [
+                              "id",
+                              "name",
+                              "mime",
+                              "size",
+                              "image"
+                            ],
+                            "properties": {
+                              "id": {
+                                "type": "string",
+                                "format": "uuid"
+                              },
+                              "name": {
+                                "type": "string"
+                              },
+                              "mime": {
+                                "type": "string"
+                              },
+                              "size": {
+                                "type": "integer"
+                              },
+                              "image": {
+                                "type": "boolean"
+                              }
+                            },
+                            "x-source": "rm2-records.ts RecordDto.files: engel kaldırma kaydı dosya taşımaz (her zaman boş dizi); eleman biçimi kayıt dosyasıyla ortak"
+                          }
+                        }
+                      },
+                      "required": [
+                        "at",
+                        "blockerId",
+                        "by",
+                        "files",
+                        "id",
+                        "kind",
+                        "text"
+                      ]
+                    },
+                    "status": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "record",
+                    "status",
+                    "stepId"
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "409": {
+            "$ref": "#/components/responses/Conflict"
+          },
+          "422": {
+            "$ref": "#/components/responses/Invalid"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          },
+          "503": {
+            "$ref": "#/components/responses/Unavailable"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "resolution"
+                ],
+                "properties": {
+                  "resolution": {
+                    "type": "string",
+                    "maxLength": 2000
+                  }
+                },
+                "additionalProperties": false
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/t/{tid}/rm2-steps/{sid}/records": {
+      "post": {
+        "tags": [
+          "Kiracı"
+        ],
+        "operationId": "post_api_t_tid_rm2_steps_sid_records",
+        "parameters": [
+          {
+            "name": "tid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "$ref": "#/components/parameters/IdempotencyKey"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Başarılı (şema gerçek API yanıtlarından; src/contract/responses.json)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "stepId": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "record": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string",
+                          "format": "uuid"
+                        },
+                        "kind": {
+                          "type": "string"
+                        },
+                        "text": {
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        },
+                        "by": {
+                          "type": "string"
+                        },
+                        "at": {
+                          "type": "string",
+                          "format": "date-time"
+                        },
+                        "blockerId": {
+                          "type": [
+                            "string",
+                            "null"
+                          ],
+                          "format": "uuid",
+                          "x-source": "rm2-records.ts: yalnız UNBLOCK kaydı engel kimliği taşır; not/gelişme/engel/dosya kaydında null"
+                        },
+                        "files": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "string",
+                                "format": "uuid"
+                              },
+                              "name": {
+                                "type": "string"
+                              },
+                              "mime": {
+                                "type": "string"
+                              },
+                              "size": {
+                                "type": "integer"
+                              },
+                              "image": {
+                                "type": "boolean"
+                              }
+                            },
+                            "required": [
+                              "id",
+                              "image",
+                              "mime",
+                              "name",
+                              "size"
+                            ]
+                          }
+                        }
+                      },
+                      "required": [
+                        "at",
+                        "blockerId",
+                        "by",
+                        "files",
+                        "id",
+                        "kind",
+                        "text"
+                      ]
+                    },
+                    "status": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "record",
+                    "status",
+                    "stepId"
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "409": {
+            "$ref": "#/components/responses/Conflict"
+          },
+          "422": {
+            "$ref": "#/components/responses/Invalid"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          },
+          "503": {
+            "$ref": "#/components/responses/Unavailable"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "kind": {
+                    "type": "string",
+                    "enum": [
+                      "NOTE",
+                      "PROGRESS",
+                      "BLOCKER"
+                    ]
+                  },
+                  "text": {
+                    "type": "string",
+                    "maxLength": 2000
+                  },
+                  "files": {
+                    "type": "array",
+                    "maxItems": 5,
+                    "items": {
+                      "type": "string",
+                      "format": "binary"
+                    }
+                  }
+                },
+                "required": [
+                  "kind"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/t/{tid}/rm2-steps/{sid}": {
       "post": {
         "tags": [
@@ -18479,7 +18897,10 @@
                       "type": "string"
                     },
                     "headline": {
-                      "type": "string"
+                      "type": [
+                        "string",
+                        "null"
+                      ]
                     },
                     "summary": {
                       "type": [
@@ -18562,7 +18983,10 @@
                             "type": "number"
                           },
                           "responsibility": {
-                            "type": "string"
+                            "type": [
+                              "string",
+                              "null"
+                            ]
                           },
                           "impact": {
                             "type": [
@@ -18612,8 +19036,8 @@
                                 },
                                 "note": {
                                   "type": [
-                                    "null",
-                                    "string"
+                                    "string",
+                                    "null"
                                   ]
                                 },
                                 "statusAt": {
@@ -18656,17 +19080,158 @@
                                     "output",
                                     "text"
                                   ]
+                                },
+                                "records": {
+                                  "type": "array",
+                                  "items": {
+                                    "type": "object",
+                                    "properties": {
+                                      "id": {
+                                        "type": "string",
+                                        "format": "uuid"
+                                      },
+                                      "kind": {
+                                        "type": "string"
+                                      },
+                                      "text": {
+                                        "type": [
+                                          "string",
+                                          "null"
+                                        ]
+                                      },
+                                      "by": {
+                                        "type": "string"
+                                      },
+                                      "at": {
+                                        "type": "string",
+                                        "format": "date-time"
+                                      },
+                                      "blockerId": {
+                                        "type": [
+                                          "null",
+                                          "string"
+                                        ],
+                                        "format": "uuid"
+                                      },
+                                      "files": {
+                                        "type": "array",
+                                        "items": {
+                                          "type": "object",
+                                          "properties": {
+                                            "id": {
+                                              "type": "string",
+                                              "format": "uuid"
+                                            },
+                                            "name": {
+                                              "type": "string"
+                                            },
+                                            "mime": {
+                                              "type": "string"
+                                            },
+                                            "size": {
+                                              "type": "integer"
+                                            },
+                                            "image": {
+                                              "type": "boolean"
+                                            }
+                                          },
+                                          "required": [
+                                            "id",
+                                            "image",
+                                            "mime",
+                                            "name",
+                                            "size"
+                                          ]
+                                        }
+                                      }
+                                    },
+                                    "required": [
+                                      "at",
+                                      "blockerId",
+                                      "by",
+                                      "files",
+                                      "id",
+                                      "kind",
+                                      "text"
+                                    ]
+                                  }
+                                },
+                                "blockers": {
+                                  "type": "array",
+                                  "items": {
+                                    "type": "object",
+                                    "required": [
+                                      "id",
+                                      "text",
+                                      "by",
+                                      "at"
+                                    ],
+                                    "properties": {
+                                      "id": {
+                                        "type": "string",
+                                        "format": "uuid"
+                                      },
+                                      "text": {
+                                        "type": "string"
+                                      },
+                                      "by": {
+                                        "type": [
+                                          "string",
+                                          "null"
+                                        ]
+                                      },
+                                      "at": {
+                                        "type": "string",
+                                        "format": "date-time"
+                                      }
+                                    },
+                                    "x-source": "rm2-records.ts loadRecords: açık engel = BLOCKER kaydı, bağlı UNBLOCK yok"
+                                  }
+                                },
+                                "lastProgress": {
+                                  "type": [
+                                    "null",
+                                    "object"
+                                  ],
+                                  "properties": {
+                                    "text": {
+                                      "type": "string"
+                                    },
+                                    "by": {
+                                      "type": "string"
+                                    },
+                                    "at": {
+                                      "type": "string",
+                                      "format": "date-time"
+                                    }
+                                  },
+                                  "required": [
+                                    "at",
+                                    "by",
+                                    "text"
+                                  ]
+                                },
+                                "canRecord": {
+                                  "type": "boolean"
+                                },
+                                "canUnblock": {
+                                  "type": "boolean"
                                 }
                               },
                               "required": [
+                                "blockers",
                                 "canMark",
+                                "canRecord",
+                                "canUnblock",
                                 "contribution",
                                 "dueDate",
                                 "id",
+                                "lastProgress",
                                 "note",
                                 "ord",
                                 "output",
                                 "phaseDays",
+                                "records",
                                 "ref",
                                 "role",
                                 "roleLabel",
@@ -18759,6 +19324,125 @@
                     "today",
                     "unitCode",
                     "unitLabel"
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          },
+          "503": {
+            "$ref": "#/components/responses/Unavailable"
+          }
+        }
+      }
+    },
+    "/api/t/{tid}/rm2/blockers": {
+      "get": {
+        "tags": [
+          "Kiracı"
+        ],
+        "operationId": "get_api_t_tid_rm2_blockers",
+        "parameters": [
+          {
+            "name": "tid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Başarılı (şema gerçek API yanıtlarından; src/contract/responses.json)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "enabled": {
+                      "type": "boolean"
+                    },
+                    "items": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string",
+                            "format": "uuid"
+                          },
+                          "stepId": {
+                            "type": "string",
+                            "format": "uuid"
+                          },
+                          "roadmapId": {
+                            "type": "string",
+                            "format": "uuid"
+                          },
+                          "planNo": {
+                            "type": "integer"
+                          },
+                          "unitLabel": {
+                            "type": "string"
+                          },
+                          "layer": {
+                            "type": "string",
+                            "enum": [
+                              "ISLETME",
+                              "KURUM"
+                            ]
+                          },
+                          "roleLabel": {
+                            "type": "string"
+                          },
+                          "stepText": {
+                            "type": "string"
+                          },
+                          "text": {
+                            "type": "string"
+                          },
+                          "by": {
+                            "type": "string"
+                          },
+                          "at": {
+                            "type": "string",
+                            "format": "date-time"
+                          }
+                        },
+                        "required": [
+                          "at",
+                          "by",
+                          "id",
+                          "layer",
+                          "planNo",
+                          "roadmapId",
+                          "roleLabel",
+                          "stepId",
+                          "stepText",
+                          "text",
+                          "unitLabel"
+                        ]
+                      }
+                    }
+                  },
+                  "required": [
+                    "enabled",
+                    "items"
                   ]
                 }
               }
@@ -18878,8 +19562,8 @@
                           },
                           "note": {
                             "type": [
-                              "null",
-                              "string"
+                              "string",
+                              "null"
                             ]
                           },
                           "statusAt": {
@@ -18921,6 +19605,138 @@
                               }
                             },
                             "x-source": "rm2.ts: Bugün listesi atıf satırı içermez (s.ref_step_id IS NULL); alan adım DTO ile ortak olduğu için her zaman null"
+                          },
+                          "records": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "id": {
+                                  "type": "string",
+                                  "format": "uuid"
+                                },
+                                "kind": {
+                                  "type": "string"
+                                },
+                                "text": {
+                                  "type": [
+                                    "string",
+                                    "null"
+                                  ]
+                                },
+                                "by": {
+                                  "type": "string"
+                                },
+                                "at": {
+                                  "type": "string",
+                                  "format": "date-time"
+                                },
+                                "blockerId": {
+                                  "type": [
+                                    "null",
+                                    "string"
+                                  ],
+                                  "format": "uuid"
+                                },
+                                "files": {
+                                  "type": "array",
+                                  "items": {
+                                    "type": "object",
+                                    "properties": {
+                                      "id": {
+                                        "type": "string",
+                                        "format": "uuid"
+                                      },
+                                      "name": {
+                                        "type": "string"
+                                      },
+                                      "mime": {
+                                        "type": "string"
+                                      },
+                                      "size": {
+                                        "type": "integer"
+                                      },
+                                      "image": {
+                                        "type": "boolean"
+                                      }
+                                    },
+                                    "required": [
+                                      "id",
+                                      "image",
+                                      "mime",
+                                      "name",
+                                      "size"
+                                    ]
+                                  }
+                                }
+                              },
+                              "required": [
+                                "at",
+                                "blockerId",
+                                "by",
+                                "files",
+                                "id",
+                                "kind",
+                                "text"
+                              ]
+                            }
+                          },
+                          "blockers": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "id": {
+                                  "type": "string",
+                                  "format": "uuid"
+                                },
+                                "text": {
+                                  "type": "string"
+                                },
+                                "by": {
+                                  "type": "string"
+                                },
+                                "at": {
+                                  "type": "string",
+                                  "format": "date-time"
+                                }
+                              },
+                              "required": [
+                                "at",
+                                "by",
+                                "id",
+                                "text"
+                              ]
+                            }
+                          },
+                          "lastProgress": {
+                            "type": [
+                              "null",
+                              "object"
+                            ],
+                            "properties": {
+                              "text": {
+                                "type": "string"
+                              },
+                              "by": {
+                                "type": "string"
+                              },
+                              "at": {
+                                "type": "string",
+                                "format": "date-time"
+                              }
+                            },
+                            "required": [
+                              "at",
+                              "by",
+                              "text"
+                            ]
+                          },
+                          "canRecord": {
+                            "type": "boolean"
+                          },
+                          "canUnblock": {
+                            "type": "boolean"
                           },
                           "roadmapId": {
                             "type": "string",
@@ -19027,16 +19843,21 @@
                           }
                         },
                         "required": [
+                          "blockers",
                           "canMark",
+                          "canRecord",
+                          "canUnblock",
                           "contribution",
                           "dueDate",
                           "id",
+                          "lastProgress",
                           "layer",
                           "note",
                           "ord",
                           "output",
                           "phaseDays",
                           "plan",
+                          "records",
                           "ref",
                           "roadmapId",
                           "role",
@@ -19199,7 +20020,10 @@
                             ]
                           },
                           "nextDue": {
-                            "type": "string",
+                            "type": [
+                              "string",
+                              "null"
+                            ],
                             "format": "date"
                           }
                         },
@@ -24064,6 +24888,6 @@
     "privacy": "Gizli satırlarda n, value, companyValue, hedef/sonuç sayıları null; türetilmiş durumlar “hidden”.",
     "versioning": "Hedef kabulü gövdede expectedVersion ister; If-Match başlığı kullanılmaz.",
     "idempotency": "Bütün /api/t/ POST ve PATCH yazmaları Idempotency-Key kabul eder; platform şirket oluşturma ve davet kabulü kendi doğal tekilliğiyle kurtarılır (tenant_exists, invitation_already_accepted).",
-    "routeCount": 136
+    "routeCount": 140
   }
 }

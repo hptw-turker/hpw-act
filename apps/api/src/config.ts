@@ -23,6 +23,10 @@ export const config = {
   mailAllowlist: (env.MAIL_ALLOWLIST ?? '').split(',').map(s => s.trim().toLocaleLowerCase('en-US')).filter(Boolean), // dolu ise yalnız bu alıcılara gerçek gönderim
   mailDir: env.MAIL_DIR ? (env.MAIL_DIR.startsWith('/') ? env.MAIL_DIR : join(apiRoot, env.MAIL_DIR)) : join(apiRoot, 'var', `mail-${env.HPW_ENV ?? 'dev'}`),
   maxUploadBytes: Number(env.MAX_UPLOAD_BYTES ?? 15 * 1024 * 1024),
+  /** v3.1.0 (R-09): adım kayıtlarına eklenen dosyaların kalıcı deposu (konteynerde birim olarak bağlanır; yedeklenir). Göreli yol apps/api köküne göre. */
+  fileDir: env.HPW_FILE_DIR ? (env.HPW_FILE_DIR.startsWith('/') ? env.HPW_FILE_DIR : join(apiRoot, env.HPW_FILE_DIR)) : join(apiRoot, 'var', `files-${env.HPW_ENV ?? 'dev'}`),
+  recordFileMaxBytes: Number(env.RECORD_FILE_MAX_BYTES ?? 10 * 1024 * 1024),
+  recordFileMaxCount: 5,
   /** v3.0.0 (ADR-0043): kapalı modüller (hedef/aksiyon/kanıt/uzlaştırma/AI/v2.15 yol haritası). Ürün varsayılanı KAPALI; test ortamında eski testler için açık. Her istekte okunur. */
   get legacyModules(): boolean { return env.HPW_LEGACY_MODULES ? env.HPW_LEGACY_MODULES === 'true' : (env.HPW_ENV ?? 'dev') === 'test'; },
   /** v3.0.0: iki adımlı doğrulama zorunluluğu (HPW personeli). Ürün varsayılanı KAPALI; test ortamında eski testler için açık. */

@@ -21,6 +21,8 @@ COPY --from=build /src/packages/domain-core/package.json ./apps/api/node_modules
 COPY --from=build /src/packages/domain-core/dist ./apps/api/node_modules/@hpw-act/domain-core/dist
 COPY --from=build /src/apps/web/dist ./apps/web/dist
 COPY db/migrations ./db/migrations
+# v3.1.0: adım kayıtlarının dosya deposu; üretimde kalıcı birim bağlanır (ops/sunucu/docker-compose.yml: files:/data/files)
+RUN mkdir -p /data/files && chmod 700 /data/files
 ENV NODE_ENV=production HOST=0.0.0.0 WEB_DIST=/app/apps/web/dist MIGRATIONS_DIR=/app/db/migrations
 WORKDIR /app/apps/api
 HEALTHCHECK --interval=15s --timeout=5s --retries=10 CMD wget -qO- "http://127.0.0.1:${PORT:-8787}/api/ready" | grep -q '"ready":true' || exit 1

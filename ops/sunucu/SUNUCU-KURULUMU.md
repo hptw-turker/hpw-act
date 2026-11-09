@@ -86,6 +86,8 @@ Yedekler `ops/sunucu/yedekler` altında 30 gün tutulur. Sunucu dışına (Happy
 
 Geri yükleme (boş bir kuruluma): `docker compose exec -T db pg_restore -U postgres -d hpw_act --clean --if-exists < yedekler/DOSYA.dump` ve ardından `docker compose restart api`.
 
+v3.1.0'dan itibaren adım kayıtlarına eklenen dosyalar veritabanında değil, `files` birimindedir (konteynerde `/data/files/<şirket>/<rastgele anahtar>`). `yedekle.sh` her dökümle aynı damgalı `hpw_act_dosyalar_*.tar.gz` arşivini de alır. Dosyaları geri yüklemek için aynı damgalı arşiv: `docker compose exec -T api sh -c 'mkdir -p /data/files && tar -C /data/files -xzf -' < yedekler/hpw_act_dosyalar_DAMGA.tar.gz`. Veritabanı ve dosya arşivi birlikte geri yüklenir; yalnız biri yüklenirse kayıtta görünen dosya indirilemez (410).
+
 ## 9. Güncelleme
 
 Yeni sürümün `GELISTIRICI_KAYNAK` içeriğini `/opt/hpw-act` üzerine kopyalayın (`ops/sunucu/.env` ve `ops/sunucu/yedekler` korunur), önce `./yedekle.sh`, sonra `docker compose up -d --build`. Şema her açılışta denetlenir ve gerekiyorsa veriyi koruyarak yükseltilir; yükseltme başarısız olursa sunucu açılmaz, eski yedekten geri dönülür.
